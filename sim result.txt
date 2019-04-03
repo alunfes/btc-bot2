@@ -73,3 +73,80 @@ i=9
 train accuracy = 0.7418, test accuracy = 0.4885
 pl=-125.06999999999994,num=61,win_rate=0.6721311475409836
 elapsed_time:501.7260341644287[sec]
+
+
+param = {'max_depth':4,
+                 'num_class':4,
+                 'eta':0.001,
+                 'min_child_weight':1,
+                 'gamma':1,
+                 'subsample':0.9,
+                 'colsample_bytree':0.9,
+                 'lambda':3,
+                 'objective':'multi:softmax',
+                 'tree_method':'gpu_hist',
+                 'early_stopping_rounds':30,
+                 'silent':True}
+        num_round = 10000
+
+
+        train_x (10000, 615)
+train_y (10000,)
+i=0
+train accuracy = 0.8337, test accuracy = 0.459
+pl=-235.29000000000005,num=46,win_rate=0.6086956521739131
+elapsed_time:14.105462741851806[min]
+train_x (10000, 615)
+train_y (10000,)
+i=1
+train accuracy = 0.8335, test accuracy = 0.497
+pl=-67.65000000000003,num=40,win_rate=0.625
+elapsed_time:13.74793576002121[min]
+train_x (10000, 615)
+train_y (10000,)
+i=2
+train accuracy = 0.8358, test accuracy = 0.551
+pl=121.66,num=39,win_rate=0.6153846153846154
+elapsed_time:13.606795239448548[min]
+train_x (10000, 615)
+train_y (10000,)
+i=3
+train accuracy = 0.8269, test accuracy = 0.5975
+pl=222.53000000000006,num=33,win_rate=0.696969696969697
+elapsed_time:13.530554338296254[min]
+train_x (10000, 615)
+train_y (10000,)
+i=4
+train accuracy = 0.8251, test accuracy = 0.645
+pl=-80.19000000000003,num=33,win_rate=0.5151515151515151
+elapsed_time:13.597614856561025[min]
+train_x (10000, 615)
+train_y (10000,)
+i=5
+train accuracy = 0.8176, test accuracy = 0.592
+pl=-238.81000000000006,num=40,win_rate=0.425
+elapsed_time:13.684698700904846[min]
+train_x (10000, 615)
+train_y (10000,)
+i=6
+train accuracy = 0.8135, test accuracy = 0.5285
+pl=-502.1500000000001,num=47,win_rate=0.5106382978723404
+elapsed_time:13.676438411076864[min]
+train_x (10000, 615)
+train_y (10000,)
+i=7
+train accuracy = 0.8188, test accuracy = 0.536
+pl=42.570000000000036,num=47,win_rate=0.5531914893617021
+elapsed_time:13.634796126683552[min]
+train_x (10000, 615)
+train_y (10000,)
+i=8
+train accuracy = 0.8107, test accuracy = 0.415
+pl=-579.59,num=48,win_rate=0.5
+elapsed_time:13.525249707698823[min]
+train_x (10000, 615)
+train_y (10000,)
+i=9
+train accuracy = 0.803, test accuracy = 0.4595
+pl=-683.3199999999999,num=48,win_rate=0.5625
+elapsed_time:13.397730688254038[min]

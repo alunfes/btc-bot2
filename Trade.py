@@ -305,12 +305,13 @@ class Trade:
     def cancel_and_wait_completion(cls, oid) -> dict:
         cls.cancel_order(oid)
         print('waiting cancell order ' + oid)
+        time.sleep(2)
         while True:  # loop for check cancel completion or execution
             flg = True
             status = cls.get_order_status(oid)
             if len(status) > 0:
                 if status[0]['child_order_state'] == 'COMPLETED':
-                    print('order has been executed')
+                    print('cancel failed order has been executed')
                     return status[0]
             else:
                 print('order has been successfully cancelled')

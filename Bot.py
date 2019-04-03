@@ -27,6 +27,7 @@ class Bot:
         self.order_price = 0
         self.order_size = 0
         self.order_status = ''
+        self.order_dt = ''
 
         self.pl = 0
         self.pl_log = []
@@ -40,6 +41,7 @@ class Bot:
         self.order_price = price
         self.order_size = size
         self.order_status = 'new entrying'
+        self.order_dt = datetime.now()
 
     def pl_order(self):
         side = 'buy' if self.posi_side == 'sell' else 'sell'
@@ -48,6 +50,7 @@ class Bot:
         self.order_price = price
         self.order_size = self.posi_size
         self.order_status = 'pl ordering'
+        self.order_dt = datetime.now()
 
 
     def exit_order(self):
@@ -63,11 +66,11 @@ class Bot:
         self.order_price = 0
         self.order_size = 0
         self.order_status = ''
+        self.order_dt = ''
 
 
     def cancel_order(self):
         status = Trade.cancel_and_wait_completion(self.order_id)
-        status = Trade.get_order_status(self.order_id)
         if len(status) > 0:
             Trade.price_tracing_order(status[0]['side'].lower(), status[0]['executed_size'])
             self.posi_side = ''
@@ -80,12 +83,14 @@ class Bot:
             self.order_price = 0
             self.order_size = 0
             self.order_status = ''
+            self.order_dt = ''
         else:
             self.order_side = ''
             self.order_id = ''
             self.order_price = 0
             self.order_size = 0
             self.order_status = ''
+            self.order_dt = ''
 
     def check_execution(self):
         status = Trade.get_order_status(self.order_id)
@@ -102,12 +107,13 @@ class Bot:
                 self.order_size = 0
                 self.order_status = ''
                 self.posi_status = 'fully executed'
-        else: #order has been expired
+        elif (datetime.now() - self.order_dt).total_seconds() >= 60: #order has been expired
             self.order_side = ''
             self.order_id = ''
             self.order_price = 0
             self.order_size = 0
             self.order_status = ''
+            self.order_dt = ''
             print('order has been expired')
 
 
@@ -163,42 +169,6 @@ class Bot:
 
 
 
-
-
-
-
-
-    def start_xgb_bot(self):
-        model = XgbModel()
-        print('bot - updating crypto data..')                               #update crypto data for initial calc
-        CryptowatchDataGetter.initialize_for_bot()
-        print('bot - initializing MarketData2..')  # update crypto data for initial calc
-        MarketData2.initialize(110,30,500)
-        print('bot - generating training data..')
-        df = MarketData2.generate_df(MarketData2.ohlc_bot)             #genrate df for initial xgb training
-        train_x, test_x, train_y, test_y = model.generate_data(copy.deepcopy(df), 1)
-        print('bot - training xgb model..')
-        bst = model.train(train_x, train_y)                                 #initial xgb training
-        print('bot - training completed..')
-        prediction = []
-        while SystemFlg.get_system_flg():                                   #main loop for bot
-            if datetime.now().second == 1:
-                res, omd = CryptowatchDataGetter.bot_data_update(datetime.now(),MarketData2.ohlc_bot,copy.deepcopy(df))
-                if res == 0:
-
-                    MarketData2.update_ohlc_index_for_bot(omd)
-                    df = MarketData2.generate_df_for_bot(MarketData2.ohlc_bot)
-                    train_x = model.generate_bot_train_data(copy.deepcopy(df))
-                    prediction = bst.predict(xgb.DMatrix(train_x))
-                    omd = MarketData2.ohlc_bot
-
-                    print('dt={}, open={}, high={}, low={}, close={}, pre={}'.foramt(omd.dt[len(omd)-1], omd.open[len(omd.open)-1],
-                                                                                     omd.high[len(omd.high)-1],
-                                                                                     omd.low[len(omd.low)-1],
-                                                                                     omd.close[len(omd.close)-1],
-                                                                                     prediction[0]
-                                                                                     ))
-            time.sleep(0.5)
 
 if __name__ == '__main__':
     SystemFlg.initialize()
