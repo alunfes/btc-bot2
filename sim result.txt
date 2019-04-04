@@ -88,7 +88,7 @@ param = {'max_depth':4,
                  'early_stopping_rounds':30,
                  'silent':True}
         num_round = 10000
-
+max_term = 200
 
         train_x (10000, 615)
 train_y (10000,)
@@ -150,3 +150,200 @@ i=9
 train accuracy = 0.803, test accuracy = 0.4595
 pl=-683.3199999999999,num=48,win_rate=0.5625
 elapsed_time:13.397730688254038[min]
+
+
+
+param = {'max_depth':4,
+                 'num_class':4,
+                 'eta':0.001,
+                 'min_child_weight':1,
+                 'gamma':1,
+                 'subsample':0.9,
+                 'colsample_bytree':0.9,
+                 'lambda':3,
+                 'objective':'multi:softmax',
+                 'tree_method':'gpu_hist',
+                 'early_stopping_rounds':30,
+                 'silent':True}
+        num_round = 10000
+MarketData.initialize_from_bot_csv(100, 60, 500)
+
+
+train_x (10000, 315)
+train_y (10000,)
+i=0
+train accuracy = 0.7287, test accuracy = 0.297
+pl=-603.8999999999993,num=152,win_rate=0.47368421052631576
+elapsed_time:8.161142226060232[min]
+train_x (10000, 315)
+train_y (10000,)
+i=1
+train accuracy = 0.7261, test accuracy = 0.3025
+pl=144.86999999999998,num=147,win_rate=0.5578231292517006
+elapsed_time:7.850332895914714[min]
+train_x (10000, 315)
+train_y (10000,)
+i=2
+train accuracy = 0.7163, test accuracy = 0.306
+pl=219.45,num=139,win_rate=0.5899280575539568
+elapsed_time:7.825622626145681[min]
+train_x (10000, 315)
+train_y (10000,)
+i=3
+train accuracy = 0.7133, test accuracy = 0.2855
+pl=339.13,num=126,win_rate=0.5714285714285714
+elapsed_time:7.757309130827585[min]
+train_x (10000, 315)
+train_y (10000,)
+i=4
+train accuracy = 0.7119, test accuracy = 0.296
+pl=297.77,num=138,win_rate=0.5579710144927537
+elapsed_time:7.827802550792694[min]
+train_x (10000, 315)
+train_y (10000,)
+i=5
+train accuracy = 0.7112, test accuracy = 0.317
+pl=354.41999999999996,num=149,win_rate=0.5436241610738255
+elapsed_time:7.892462352911632[min]
+train_x (10000, 315)
+train_y (10000,)
+i=6
+train accuracy = 0.721, test accuracy = 0.3585
+pl=1256.4199999999996,num=138,win_rate=0.6666666666666666
+elapsed_time:7.86596675713857[min]
+train_x (10000, 315)
+train_y (10000,)
+
+i=7
+train accuracy = 0.7242, test accuracy = 0.3655
+pl=280.94000000000005,num=118,win_rate=0.5423728813559322
+elapsed_time:7.863942384719849[min]
+train_x (10000, 315)
+train_y (10000,)
+i=8
+train accuracy = 0.7249, test accuracy = 0.3185
+pl=-366.62999999999994,num=97,win_rate=0.5773195876288659
+elapsed_time:7.93452961842219[min]
+train_x (10000, 315)
+train_y (10000,)
+i=9
+train accuracy = 0.7343, test accuracy = 0.315
+pl=-334.8400000000001,num=119,win_rate=0.5546218487394958
+elapsed_time:7.940578007698059[min]
+
+
+train_length = 5000
+test_length = 1000
+window = 500
+
+
+train_x (5000, 315)
+train_y (5000,)
+i=0
+train accuracy = 0.892, test accuracy = 0.417
+pl=165.43999999999997,num=59,win_rate=0.5254237288135594
+elapsed_time:5.6492464701334635[min]
+train_x (5000, 315)
+train_y (5000,)
+i=1
+train accuracy = 0.8952, test accuracy = 0.33
+pl=-428.45000000000016,num=60,win_rate=0.5
+elapsed_time:5.458100454012553[min]
+train_x (5000, 315)
+train_y (5000,)
+i=2
+train accuracy = 0.885, test accuracy = 0.291
+pl=-597.4100000000001,num=40,win_rate=0.6
+elapsed_time:5.454071072737376[min]
+train_x (5000, 315)
+train_y (5000,)
+i=3
+train accuracy = 0.8764, test accuracy = 0.316
+pl=241.99999999999997,num=49,win_rate=0.5714285714285714
+elapsed_time:5.4268118421236675[min]
+train_x (5000, 315)
+train_y (5000,)
+i=4
+train accuracy = 0.892, test accuracy = 0.342
+pl=-277.0899999999999,num=46,win_rate=0.5869565217391305
+elapsed_time:5.456142322222392[min]
+train_x (5000, 315)
+train_y (5000,)
+i=5
+train accuracy = 0.88, test accuracy = 0.395
+pl=641.4100000000001,num=50,win_rate=0.7
+elapsed_time:5.426372905572255[min]
+train_x (5000, 315)
+train_y (5000,)
+i=6
+train accuracy = 0.88, test accuracy = 0.357
+pl=208.01,num=42,win_rate=0.7142857142857143
+elapsed_time:5.465466630458832[min]
+train_x (5000, 315)
+train_y (5000,)
+i=7
+train accuracy = 0.8708, test accuracy = 0.347
+pl=234.52,num=41,win_rate=0.6829268292682927
+elapsed_time:5.478174110253652[min]
+train_x (5000, 315)
+train_y (5000,)
+i=8
+train accuracy = 0.8638, test accuracy = 0.39
+pl=-38.389999999999986,num=46,win_rate=0.5434782608695652
+elapsed_time:5.507249216238658[min]
+train_x (5000, 315)
+train_y (5000,)
+i=9
+train accuracy = 0.8552, test accuracy = 0.308
+pl=-140.02999999999992,num=36,win_rate=0.5833333333333334
+elapsed_time:5.447228503227234[min]
+train_x (5000, 315)
+train_y (5000,)
+i=10
+train accuracy = 0.8668, test accuracy = 0.378
+pl=158.95,num=27,win_rate=0.5555555555555556
+elapsed_time:5.463428592681884[min]
+train_x (5000, 315)
+train_y (5000,)
+i=11
+train accuracy = 0.8556, test accuracy = 0.466
+pl=284.78999999999996,num=27,win_rate=0.6296296296296297
+elapsed_time:5.390101659297943[min]
+train_x (5000, 315)
+train_y (5000,)
+i=12
+train accuracy = 0.848, test accuracy = 0.568
+pl=197.12000000000012,num=32,win_rate=0.5625
+elapsed_time:5.394784514109293[min]
+train_x (5000, 315)
+train_y (5000,)
+i=13
+train accuracy = 0.8492, test accuracy = 0.619
+pl=418.33000000000004,num=23,win_rate=0.6521739130434783
+elapsed_time:5.368762354056041[min]
+train_x (5000, 315)
+train_y (5000,)
+i=14
+train accuracy = 0.852, test accuracy = 0.648
+pl=182.60000000000002,num=12,win_rate=0.5
+elapsed_time:5.429336150487264[min]
+train_x (5000, 315)
+train_y (5000,)
+i=15
+train accuracy = 0.8556, test accuracy = 0.634
+pl=-409.86,num=12,win_rate=0.5
+elapsed_time:5.395017397403717[min]
+train_x (5000, 315)
+train_y (5000,)
+i=16
+train accuracy = 0.8592, test accuracy = 0.671
+pl=281.93,num=14,win_rate=0.7857142857142857
+elapsed_time:5.407086940606435[min]
+train_x (5000, 315)
+train_y (5000,)
+i=17
+train accuracy = 0.8576, test accuracy = 0.62
+pl=89.21000000000001,num=12,win_rate=0.6666666666666666
+elapsed_time:5.361717609564463[min]
+train_x (5000, 315)
+train_y (5000,)

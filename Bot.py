@@ -35,6 +35,17 @@ class Bot:
         self.num_win = 0
         self.win_rate = 0
 
+    def calc_and_log_pl(self, ave_p, size):
+        pl = (ave_p - self.posi_price) * self.posi_size if self.posi_side == 'buy' else (self.posi_price - ave_p) * self.posi_size
+        self.pl += pl
+        self.pl_log.append(self.pl)
+        self.num_trade += 1
+        if pl > 0:
+            self.num_win += 1
+        self.win_rate = float(self.num_win) / float(self.num_trade)
+        print('pl = {}, num = {}, win_rate = {}'.format(self.pl, self.num_trade, self.win_rate))
+
+
     def entry_order(self, side, price, size):
         self.order_id = Trade.order(side, price, size, 1)
         self.order_side = side
@@ -42,6 +53,7 @@ class Bot:
         self.order_size = size
         self.order_status = 'new entrying'
         self.order_dt = datetime.now()
+        print('new entry: side = {}, price = {}, size = {}'.format(side, price, size))
 
     def pl_order(self):
         side = 'buy' if self.posi_side == 'sell' else 'sell'
@@ -51,11 +63,15 @@ class Bot:
         self.order_size = self.posi_size
         self.order_status = 'pl ordering'
         self.order_dt = datetime.now()
+        print('pl order: side = {}, price = {}, size = {}'.format(self.order_side, self.order_price, self.order_size))
 
 
     def exit_order(self):
+        print('exit order')
+        Trade.cancel_and_wait_completion(self.order_id) #cancel pl order
         side = 'buy' if self.posi_side == 'sell' else 'sell'
-        Trade.price_tracing_order(side, self.posi_size)
+        ave_p = Trade.price_tracing_order(side, self.posi_size)
+        self.calc_and_log_pl(ave_p, self.posi_size)
         self.posi_side = ''
         self.posi_id = ''
         self.posi_price = 0
@@ -70,9 +86,12 @@ class Bot:
 
 
     def cancel_order(self):
+        print('cancel order')
         status = Trade.cancel_and_wait_completion(self.order_id)
         if len(status) > 0:
-            Trade.price_tracing_order(status[0]['side'].lower(), status[0]['executed_size'])
+            print('cancel failed, partially executed')
+            ave_p = Trade.price_tracing_order(status[0]['side'].lower(), status[0]['executed_size'])
+            self.calc_and_log_pl(ave_p, status[0]['executed_size'])
             self.posi_side = ''
             self.posi_id = ''
             self.posi_price = 0
@@ -95,18 +114,41 @@ class Bot:
     def check_execution(self):
         status = Trade.get_order_status(self.order_id)
         if len(status) > 0:
-            self.order_size = status[0]['outstanding_size']
-            self.posi_side = status[0]['side'].lower()
-            self.posi_price = status[0]['average_price']
-            self.posi_size = status[0]['executed_size']
-            self.posi_status = 'partially executed'
-            if self.order_size == 0:
+            if int(status[0]['outstanding_size']) == 0 and self.order_status != 'new entrying': #pl is fully executed
+                self.calc_and_log_pl(status[0]['average_price'], status[0]['executed_size'])
                 self.order_side = ''
                 self.order_id = ''
                 self.order_price = 0
                 self.order_size = 0
                 self.order_status = ''
-                self.posi_status = 'fully executed'
+                self.order_size = 0
+                self.posi_side = ''
+                self.posi_price = 0
+                self.posi_size = 0
+                self.posi_status = ''
+            else:
+                if int(status[0]['outstanding_size']) == 0: #new entry has been fully executed
+                    print('entry order has been fully executed')
+                    self.order_side = ''
+                    self.order_id = ''
+                    self.order_price = 0
+                    self.order_size = 0
+                    self.order_status = ''
+                    self.posi_side = status[0]['side'].lower()
+                    self.posi_price = status[0]['average_price']
+                    self.posi_size = status[0]['executed_size']
+                    self.posi_status = 'fully executed'
+                    print('current position: side = {}, price = {}, size = {}'.format(self.posi_side, self.posi_price, self.posi_size))
+                elif int(status[0]['outstanding_size']) > 0: #entry order has been partially executed
+                    print('entry order partially executed')
+                    self.order_size = status[0]['executed_size']
+                    self.order_status = 'partially executed'
+                    self.posi_status = 'partially executed'
+                    self.posi_side = status[0]['side'].lower()
+                    self.posi_price = status[0]['average_price']
+                    self.posi_size = status[0]['executed_size']
+                    print('current position: side = {}, price = {}, size = {}'.format(self.posi_side, self.posi_price,
+                                                                                      self.posi_size))
         elif (datetime.now() - self.order_dt).total_seconds() >= 60: #order has been expired
             self.order_side = ''
             self.order_id = ''
@@ -115,6 +157,8 @@ class Bot:
             self.order_status = ''
             self.order_dt = ''
             print('order has been expired')
+        else:
+            print('') #maybe order is not yet boarded
 
 
     def start_bot(self,size, pl_kijun):
