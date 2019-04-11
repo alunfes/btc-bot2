@@ -42,23 +42,22 @@ class XgbModel:
         print('train_y', train_y.shape)
         train = xgb.DMatrix(train_x, label = train_y)
         param = {
-            'max_depth': 2,
+            'max_depth': 4,
             'num_class': 4,
-            'booster': 'gbtree',
-            'max_depth': 2,
-            'eta': 0.014665358030762696,
-            'gamma': 0.06164324304230239,
-            'grow_policy': 'lossguide',
-            'min_child_weight': 16,
-            'subsample': 0.5,
-            'colsample_bytree': 0.3578383397468333,
-            'colsample_bylevel': 0.8375960956222188,
-            'colsample_bynode': 0.5890703429135455,
-            'alpha': 0.025096283242450567,
-            'lambda': 1.2353050553508833e-06,
+            #'booster': 'gbtree',
+            'eta': 0.005,
+            'gamma': 1,
+            #'grow_policy': 'lossguide',
+            'min_child_weight': 1,
+            'subsample': 0.9,
+            'colsample_bytree': 0.9,
+            #'colsample_bylevel': 0.8375960956222188,
+            #'colsample_bynode': 0.5890703429135455,
+            #'alpha': 0.025096283242450567,
+            'lambda': 3,
             'objective': 'multi:softmax',
             'silent': True}
-        num_round = 100
+        num_round = 10000
         bst = xgb.train(param, train, num_round)
         return bst
 

@@ -18,7 +18,7 @@ class OneMinutesData:
         self.future_side = []
 
     def cut_data(self, num_data):
-        self.unix_time = self.unix_time[len(self.unix_time) - num_data:]
+        self.unix_time = self.unix_time[len(self.unix_time) - num_data:]  #maybe ok just like [-num_data:]
         self.dt = self.dt[len(self.dt) - num_data:]
         self.open = self.open[len(self.open) - num_data:]
         self.high = self.high[len(self.high) - num_data:]

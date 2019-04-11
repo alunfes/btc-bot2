@@ -109,6 +109,8 @@ class MarketData2:
             df = df.assign(col=ohlc.momentum[k][cls.max_term:end])
             df.rename(columns={'col': col}, inplace=True)
         df = df.assign(future_side=ohlc.future_side[cls.max_term:])
+        print('future side unique val')
+        print(df['future_side'].value_counts(dropna=False, normalize=True))
         return df
 
     @classmethod
@@ -150,6 +152,7 @@ class MarketData2:
                 ohlc.future_side.append('sell')
             elif buy_max < future_side_kijun and sell_max < future_side_kijun:
                 ohlc.future_side.append('no')
+
         return ohlc
 
 

@@ -2,14 +2,19 @@ import threading
 import xgboost as xgb
 import pandas as pd
 import time
+import copy
+import pickle
+from catboost import Pool
 from SystemFlg import SystemFlg
-from XgbModel import XgbModel
-from MarketData import MarketData
+from CatModel import CatModel
+from datetime import timedelta
 from MarketData2 import MarketData2
 from CryptowatchDataGetter import CryptowatchDataGetter
 from Trade import Trade
 from datetime import datetime
-import copy
+#import datetime
+import pytz
+
 
 
 
@@ -59,6 +64,7 @@ class Bot:
         side = 'buy' if self.posi_side == 'sell' else 'sell'
         price = self.posi_price + self.pl_kijun if self.posi_side == 'buy' else self.posi_price - self.pl_kijun
         self.order_id = Trade.order(side, price, self.posi_size, 100)
+        self.order_side = side
         self.order_price = price
         self.order_size = self.posi_size
         self.order_status = 'pl ordering'
@@ -166,32 +172,44 @@ class Bot:
         print('bot - updating crypto data..')
         CryptowatchDataGetter.get_and_add_to_csv()
         print('bot - initializing MarketData2..')
-        MarketData2.initialize_from_bot_csv(100, 30, 500)
+        MarketData2.initialize_from_bot_csv(110, 100, 900)
         train_df = MarketData2.generate_df(MarketData2.ohlc_bot)
         #print(train_df)
-        model = XgbModel()
+        #model = XgbModel()
+        model = CatModel()
         print('bot - training xgb model..')
         train_x, test_x, train_y, test_y = model.generate_data(copy.deepcopy(train_df), 1)
         #print('x shape '+str(train_x.shape))
         #print('y shape '+str(train_y.shape))
-        bst = model.train(train_x, train_y)
+        #bst = model.train(train_x, train_y)
+        bst = model.read_dump_model('./cat_model.dat')
         print('bot - training completed..')
         print('bot - updating crypto data..')
-        CryptowatchDataGetter.get_and_add_to_csv()
-        MarketData2.initialize_from_bot_csv(100, 30, 500)
+        #CryptowatchDataGetter.get_and_add_to_csv()
+        #MarketData2.initialize_from_bot_csv(110, 100, 900)
         MarketData2.ohlc_bot.cut_data(1000)
         print('bot - started bot loop.')
+        predict = [0]
+        JST = pytz.timezone('Asia/Tokyo')
         while SystemFlg.get_system_flg():
-            if datetime.now().second == 1:
+            while datetime.now(tz=JST).hour == 3 and datetime.now(tz=JST).minute >= 50:
+                time.sleep(10) #wait for daily system maintenace
+            if datetime.now(tz=JST).second == 1:
                 res, omd = CryptowatchDataGetter.get_data_after_specific_ut(MarketData2.ohlc_bot.unix_time[-1])
+                print('downloaded data - '+str(datetime.now(tz=JST)))
                 if res == 0:
                     for i in range(len(omd.dt)):
                         MarketData2.ohlc_bot.add_and_pop(omd.unix_time[i],omd.dt[i], omd.open[i], omd.high[i], omd.low[i], omd.close[i], omd.size[i])
                     MarketData2.update_ohlc_index_for_bot2()
+                    print('updated MarketData - ' + str(datetime.now(tz=JST)))
                     df = MarketData2.generate_df_for_bot(copy.deepcopy(MarketData2.ohlc_bot))
                     pred_x = model.generate_bot_pred_data(df)
-                    predict = bst.predict(xgb.DMatrix(pred_x))
-                    print('dt={}, open={}, close={}, predict={}'.format(MarketData2.ohlc_bot.dt[-1],MarketData2.ohlc_bot.open[-1],
+                    print('generated df - ' + str(datetime.now(tz=JST)))
+                    # predict = bst.predict(xgb.DMatrix(pred_x))
+                    predict = bst.predict(Pool(pred_x))
+                    print('predicted - ' + str(datetime.now(tz=JST)))
+                    print('dt={}, open={}, close={}, predict={}'.format(MarketData2.ohlc_bot.dt[-1],
+                                                                        MarketData2.ohlc_bot.open[-1],
                                                                         MarketData2.ohlc_bot.close[-1], predict[0]))
                 else:
                     print('crypto watch data download error!')
@@ -216,8 +234,9 @@ class Bot:
 
 if __name__ == '__main__':
     SystemFlg.initialize()
+    Trade.initialize()
     bot = Bot()
-    bot.start_bot()
+    bot.start_bot(0.11, 900)
 
 
 
