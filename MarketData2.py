@@ -66,24 +66,16 @@ class MarketData2:
             cls.ohlc_bot.low.extend(tmp_ohlc.low[from_ind:])
             cls.ohlc_bot.close.extend(tmp_ohlc.close[from_ind:])
             cls.ohlc_bot.size.extend(tmp_ohlc.size[from_ind:])
-            cls.update_ma()
-            cls.update_ma_kairi()
-            cls.update_momentum()
-            cls.update_rsi()
+            cls.ohlc_bot = cls.update_ma2(cls.ohlc_bot)
         else:
             print('tmp data has no new record!')
 
     @classmethod
     def update_ohlc_index_for_bot2(cls):
-        cls.ohlc_bot.ma = {}
-        cls.ohlc_bot.ma_kairi = {}
-        cls.ohlc_bot.rsi = {}
-        cls.ohlc_bot.momentum = {}
-        cls.ohlc_bot = cls.calc_ma2(cls.ohlc_bot)
-        cls.ohlc_bot = cls.calc_ma_kairi2(cls.ohlc_bot)
-        cls.ohlc_bot = cls.calc_momentum2(cls.ohlc_bot)
-        cls.ohlc_bot = cls.calc_rsi2(cls.ohlc_bot)
-
+        cls.update_ma2()
+        cls.update_ma_kairi2()
+        cls.update_momentum2()
+        cls.update_rsi2()
 
 
     @classmethod
@@ -164,6 +156,14 @@ class MarketData2:
         return ohlc
 
     @classmethod
+    def update_ma2(cls):
+        for i in range(cls.max_term):
+            term = i + 5
+            close_con = cls.ohlc_bot.close[len(cls.ohlc_bot.close) - term - (len(cls.ohlc_bot.ma[term]) - len(cls.ohlc_bot.close) + 1):]
+            updates = list(pd.Series(close_con).rolling(window=term).mean().dropna())
+            cls.ohlc_bot.ma[term].extend(updates)
+
+    @classmethod
     def calc_ma_kairi2(cls, ohlc):
         for i in range(cls.max_term):
             term = i + 5
@@ -171,11 +171,26 @@ class MarketData2:
         return ohlc
 
     @classmethod
+    def update_ma_kairi2(cls):
+        for i in range(cls.max_term):
+            term = i + 5
+            close_con = cls.ohlc_bot.close[len(cls.ohlc_bot.ma_kairi[term]) - len(cls.ohlc_bot.close):]
+            ma_con = cls.ohlc_bot.ma[term][len(cls.ohlc_bot.ma_kairi[term]) - len(cls.ohlc_bot.ma[term]):]
+            cls.ohlc_bot.ma_kairi[term].extend(list([x / y for (x, y) in zip(close_con, ma_con)]))
+
+    @classmethod
     def calc_momentum2(cls, ohlc):
         for i in range(cls.max_term):
             term = i + 5
             ohlc.momentum[term] = list(pd.Series(ohlc.close).diff(term-1))
         return ohlc
+
+    @classmethod
+    def update_momentum2(cls):
+        for i in range(cls.max_term):
+            term = i + 5
+            close_con = cls.ohlc_bot.close[len(cls.ohlc_bot.close) - term - (len(cls.ohlc_bot.momentum[term]) - len(cls.ohlc_bot.close)+1)+1:]
+            cls.ohlc_bot.momentum[term].extend(list(pd.Series(close_con).diff(term - 1).dropna()))
 
     @classmethod
     def calc_rsi2(cls, ohlc):
@@ -190,6 +205,19 @@ class MarketData2:
             ohlc.rsi[term] = list(100.0 - (100.0 / (1.0 + up_sma / down_sma)))
         return ohlc
 
+    @classmethod
+    def update_rsi2(cls):
+        for i in range(cls.max_term):
+            term = i + 5
+            close_con = cls.ohlc_bot.close[len(cls.ohlc_bot.close) - len(cls.ohlc_bot.rsi):]
+            open_con = cls.ohlc_bot.open[len(cls.ohlc_bot.open) - len(cls.ohlc_bot.rsi):]
+            diff = pd.Series([x - y for (x, y) in zip(close_con, open_con)])
+            up, down = diff.copy(), diff.copy()
+            up[up < 0] = 0
+            down[down > 0] = 0
+            up_sma = up.rolling(window=term, center=False).mean()
+            down_sma = down.abs().rolling(window=term, center=False).mean()
+            cls.ohlc_bot.rsi[term].extend(list(100.0 - (100.0 / (1.0 + up_sma / down_sma))))
 
     @classmethod
     def update_ma(cls):

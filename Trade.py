@@ -29,18 +29,27 @@ class Trade:
         cls.api_key = cls.api_key[:len(cls.api_key) - 1]
         file.close()
 
+    '''
+    when margin is not sufficient - {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
+    '''
     @classmethod
     def order(cls, side, price, size, expire_m) -> str:  # min size is 0.01
         cls.num_private_access += 1
-        order_id = cls.bf.create_order(
-            symbol='BTC/JPY',
-            type='limit',
-            side=side,
-            price=price,
-            amount=size,
-            # params={'product_code': 'FX_BTC_JPY'}
-            params={'product_code': 'FX_BTC_JPY', 'minute_to_expire': expire_m}  # 期限切れまでの時間（分）（省略した場合は30日）
-        )['info']['child_order_acceptance_id']
+        order_id = ''
+        try:
+            order_id = cls.bf.create_order(
+                symbol='BTC/JPY',
+                type='limit',
+                side=side,
+                price=price,
+                amount=size,
+                # params={'product_code': 'FX_BTC_JPY'}
+                params={'product_code': 'FX_BTC_JPY', 'minute_to_expire': expire_m}  # 期限切れまでの時間（分）（省略した場合は30日）
+            )
+        except Exception as e:
+            print(e)
+            return ''
+        order_id = order_id['info']['child_order_acceptance_id']
         print('ok order - ' + str(order_id))
         return order_id
 
@@ -225,14 +234,14 @@ class Trade:
         status = []
         while remaining_size > 0:
             price = cls.get_opt_price()
-            order_id = cls.order_wait_till_boarding(side, price, remaining_size, 100)['child_order_acceptance_id']
+            order_id = cls.order_wait_till_boarding(side, price, remaining_size, 100)['child_order_acceptance_id'] #disappered error occurre when already exected ?
             while abs(price - cls.get_opt_price()) <= 300 and remaining_size > 0:  # loop when current order price is close to opt price
                 status = cls.get_order_status(order_id)
                 if len(status) > 0:
                     remaining_size = status[0]['outstanding_size']
                     print('executed @' + str(status[0]['average_price']) + ' x ' + str(status[0]['executed_size']))
                 else: #some how order was disappered
-                    print('order disappered! - ebtrying new order')
+                    print('order disappered! - entrying new order')
                     cls.cancel_and_wait_completion(order_id)
                     price = cls.get_opt_price()
                     order_id = cls.order_wait_till_boarding(side, price, remaining_size, 100)['child_order_acceptance_id']
@@ -342,7 +351,7 @@ class Trade:
                 if status[0]['child_order_state'] == 'ACTIVE' or status[0]['child_order_state'] == 'COMPLETED':
                     print('confirmed the order has been boarded')
                     return status[0]
-            time.sleep(1)
+            time.sleep(0.5)
 
 
 

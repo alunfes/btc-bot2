@@ -18,22 +18,22 @@ class OneMinutesData:
         self.future_side = []
 
     def cut_data(self, num_data):
-        self.unix_time = self.unix_time[len(self.unix_time) - num_data:]  #maybe ok just like [-num_data:]
-        self.dt = self.dt[len(self.dt) - num_data:]
-        self.open = self.open[len(self.open) - num_data:]
-        self.high = self.high[len(self.high) - num_data:]
-        self.low = self.low[len(self.low) - num_data:]
-        self.close = self.close[len(self.close) - num_data:]
-        self.size = self.size[len(self.size) - num_data:]
+        self.unix_time = self.unix_time[-num_data:]
+        self.dt = self.dt[-num_data:]
+        self.open = self.open[-num_data:]
+        self.high = self.high[-num_data:]
+        self.low = self.low[-num_data:]
+        self.close = self.close[-num_data:]
+        self.size = self.size[-num_data:]
         for k in self.ma:
-            self.ma[k] = self.ma[k][len(self.ma[k])-num_data:]
+            self.ma[k] = self.ma[k][-num_data:]
         for k in self.ma_kairi:
-            self.ma_kairi[k] = self.ma_kairi[k][len(self.ma_kairi[k])-num_data:]
+            self.ma_kairi[k] = self.ma_kairi[k][-num_data:]
         for k in self.momentum:
-            self.momentum[k] = self.momentum[k][len(self.momentum[k])-num_data:]
+            self.momentum[k] = self.momentum[k][-num_data:]
         for k in self.rsi:
-            self.rsi[k] = self.rsi[k][len(self.rsi[k])-num_data:]
-        self.future_side = self.future_side[len(self.future_side) - num_data:]
+            self.rsi[k] = self.rsi[k][-num_data:]
+        self.future_side = self.future_side[-num_data:]
 
     def add_and_pop(self, unix_time, dt, open, high, low, close, size):
         self.unix_time.append(unix_time)

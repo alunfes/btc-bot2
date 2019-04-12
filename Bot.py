@@ -16,7 +16,13 @@ from datetime import datetime
 import pytz
 
 
-
+'''
+経過時間表示
+not yet boardがboardしたらその旨表示
+API limitギリギリで一時停止（ポジあればその時点でクローズ）
+API accessを単位時間表示
+毎分ごとにperformanceも表示する
+'''
 
 class Bot:
     def initialize(self, size, pl_kijun):
@@ -120,7 +126,8 @@ class Bot:
     def check_execution(self):
         status = Trade.get_order_status(self.order_id)
         if len(status) > 0:
-            if int(status[0]['outstanding_size']) == 0 and self.order_status != 'new entrying': #pl is fully executed
+            if status[0]['outstanding_size'] == 0 and self.order_status != 'new entrying': #pl is fully executed
+                print(status[0])
                 self.calc_and_log_pl(status[0]['average_price'], status[0]['executed_size'])
                 self.order_side = ''
                 self.order_id = ''
@@ -132,8 +139,9 @@ class Bot:
                 self.posi_price = 0
                 self.posi_size = 0
                 self.posi_status = ''
+                print('pl order has been fully executed')
             else:
-                if int(status[0]['outstanding_size']) == 0: #new entry has been fully executed
+                if status[0]['outstanding_size'] == 0: #new entry has been fully executed
                     print('entry order has been fully executed')
                     self.order_side = ''
                     self.order_id = ''
@@ -145,7 +153,7 @@ class Bot:
                     self.posi_size = status[0]['executed_size']
                     self.posi_status = 'fully executed'
                     print('current position: side = {}, price = {}, size = {}'.format(self.posi_side, self.posi_price, self.posi_size))
-                elif int(status[0]['outstanding_size']) > 0: #entry order has been partially executed
+                elif status[0]['executed_size'] > self.posi_size: #entry order has been partially executed
                     print('entry order partially executed')
                     self.order_size = status[0]['executed_size']
                     self.order_status = 'partially executed'
@@ -164,7 +172,7 @@ class Bot:
             self.order_dt = ''
             print('order has been expired')
         else:
-            print('') #maybe order is not yet boarded
+            print('order is not yet boarded') #maybe order is not yet boarded
 
 
     def start_bot(self,size, pl_kijun):
@@ -178,7 +186,7 @@ class Bot:
         #model = XgbModel()
         model = CatModel()
         print('bot - training xgb model..')
-        train_x, test_x, train_y, test_y = model.generate_data(copy.deepcopy(train_df), 1)
+        train_x, test_x, train_y, test_y = model.generate_data(train_df, 1)
         #print('x shape '+str(train_x.shape))
         #print('y shape '+str(train_y.shape))
         #bst = model.train(train_x, train_y)
@@ -195,19 +203,22 @@ class Bot:
             while datetime.now(tz=JST).hour == 3 and datetime.now(tz=JST).minute >= 50:
                 time.sleep(10) #wait for daily system maintenace
             if datetime.now(tz=JST).second == 1:
+                print('num private access={}, num public access={}'.format(Trade.num_private_access, Trade.num_public_access))
                 res, omd = CryptowatchDataGetter.get_data_after_specific_ut(MarketData2.ohlc_bot.unix_time[-1])
-                print('downloaded data - '+str(datetime.now(tz=JST)))
+                #print('downloaded data - '+str(datetime.now(tz=JST)))
                 if res == 0:
                     for i in range(len(omd.dt)):
                         MarketData2.ohlc_bot.add_and_pop(omd.unix_time[i],omd.dt[i], omd.open[i], omd.high[i], omd.low[i], omd.close[i], omd.size[i])
+                        #print('add and pop MarketData - ' + str(datetime.now(tz=JST)))
+                    #print('updated -start MarketData - ' + str(datetime.now(tz=JST)))
                     MarketData2.update_ohlc_index_for_bot2()
-                    print('updated MarketData - ' + str(datetime.now(tz=JST)))
-                    df = MarketData2.generate_df_for_bot(copy.deepcopy(MarketData2.ohlc_bot))
+                    #print('updated -end MarketData - ' + str(datetime.now(tz=JST)))
+                    df = MarketData2.generate_df_for_bot(MarketData2.ohlc_bot)
                     pred_x = model.generate_bot_pred_data(df)
-                    print('generated df - ' + str(datetime.now(tz=JST)))
+                    #print('generated df - ' + str(datetime.now(tz=JST)))
                     # predict = bst.predict(xgb.DMatrix(pred_x))
                     predict = bst.predict(Pool(pred_x))
-                    print('predicted - ' + str(datetime.now(tz=JST)))
+                    #print('predicted - ' + str(datetime.now(tz=JST)))
                     print('dt={}, open={}, close={}, predict={}'.format(MarketData2.ohlc_bot.dt[-1],
                                                                         MarketData2.ohlc_bot.open[-1],
                                                                         MarketData2.ohlc_bot.close[-1], predict[0]))
