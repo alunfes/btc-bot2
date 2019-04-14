@@ -313,58 +313,6 @@ class Trade:
             return ''
 
     '''
-    @classmethod
-    def price_tracing_order(cls, side, size) -> float:
-        if cls.flg_api_limit == False:
-            print('started price tracing order')
-            remaining_size = size
-            sum_price_x_size = 0
-            sum_size = 0
-            status = []
-            while remaining_size > 0:
-                price = cls.get_opt_price()
-                s = cls.order_wait_till_boarding(side, price, remaining_size, 100)
-                order_id = s['child_order_acceptance_id'] #disappered error occurre when already exected ?
-                while abs(price - cls.get_opt_price()) <= 300 and remaining_size > 0:  # loop when current order price is close to opt price
-                    status = cls.get_order_status(order_id)
-                    if len(status) > 0:
-                        remaining_size = status[0]['outstanding_size']
-                        print('executed @' + str(status[0]['average_price']) + ' x ' + str(status[0]['executed_size']))
-                        if remaining_size == 0:
-                            print('price tracing order has been completed')
-
-                    else: #some how order was disappered
-                        print('order disappered! - entrying new order')
-                        print(status)
-                        print(s)
-                        cls.cancel_and_wait_completion(order_id)
-                        price = cls.get_opt_price()
-                        order_id = cls.order_wait_till_boarding(side, price, remaining_size, 100)['child_order_acceptance_id']
-                    time.sleep(1)
-                #order price is far from opt price
-                sum_price_x_size += float(status[0]['average_price']) * float(status[0]['executed_size'])
-                sum_size += float(status[0]['executed_size'])
-                status = cls.cancel_and_wait_completion(order_id)  # when order price is far from opt price
-                if len(status) > 0: #cancel failed and partially executed
-                    remaining_size = status[0]['outstanding_size']
-                    sum_price_x_size += float(status[0]['average_price']) * float(status[0]['executed_size'])
-                    sum_size += float(status[0]['executed_size'])
-                    print('executed @' + str(status[0]['average_price']) + ' x ' + str(status[0]['executed_size']))
-                else: #successfully cancelled
-                    print('')
-            print('price tracing order has been completed')
-            if sum_price_x_size == 0 and sum_size ==0:
-                print('ave price={}, exe size = {}'.format(status[0]['average_price'], status[0]['executed_size']))
-                return status[0]['average_price']
-            else:
-                print('ave price={}, exe size = {}'.format(sum_price_x_size/sum_size, sum_size))
-                return sum_price_x_size / sum_size
-        else:
-            print('order is temporary exhibited due to API access limitation!')
-            return ''
-            '''
-
-    '''
     #res['bids'][0][0] = 394027
     {'bids': [[394027.0, 0.15], [394022.0, 0.01], [394020.0, 3.22357434], [394018.0, 0.02050665], [394016.0, 0.085], [394015.0, 0.02], [394014.0, 0.025], [394013.0, 0.21195378], [394012.0, 1.67], [394011.0, 1.36], [394010.0, 0.395], [394009.0, 0.01], [394008.0, 0.021], [394007.0, 0.09018275], [394006.0, 1.4862514], [394005.0, 6.42], [394004.0, 0.79593158], [394003.0, 5.0], [394002.0, 0.34592307], [394001.0, 4.14846844], [394000.0, 173.92494563], [393999.0, 0.01], [393998.0, 0.55], [393997.0, 0.484], [393996.0,
     '''

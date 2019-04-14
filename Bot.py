@@ -17,7 +17,7 @@ import pytz
 
 
 '''
-毎分のsec=1をスキップしてしまうことがあるので、そうしないように対応が必要。
+margin deposit errorが複数回続いたらsystemflgをfalseにして停止
 price tracing orderで0.01以下のorderを出してしまいエラーになることがある。
 現状price tracing order時にplがずれるので、最初にaccount data get and check diff from initialize deposit as a account pl
 bot開始時に現在のholdingを確認して、それをbot posiに反映させて開始する
@@ -230,11 +230,10 @@ class Bot:
         predict = [0]
         JST = pytz.timezone('Asia/Tokyo')
         start = time.time()
-        flg_min_action = False
         while SystemFlg.get_system_flg():
             while datetime.now(tz=JST).hour == 3 and datetime.now(tz=JST).minute >= 50:
                 time.sleep(10) #wait for daily system maintenace
-            if datetime.now(tz=JST).second == 1:
+            if datetime.now(tz=JST).second == 1 or datetime.now(tz=JST).second == 2:
                 elapsed_time = time.time() - start
                 print("bot elapsed_time:{0}".format(round(elapsed_time/60,2)) + "[min]")
                 print('private access per min={}, num private access={}, num public access={}'.format(Trade.num_private_access_per_min, Trade.num_private_access, Trade.num_public_access))
@@ -286,7 +285,7 @@ if __name__ == '__main__':
     SystemFlg.initialize()
     Trade.initialize()
     bot = Bot()
-    bot.start_bot(0.11, 900)
+    bot.start_bot(0.08, 900)
 
 
 

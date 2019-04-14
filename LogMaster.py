@@ -25,6 +25,12 @@ class LogMaster:
         cls.api_error = {}
         cls.action_message = {}
 
+    @classmethod
+    def add_log(cls,):
+
+
+
+
 
 
 

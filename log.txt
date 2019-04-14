@@ -1,0 +1,167 @@
+/Users/alun/Projects/btc-bot2/btc-bot2/bin/python /Users/alun/Projects/btc-bot2/Bot.py
+bot - updating crypto data..
+bot - initializing MarketData2..
+future side unique val
+buy     0.306291
+sell    0.286673
+no      0.223800
+both    0.183236
+Name: future_side, dtype: float64
+bot - training xgb model..
+bot - training completed..
+bot - updating crypto data..
+bot - started bot loop.
+bot elapsed_time:0.65[min]
+private access per min=0.6, num private access=1, num public access=0
+dt=2019-04-15 07:46:00, close=585101, predict=[2.], pl=0, num_trade=0, win_rate=0
+ok order - JRF20190414-224604-239366
+new entry: side = sell, price = 585101, size = 0.08
+order is not yet boarded
+order has been boarded
+entry order has been fully executed
+current position: side = sell, price = 585101.0, size = 0.08
+ok order - JRF20190414-224629-344100
+pl order: side = buy, price = 584201.0, size = 0.08
+order is not yet boarded
+order has been boarded
+bot elapsed_time:1.65[min]
+private access per min=30.98, num private access=83, num public access=38
+dt=2019-04-15 07:47:00, close=584812, predict=[2.], pl=35.04, num_trade=0, win_rate=0
+bot elapsed_time:2.65[min]
+private access per min=45.48, num private access=166, num public access=121
+dt=2019-04-15 07:48:00, close=584277, predict=[1.], pl=64.08, num_trade=0, win_rate=0
+exit order
+waiting cancell order JRF20190414-224629-344100
+cancel failed order has been partially executed. exe size=0.08
+started price tracing order
+ok order - JRF20190414-224809-485654
+confirmed the order has been boarded
+waiting cancell order JRF20190414-224809-485654
+order has been successfully cancelled
+ok order - JRF20190414-224822-485851
+confirmed the order has been boarded
+price tracing order - replaced order for buy, @585002.0 x 0.08
+waiting cancell order JRF20190414-224822-485851
+cancel failed order has been partially executed. exe size=0.08
+price tracing order - executed 0.08 @584970.0
+order is temporary exhibited due to API access limitation!
+confirmed the order has been boarded
+price tracing order - replaced order for buy, @584866.0 x 0.0
+ave price=584970.0, exe size = 0.16
+pl = 10.48, num = 1, win_rate = 1.0
+bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
+order failed!
+posi_side=, posi_size=0, order_side=, order_size=0, order_status=
+bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
+order failed!
+posi_side=, posi_size=0, order_side=, order_size=0, order_status=
+bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
+order failed!
+posi_side=, posi_size=0, order_side=, order_size=0, order_status=
+bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
+order failed!
+posi_side=, posi_size=0, order_side=, order_size=0, order_status=
+bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
+order failed!
+posi_side=, posi_size=0, order_side=, order_size=0, order_status=
+bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
+order failed!
+posi_side=, posi_size=0, order_side=, order_size=0, order_status=
+bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
+order failed!
+posi_side=, posi_size=0, order_side=, order_size=0, order_status=
+bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
+order failed!
+posi_side=, posi_size=0, order_side=, order_size=0, order_status=
+bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
+order failed!
+posi_side=, posi_size=0, order_side=, order_size=0, order_status=
+bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
+order failed!
+posi_side=, posi_size=0, order_side=, order_size=0, order_status=
+bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
+order failed!
+posi_side=, posi_size=0, order_side=, order_size=0, order_status=
+bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
+order failed!
+posi_side=, posi_size=0, order_side=, order_size=0, order_status=
+bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
+order failed!
+posi_side=, posi_size=0, order_side=, order_size=0, order_status=
+bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
+order failed!
+posi_side=, posi_size=0, order_side=, order_size=0, order_status=
+bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
+order failed!
+posi_side=, posi_size=0, order_side=, order_size=0, order_status=
+bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
+order failed!
+posi_side=, posi_size=0, order_side=, order_size=0, order_status=
+bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
+order failed!
+posi_side=, posi_size=0, order_side=, order_size=0, order_status=
+bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
+order failed!
+posi_side=, posi_size=0, order_side=, order_size=0, order_status=
+bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
+order failed!
+posi_side=, posi_size=0, order_side=, order_size=0, order_status=
+bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
+order failed!
+posi_side=, posi_size=0, order_side=, order_size=0, order_status=
+bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
+order failed!
+posi_side=, posi_size=0, order_side=, order_size=0, order_status=
+bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
+order failed!
+posi_side=, posi_size=0, order_side=, order_size=0, order_status=
+bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
+order failed!
+posi_side=, posi_size=0, order_side=, order_size=0, order_status=
+bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
+order failed!
+posi_side=, posi_size=0, order_side=, order_size=0, order_status=
+bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
+order failed!
+posi_side=, posi_size=0, order_side=, order_size=0, order_status=
+bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
+order failed!
+posi_side=, posi_size=0, order_side=, order_size=0, order_status=
+bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
+order failed!
+posi_side=, posi_size=0, order_side=, order_size=0, order_status=
+bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
+order failed!
+posi_side=, posi_size=0, order_side=, order_size=0, order_status=
+bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
+order failed!
+posi_side=, posi_size=0, order_side=, order_size=0, order_status=
+bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
+order failed!
+posi_side=, posi_size=0, order_side=, order_size=0, order_status=
+bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
+order failed!
+posi_side=, posi_size=0, order_side=, order_size=0, order_status=
+bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
+order failed!
+posi_side=, posi_size=0, order_side=, order_size=0, order_status=
+bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
+order failed!
+posi_side=, posi_size=0, order_side=, order_size=0, order_status=
+bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
+order failed!
+posi_side=, posi_size=0, order_side=, order_size=0, order_status=
+bot elapsed_time:3.66[min]
+private access per min=46.21, num private access=216, num public access=126
+dt=2019-04-15 07:49:00, close=585492, predict=[1.], pl=10.48, num_trade=1, win_rate=1.0
+bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
+order failed!
+posi_side=, posi_size=0, order_side=, order_size=0, order_status=
+Traceback (most recent call last):
+  File "/Users/alun/Projects/btc-bot2/Bot.py", line 287, in <module>
+    bot = Bot()
+  File "/Users/alun/Projects/btc-bot2/Bot.py", line 278, in start_bot
+    self.check_execution()
+KeyboardInterrupt
+
+Process finished with exit code 137 (interrupted by signal 9: SIGKILL)
