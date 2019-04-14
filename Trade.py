@@ -1,6 +1,11 @@
 import ccxt
 import time
-import copy
+import threading
+from SystemFlg import SystemFlg
+
+'''
+Private API は 1 分間に約 200 回を上限とします。
+'''
 
 
 class Trade:
@@ -19,6 +24,30 @@ class Trade:
         cls.order_id = {}
         cls.num_private_access = 0
         cls.num_public_access = 0
+        cls.num_private_access_per_min = 0
+        cls.flg_api_limit = False
+        th = threading.Thread(target=cls.monitor_api)
+        th.start()
+
+    @classmethod
+    def monitor_api(cls):
+        pre_access = 0
+        i = 0
+        start = time.time()
+        time.sleep(1)
+        while SystemFlg.get_system_flg():
+            elapsed_time = time.time() - start
+            cls.num_private_access_per_min = round(cls.num_private_access / float(elapsed_time/60),2)
+            if cls.num_private_access_per_min > 195:
+                print('API private access reached limitation, suspend Trade for 60 sec!')
+                cls.cancel_all_orders()
+                #maybe need to add all posi close code
+                cls.flg_api_limit = True
+                time.sleep(60)
+                cls.flg_api_limit = False
+                print('API private access suspension has been resumed')
+            time.sleep(1)
+            i += 1
 
     @classmethod
     def __read_keys(cls):
@@ -34,24 +63,32 @@ class Trade:
     '''
     @classmethod
     def order(cls, side, price, size, expire_m) -> str:  # min size is 0.01
-        cls.num_private_access += 1
-        order_id = ''
-        try:
-            order_id = cls.bf.create_order(
-                symbol='BTC/JPY',
-                type='limit',
-                side=side,
-                price=price,
-                amount=size,
-                # params={'product_code': 'FX_BTC_JPY'}
-                params={'product_code': 'FX_BTC_JPY', 'minute_to_expire': expire_m}  # 期限切れまでの時間（分）（省略した場合は30日）
-            )
-        except Exception as e:
-            print(e)
-            return ''
-        order_id = order_id['info']['child_order_acceptance_id']
-        print('ok order - ' + str(order_id))
-        return order_id
+        if cls.flg_api_limit == False:
+            cls.num_private_access += 1
+            order_id = ''
+            if size >= 0.01:
+                try:
+                    order_id = cls.bf.create_order(
+                        symbol='BTC/JPY',
+                        type='limit',
+                        side=side,
+                        price=price,
+                        amount=size,
+                        # params={'product_code': 'FX_BTC_JPY'}
+                        params={'product_code': 'FX_BTC_JPY', 'minute_to_expire': expire_m}  # 期限切れまでの時間（分）（省略した場合は30日）
+                    )
+                except Exception as e:
+                    print(e)
+                    return ''
+                order_id = order_id['info']['child_order_acceptance_id']
+                print('ok order - ' + str(order_id))
+                return order_id
+            else:
+                print('order is temporary exhibited due to API access limitation!')
+                return ''
+        else:
+            print('order size '+str(size)+' is too small. minimum order size is 0.01!')
+            return''
 
     '''
         {'id': 0, 'child_order_id': 'JFX20190218-133228-026751F', 'product_code': 'FX_BTC_JPY', 'side': 'BUY', 'child_order_type': 'LIMIT', 'price': 300000.0, 'average_price': 0.0, 'size': 0.01, 'child_order_state': 'ACTIVE', 'expire_date': '2019-03-20T13:32:16', 'child_order_date': '2019-02-18T13:32:16', 'child_order_acceptance_id': 'JRF20190218-133216-339861', 'outstanding_size': 0.01, 'cancel_size': 0.0, 'executed_size': 0.0, 'total_commission': 0.0}
@@ -62,15 +99,19 @@ class Trade:
 
     @classmethod
     def get_order_status(cls, id) -> []:
-        cls.num_private_access += 1
-        res = []
-        try:
-            res = cls.bf.private_get_getchildorders(
-                params={'product_code': 'FX_BTC_JPY', 'child_order_acceptance_id': id})
-        except Exception as e:
-            print('error in get_order_status ' + e)
-        finally:
-            return res
+        if cls.flg_api_limit == False:
+            cls.num_private_access += 1
+            res = []
+            try:
+                res = cls.bf.private_get_getchildorders(
+                    params={'product_code': 'FX_BTC_JPY', 'child_order_acceptance_id': id})
+            except Exception as e:
+                print('error in get_order_status ' + e)
+            finally:
+                return res
+        else:
+            print('order is temporary exhibited due to API access limitation!')
+            return []
 
     '''
     [{'id': 'JRF20190220-140338-069226',
@@ -194,7 +235,6 @@ class Trade:
     'pnl': -0.3,
     'sfd': 0.0}]
     '''
-
     @classmethod
     def get_positions(cls):  # None
         cls.num_private_access += 1
@@ -205,7 +245,7 @@ class Trade:
     def cancel_order(cls, order_id):
         cls.num_private_access += 1
         try:
-            res = cls.bf.cancel_order(id=order_id, symbol='BTC/JPY', params={"product_code": "FX_BTC_JPY"})
+            return cls.bf.cancel_order(id=order_id, symbol='BTC/JPY', params={"product_code": "FX_BTC_JPY"})
         except Exception as e:
             print(e)
 
@@ -225,46 +265,104 @@ class Trade:
         for o in orders:
             cls.cancel_order(o['id'])
 
+    '''
+    can't handle if existing positions
+    assumed only when exit from current position
+    '''
     @classmethod
     def price_tracing_order(cls, side, size) -> float:
-        print('started price tracing order')
-        remaining_size = size
-        sum_price_x_size = 0
-        sum_size = 0
-        status = []
-        while remaining_size > 0:
+        if cls.flg_api_limit == False:
+            print('started price tracing order')
+            remaining_size = size
+            sum_price_x_size = 0
+            sum_size = 0
+            pre_exe_size = 0
             price = cls.get_opt_price()
-            order_id = cls.order_wait_till_boarding(side, price, remaining_size, 100)['child_order_acceptance_id'] #disappered error occurre when already exected ?
-            while abs(price - cls.get_opt_price()) <= 300 and remaining_size > 0:  # loop when current order price is close to opt price
+            order_id = cls.order_wait_till_boarding(side, price, remaining_size, 100)['child_order_acceptance_id']
+            while remaining_size > 0:
                 status = cls.get_order_status(order_id)
-                if len(status) > 0:
-                    remaining_size = status[0]['outstanding_size']
-                    print('executed @' + str(status[0]['average_price']) + ' x ' + str(status[0]['executed_size']))
-                else: #some how order was disappered
-                    print('order disappered! - entrying new order')
-                    cls.cancel_and_wait_completion(order_id)
+                if abs(price - cls.get_opt_price()) <= 300 and remaining_size > 0: #current order price is far from opt price
+                    res = cls.cancel_and_wait_completion(order_id)
+                    if len(res) > 0:
+                        remaining_size = res['outstanding_size']
+                        sum_price_x_size += float(res['average_price']) * float(res['executed_size'] - pre_exe_size)
+                        sum_size += float(res['executed_size'] - pre_exe_size)
+                        print('price tracing order - executed ' + str(res['executed_size']-pre_exe_size) + ' @' + str(res['average_price']))
                     price = cls.get_opt_price()
                     order_id = cls.order_wait_till_boarding(side, price, remaining_size, 100)['child_order_acceptance_id']
-                time.sleep(1)
-            #order price is far from opt price
-            sum_price_x_size += float(status[0]['average_price']) * float(status[0]['executed_size'])
-            sum_size += float(status[0]['executed_size'])
-            status = cls.cancel_and_wait_completion(order_id)  # when order price is far from opt price
-            if len(status) > 0: #cancel failed and partially executed
-                remaining_size = status[0]['outstanding_size']
+                    print('price tracing order - replaced order for '+side + ', @'+str(price)+' x '+str(remaining_size))
+                    pre_exe_size = 0
+                if status[0]['outstanding_size'] == 0: #excuted all portion
+                    sum_price_x_size += float(status[0]['average_price']) * float(status[0]['executed_size'] - pre_exe_size)
+                    sum_size += float(status[0]['executed_size'] - pre_exe_size)
+                    remaining_size = 0
+                    pre_exe_size = 0
+                    break
+                else:
+                    if status[0]['outstanding_size'] < remaining_size:
+                        sum_price_x_size += float(status[0]['average_price']) * float(status[0]['executed_size'] - pre_exe_size)
+                        sum_size += float(status[0]['executed_size'] - pre_exe_size)
+                        remaining_size = status[0]['outstanding_size']
+                        print('price tracing order - executed '+str(status[0]['executed_size'] - pre_exe_size) + ' @'+str(price))
+                        pre_exe_size = status[0]['executed_size']
+                time.sleep(0.5)
+            print('ave price={}, exe size = {}'.format(sum_price_x_size / sum_size, sum_size))
+            return sum_price_x_size / sum_size
+        else:
+            print('order is temporary exhibited due to API access limitation!')
+            return ''
+
+    '''
+    @classmethod
+    def price_tracing_order(cls, side, size) -> float:
+        if cls.flg_api_limit == False:
+            print('started price tracing order')
+            remaining_size = size
+            sum_price_x_size = 0
+            sum_size = 0
+            status = []
+            while remaining_size > 0:
+                price = cls.get_opt_price()
+                s = cls.order_wait_till_boarding(side, price, remaining_size, 100)
+                order_id = s['child_order_acceptance_id'] #disappered error occurre when already exected ?
+                while abs(price - cls.get_opt_price()) <= 300 and remaining_size > 0:  # loop when current order price is close to opt price
+                    status = cls.get_order_status(order_id)
+                    if len(status) > 0:
+                        remaining_size = status[0]['outstanding_size']
+                        print('executed @' + str(status[0]['average_price']) + ' x ' + str(status[0]['executed_size']))
+                        if remaining_size == 0:
+                            print('price tracing order has been completed')
+
+                    else: #some how order was disappered
+                        print('order disappered! - entrying new order')
+                        print(status)
+                        print(s)
+                        cls.cancel_and_wait_completion(order_id)
+                        price = cls.get_opt_price()
+                        order_id = cls.order_wait_till_boarding(side, price, remaining_size, 100)['child_order_acceptance_id']
+                    time.sleep(1)
+                #order price is far from opt price
                 sum_price_x_size += float(status[0]['average_price']) * float(status[0]['executed_size'])
                 sum_size += float(status[0]['executed_size'])
-                print('executed @' + str(status[0]['average_price']) + ' x ' + str(status[0]['executed_size']))
-            else: #successfully cancelled
-                print('')
-        print('price tracing order has been completed')
-        if sum_price_x_size == 0 and sum_size ==0:
-            print('ave price={}, exe size = {}'.format(status[0]['average_price'], status[0]['executed_size']))
-            return status[0]['average_price']
+                status = cls.cancel_and_wait_completion(order_id)  # when order price is far from opt price
+                if len(status) > 0: #cancel failed and partially executed
+                    remaining_size = status[0]['outstanding_size']
+                    sum_price_x_size += float(status[0]['average_price']) * float(status[0]['executed_size'])
+                    sum_size += float(status[0]['executed_size'])
+                    print('executed @' + str(status[0]['average_price']) + ' x ' + str(status[0]['executed_size']))
+                else: #successfully cancelled
+                    print('')
+            print('price tracing order has been completed')
+            if sum_price_x_size == 0 and sum_size ==0:
+                print('ave price={}, exe size = {}'.format(status[0]['average_price'], status[0]['executed_size']))
+                return status[0]['average_price']
+            else:
+                print('ave price={}, exe size = {}'.format(sum_price_x_size/sum_size, sum_size))
+                return sum_price_x_size / sum_size
         else:
-            print('ave price={}, exe size = {}'.format(sum_price_x_size/sum_size, sum_size))
-            return sum_price_x_size / sum_size
-
+            print('order is temporary exhibited due to API access limitation!')
+            return ''
+            '''
 
     '''
     #res['bids'][0][0] = 394027
@@ -272,8 +370,14 @@ class Trade:
     '''
     @classmethod
     def get_order_book(cls):
-        cls.num_private_access += 1
+        cls.num_public_access += 1
         return cls.bf.fetch_order_book(symbol='BTC/JPY', params={"product_code": "FX_BTC_JPY"})
+
+    @classmethod
+    def get_last_price(cls):
+        cls.num_public_access += 1
+        ticker = cls.bf.fetch_ticker('BTC/JPY', params={"product_code": "FX_BTC_JPY"})
+        return ticker['last']
 
     @classmethod
     def get_opt_price(cls):
