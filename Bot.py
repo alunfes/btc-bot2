@@ -17,11 +17,8 @@ import pytz
 
 
 '''
-margin deposit errorが複数回続いたらsystemflgをfalseにして停止
-price tracing orderで0.01以下のorderを出してしまいエラーになることがある。
 現状price tracing order時にplがずれるので、最初にaccount data get and check diff from initialize deposit as a account pl
 bot開始時に現在のholdingを確認して、それをbot posiに反映させて開始する
-num private access per min calc maybe wrong
 厳密にupdate indexの計算の検証
 write log to csv
 ローソク足チャートにentry point, plなど表示
@@ -31,16 +28,31 @@ daily maintenanceの時にMarketData, Tradeなどinitialize。（理想的には
 '''
 長期で下落が見込まれる状況でも決まった時間のfuture sideだけで取引するとリスクに見合わないトレードになってしまうことがありうる
 ボラを新しい特徴として入れる代わりに、max termのwindowを広げることでoverfitを減らせる？  
+plが近づいた時にpredictが同じ方向だったら利確しない方が合理的？
+ポジ持ってる時に3(both)になったら一旦exitするのが安全？plにはどう影響する？
 '''
 class Bot:
-    def initialize(self, size, pl_kijun):
-        self.trade_size = size
+    def initialize(self,pl_kijun):
         self.pl_kijun = pl_kijun
+        self.posi_initialzie()
+        self.order_initailize()
+        self.pl = 0
+        self.holding_pl = 0
+        self.pl_log = []
+        self.num_trade = 0
+        self.num_win = 0
+        self.win_rate = 0
+        self.margin_rate = 120.0
+        self.leverage = 15.0
+
+    def posi_initialzie(self):
         self.posi_side = ''
         self.posi_id = ''
         self.posi_price = 0
         self.posi_size = 0
         self.posi_status = ''
+
+    def order_initailize(self):
         self.order_side = ''
         self.order_id = ''
         self.order_price = 0
@@ -48,12 +60,14 @@ class Bot:
         self.order_status = ''
         self.order_dt = ''
 
-        self.pl = 0
-        self.holding_pl = 0
-        self.pl_log = []
-        self.num_trade = 0
-        self.num_win = 0
-        self.win_rate = 0
+
+    def calc_opt_size(self):
+        collateral = Trade.get_collateral()['collateral']
+        #price * size * 1/0.15 = margin
+        #110 = price * size * 1/0.15 / current_asset
+        size = round((2.0 * collateral * self.margin_rate) / Trade.get_last_price() * 1.0/self.leverage,2)
+        return size
+        #return round((self.leverage * (current_asset / Trade.get_last_price()) * 100.0) / self.margin_rate,2)
 
     def calc_and_log_pl(self, ave_p, size):
         pl = (ave_p - self.posi_price) * self.posi_size if self.posi_side == 'buy' else (self.posi_price - ave_p) * self.posi_size
@@ -62,7 +76,7 @@ class Bot:
         self.num_trade += 1
         if pl > 0:
             self.num_win += 1
-        self.win_rate = float(self.num_win) / float(self.num_trade)
+        self.win_rate = round(float(self.num_win) / float(self.num_trade),2)
         print('pl = {}, num = {}, win_rate = {}'.format(self.pl, self.num_trade, self.win_rate))
 
     def calc_holding_pl(self):
@@ -97,28 +111,26 @@ class Bot:
 
     def exit_order(self):
         print('exit order')
-        Trade.cancel_and_wait_completion(self.order_id) #cancel pl order
-        side = 'buy' if self.posi_side == 'sell' else 'sell'
-        ave_p = Trade.price_tracing_order(side, self.posi_size)
-        if ave_p != '':
-            self.calc_and_log_pl(ave_p, self.posi_size)
-            self.posi_side = ''
-            self.posi_id = ''
-            self.posi_price = 0
-            self.posi_size = 0
-            self.posi_status = ''
-            self.order_side = ''
-            self.order_id = ''
-            self.order_price = 0
-            self.order_size = 0
-            self.order_status = ''
-            self.order_dt = ''
-            self.holding_pl = 0
+        res = Trade.cancel_and_wait_completion(self.order_id) #cancel pl order
+        if len(res) > 0:
+            self.posi_size = self.posi_size - res[0]['executed_size']
+        if self.posi_size > 0:
+            side = 'buy' if self.posi_side == 'sell' else 'sell'
+            ave_p = Trade.price_tracing_order(side, self.posi_size)
+            if ave_p != '':
+                self.calc_and_log_pl(ave_p, self.posi_size)
+                self.posi_initialzie()
+                self.order_initailize()
+            else:
+                print('Reached API access limitation!')
+                print('Sleep for 60s...')
+                time.sleep(60)
+                print('Resumed from API limitation sleep.')
         else:
-            print('Reached API access limitation!')
-            print('Sleep for 60s...')
-            time.sleep(60)
-            print('Resumed from API limitation sleep.')
+            print('order has been fully executed before cancellation')
+            self.calc_and_log_pl(res[0]['average_price'], res[0]['executed_size'])
+            self.posi_initialzie()
+            self.order_initailize()
 
 
     def cancel_order(self):
@@ -204,8 +216,8 @@ class Bot:
             pass
 
 
-    def start_bot(self,size, pl_kijun):
-        self.initialize(size, pl_kijun)
+    def start_bot(self,pl_kijun):
+        self.initialize(pl_kijun)
         Trade.cancel_all_orders()
         print('bot - updating crypto data..')
         CryptowatchDataGetter.get_and_add_to_csv()
@@ -252,19 +264,19 @@ class Bot:
                     # predict = bst.predict(xgb.DMatrix(pred_x))
                     predict = bst.predict(Pool(pred_x))
                     #print('predicted - ' + str(datetime.now(tz=JST)))
-                    print('dt={}, close={}, predict={}, pl={}, num_trade={}, win_rate={}'.format(MarketData2.ohlc_bot.dt[-1],
+                    print('dt={}, close={}, predict={}, pl={}, num_trade={}, win_rate={}, posi_side={}, posi_price={}, order_side={}, order_price={}'.format(MarketData2.ohlc_bot.dt[-1],
                                                                         MarketData2.ohlc_bot.close[-1],
                                                                                                  predict[0],
                                                                                                  self.pl+self.holding_pl,
                                                                                                  self.num_trade,
-                                                                                                 self.win_rate))
+                                                                                                 self.win_rate, self.posi_side, self.posi_price, self.order_side, self.order_price))
                 else:
                     print('crypto watch data download error!')
             if self.posi_side == '' and self.order_side == '': #no position no order
                 if predict[0] == 1:
-                    self.entry_order('buy', MarketData2.ohlc_bot.close[-1], self.trade_size)
+                    self.entry_order('buy', MarketData2.ohlc_bot.close[-1], self.calc_opt_size())
                 elif predict[0] == 2:
-                    self.entry_order('sell', MarketData2.ohlc_bot.close[-1], self.trade_size)
+                    self.entry_order('sell', MarketData2.ohlc_bot.close[-1], self.calc_opt_size())
             elif self.posi_side == '' and self.order_side != '': #no position and ordering
                 if (self.order_side == 'buy' and (predict[0] == 2 or predict[0] == 0)) or (self.order_side == 'sell' and (predict[0] == 1 or predict[0] == 0)):
                     self.cancel_order()
@@ -285,7 +297,7 @@ if __name__ == '__main__':
     SystemFlg.initialize()
     Trade.initialize()
     bot = Bot()
-    bot.start_bot(0.08, 900)
+    bot.start_bot(900)
 
 
 

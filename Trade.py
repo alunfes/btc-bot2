@@ -26,6 +26,7 @@ class Trade:
         cls.num_public_access = 0
         cls.num_private_access_per_min = 0
         cls.flg_api_limit = False
+        cls.conti_order_error = 0
         th = threading.Thread(target=cls.monitor_api)
         th.start()
 
@@ -79,8 +80,13 @@ class Trade:
                     )
                 except Exception as e:
                     print(e)
+                    cls.conti_order_error += 1
+                    if cls.conti_order_error > 15:
+                        SystemFlg.set_system_flg(False)
+                        print('continuous order error more than 15times System Finished.')
                     return ''
                 order_id = order_id['info']['child_order_acceptance_id']
+                cls.conti_order_error = 0
                 print('ok order - ' + str(order_id))
                 return order_id
             else:
@@ -260,6 +266,17 @@ class Trade:
             return res['total']['BTC'] * cls.get_opt_price() + res['total']['JPY']
 
     @classmethod
+    def get_collateral(cls):
+        cls.num_private_access += 1
+        res=''
+        try:
+            res = cls.bf.fetch2(path='getcollateral', api='private', method='GET')
+        except Exception as e:
+            print('error i get_collateral ' + e)
+        finally:
+            return res
+
+    @classmethod
     def cancel_all_orders(cls):
         orders = cls.get_orders()
         for o in orders:
@@ -409,6 +426,11 @@ class Trade:
 
 if __name__ == '__main__':
     Trade.initialize()
+    col = Trade.get_collateral()
+    print(col)
+
+    '''
+    Trade.initialize()
     oid = Trade.order('buy', 500000, 0.1, 1)
     print(Trade.get_order_status(oid))
     time.sleep(3)
@@ -416,6 +438,7 @@ if __name__ == '__main__':
     Trade.cancel_order(oid)
     time.sleep(5)
     print(Trade.get_order_status(oid)[0])
+    '''
 
 
 
