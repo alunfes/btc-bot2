@@ -10,6 +10,7 @@ from CatModel import CatModel
 from datetime import timedelta
 from MarketData2 import MarketData2
 from CryptowatchDataGetter import CryptowatchDataGetter
+from LogMaster import LogMaster
 from Trade import Trade
 from datetime import datetime
 #import datetime
@@ -65,7 +66,7 @@ class Bot:
         collateral = Trade.get_collateral()['collateral']
         #price * size * 1/0.15 = margin
         #110 = price * size * 1/0.15 / current_asset
-        size = round((2.0 * collateral * self.margin_rate) / Trade.get_last_price() * 1.0/self.leverage,2)
+        size = round((1.5 * collateral * self.margin_rate) / Trade.get_last_price() * 1.0/self.leverage,2)
         return size
         #return round((self.leverage * (current_asset / Trade.get_last_price()) * 100.0) / self.margin_rate,2)
 
@@ -92,21 +93,29 @@ class Bot:
             self.order_size = size
             self.order_status = 'new boarding'
             self.order_dt = datetime.now()
+            LogMaster.add_log({'dt':self.order_dt,'action_message':'new entry for '+side+' @'+str(price)+' x'+str(size)})
             print('new entry: side = {}, price = {}, size = {}'.format(side, price, size))
         else:
+            LogMaster.add_log({'dt': self.order_dt, 'action_message': 'failed new entry for ' + side + ' @' + str(price) + ' x' + str(size)})
             print('order failed!')
             print('posi_side={}, posi_size={}, order_side={}, order_size={}, order_status={}'.format(self.posi_side,self.posi_size,self.order_side,self.order_size,self.order_status))
 
     def pl_order(self):
         side = 'buy' if self.posi_side == 'sell' else 'sell'
         price = self.posi_price + self.pl_kijun if self.posi_side == 'buy' else self.posi_price - self.pl_kijun
-        self.order_id = Trade.order(side, price, self.posi_size, 1440)
-        self.order_side = side
-        self.order_price = price
-        self.order_size = self.posi_size
-        self.order_status = 'pl ordering'
-        self.order_dt = datetime.now()
-        print('pl order: side = {}, price = {}, size = {}'.format(self.order_side, self.order_price, self.order_size))
+        res = Trade.order(side, price, self.posi_size, 1440)
+        if len(res) > 10:
+            self.order_id = res
+            self.order_side = side
+            self.order_price = price
+            self.order_size = self.posi_size
+            self.order_status = 'pl ordering'
+            self.order_dt = datetime.now()
+            print('pl order: side = {}, price = {}, size = {}'.format(self.order_side, self.order_price, self.order_size))
+            LogMaster.add_log({'dt': self.order_dt, 'action_message': 'pl entry for ' + side + ' @' + str(price) + ' x' + str(self.posi_size)})
+        else:
+            LogMaster.add_log({'dt': self.order_dt,'action_message': 'failed pl entry!'})
+            print('failed pl order!')
 
 
     def exit_order(self):
@@ -117,11 +126,13 @@ class Bot:
         if self.posi_size > 0:
             side = 'buy' if self.posi_side == 'sell' else 'sell'
             ave_p = Trade.price_tracing_order(side, self.posi_size)
-            if ave_p != '':
+            if ave_p != '': #completed price tracing order
                 self.calc_and_log_pl(ave_p, self.posi_size)
+                LogMaster.add_log({'dt': datetime.now(), 'action_message': 'exit completed ave_price='+str(ave_p)+' x'+str(self.posi_size)})
                 self.posi_initialzie()
                 self.order_initailize()
             else:
+                LogMaster.add_log({'dt': datetime.now(),'action_message': 'Reached API access limitation!'})
                 print('Reached API access limitation!')
                 print('Sleep for 60s...')
                 time.sleep(60)
@@ -129,6 +140,7 @@ class Bot:
         else:
             print('order has been fully executed before cancellation')
             self.calc_and_log_pl(res[0]['average_price'], res[0]['executed_size'])
+            LogMaster.add_log({'dt': datetime.now(),'action_message': 'exit - order has been fully executed before cancellation' + str(res[0]['average_price']) + ' x' + str(res[0]['executed_size'])})
             self.posi_initialzie()
             self.order_initailize()
 
@@ -140,6 +152,7 @@ class Bot:
             print('cancel failed, partially executed')
             ave_p = Trade.price_tracing_order(status[0]['side'].lower(), status[0]['executed_size'])
             self.calc_and_log_pl(ave_p, status[0]['executed_size'])
+            LogMaster.add_log({'dt': datetime.now(),'action_message': 'cancel order - cancel failed and partially executed. closed position.' + str(ave_p) + ' x' + str(status[0]['executed_size'])})
             self.posi_side = ''
             self.posi_id = ''
             self.posi_price = 0
@@ -152,6 +165,7 @@ class Bot:
             self.order_status = ''
             self.order_dt = ''
         else:
+            LogMaster.add_log({'dt': datetime.now(), 'action_message':'cancelled order'})
             self.order_side = ''
             self.order_id = ''
             self.order_price = 0
@@ -165,6 +179,7 @@ class Bot:
             if status[0]['outstanding_size'] == 0 and 'pl' in self.order_status: #pl is fully executed
                 print(status[0])
                 self.calc_and_log_pl(status[0]['average_price'], status[0]['executed_size'])
+                LogMaster.add_log({'dt': datetime.now(), 'action_message':'pl order has been fully executed.'+'ave_price='+str(status[0]['average_price'])+' size='+str(status[0]['executed_size'])})
                 self.order_side = ''
                 self.order_id = ''
                 self.order_price = 0
@@ -189,6 +204,7 @@ class Bot:
                     self.posi_size = status[0]['executed_size']
                     self.posi_status = 'fully executed'
                     print('current position: side = {}, price = {}, size = {}'.format(self.posi_side, self.posi_price, self.posi_size))
+                    LogMaster.add_log({'dt': datetime.now(), 'action_message':'entry order has been fully executed'})
                 elif status[0]['executed_size'] > self.posi_size: #entry order has been partially executed
                     print('entry order partially executed')
                     self.order_size = status[0]['executed_size']
@@ -197,6 +213,7 @@ class Bot:
                     self.posi_side = status[0]['side'].lower()
                     self.posi_price = status[0]['average_price']
                     self.posi_size = status[0]['executed_size']
+                    LogMaster.add_log({'dt': datetime.now(), 'action_message': 'entry order partially executed.'+'price='+str(status[0]['average_price'])+' size='+str(status[0]['executed_size'])})
                     print('current position: side = {}, price = {}, size = {}'.format(self.posi_side, self.posi_price,
                                                                                       self.posi_size))
                 elif status[0]['child_order_state'] == 'ACTIVE' and 'boarded' not in self.order_status:
@@ -220,14 +237,17 @@ class Bot:
         self.initialize(pl_kijun)
         Trade.cancel_all_orders()
         print('bot - updating crypto data..')
+        LogMaster.add_log({'action_message':'bot - updating crypto data..'})
         CryptowatchDataGetter.get_and_add_to_csv()
         print('bot - initializing MarketData2..')
+        LogMaster.add_log({'action_message': 'bot - initializing MarketData2..'})
         MarketData2.initialize_from_bot_csv(110, 100, 900)
         train_df = MarketData2.generate_df(MarketData2.ohlc_bot)
         #print(train_df)
         #model = XgbModel()
         model = CatModel()
         print('bot - training xgb model..')
+        LogMaster.add_log({'action_message': 'bot - training xgb model..'})
         train_x, test_x, train_y, test_y = model.generate_data(train_df, 1)
         #print('x shape '+str(train_x.shape))
         #print('y shape '+str(train_y.shape))
@@ -235,10 +255,12 @@ class Bot:
         bst = model.read_dump_model('./cat_model.dat')
         print('bot - training completed..')
         print('bot - updating crypto data..')
+        LogMaster.add_log({'action_message': 'bot - training completed..'})
         #CryptowatchDataGetter.get_and_add_to_csv()
         #MarketData2.initialize_from_bot_csv(110, 100, 900)
         MarketData2.ohlc_bot.cut_data(1000)
         print('bot - started bot loop.')
+        LogMaster.add_log({'action_message': 'bot - started bot loop.'})
         predict = [0]
         JST = pytz.timezone('Asia/Tokyo')
         start = time.time()
@@ -264,6 +286,12 @@ class Bot:
                     # predict = bst.predict(xgb.DMatrix(pred_x))
                     predict = bst.predict(Pool(pred_x))
                     #print('predicted - ' + str(datetime.now(tz=JST)))
+                    LogMaster.add_log({'dt':MarketData2.ohlc_bot.dt[-1],'open':MarketData2.ohlc_bot.open[-1],'high':MarketData2.ohlc_bot.high[-1],
+                                      'low':MarketData2.ohlc_bot.low[-1],'close':MarketData2.ohlc_bot.close[-1],'posi_side':self.posi_side,
+                                       'posi_price':self.posi_price,'posi_size':self.posi_size,'order_side':self.order_side,'order_price':self.order_price,
+                                       'order_size':self.order_size,'num_private_access':Trade.num_private_access, 'num_public_access':Trade.num_public_access,
+                                       'num_private_per_min':Trade.num_private_access_per_min,'num_trade':self.num_trade,'win_rate':self.win_rate,
+                                       'prediction':predict[0]})
                     print('dt={}, close={}, predict={}, pl={}, num_trade={}, win_rate={}, posi_side={}, posi_price={}, order_side={}, order_price={}'.format(MarketData2.ohlc_bot.dt[-1],
                                                                         MarketData2.ohlc_bot.close[-1],
                                                                                                  predict[0],
@@ -296,6 +324,7 @@ class Bot:
 if __name__ == '__main__':
     SystemFlg.initialize()
     Trade.initialize()
+    LogMaster.initialize()
     bot = Bot()
     bot.start_bot(900)
 
