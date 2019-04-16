@@ -2,6 +2,8 @@ import ccxt
 import time
 import threading
 from SystemFlg import SystemFlg
+from LogMaster import LogMaster
+from datetime import datetime
 
 '''
 Private API は 1 分間に約 200 回を上限とします。
@@ -80,9 +82,11 @@ class Trade:
                     )
                 except Exception as e:
                     print(e)
+                    LogMaster.add_log({'dt': datetime.now(),'action_message': 'Trade-order error! '+str(e)})
                     cls.conti_order_error += 1
                     if cls.conti_order_error > 15:
                         SystemFlg.set_system_flg(False)
+                        LogMaster.add_log({'dt':datetime.now(),'action_message':'continuous order error more than 15times System Finished.'})
                         print('continuous order error more than 15times System Finished.')
                     return ''
                 order_id = order_id['info']['child_order_acceptance_id']
@@ -301,10 +305,12 @@ class Trade:
                 if abs(price - cls.get_opt_price()) <= 300 and remaining_size > 0: #current order price is far from opt price
                     res = cls.cancel_and_wait_completion(order_id)
                     if len(res) > 0:
-                        remaining_size = res['outstanding_size']
+                        remaining_size -= res['executed_size']
                         sum_price_x_size += float(res['average_price']) * float(res['executed_size'] - pre_exe_size)
                         sum_size += float(res['executed_size'] - pre_exe_size)
                         print('price tracing order - executed ' + str(res['executed_size']-pre_exe_size) + ' @' + str(res['average_price']))
+                        if remaining_size == 0:
+                            break
                     price = cls.get_opt_price()
                     order_id = cls.order_wait_till_boarding(side, price, remaining_size, 100)['child_order_acceptance_id']
                     print('price tracing order - replaced order for '+side + ', @'+str(price)+' x '+str(remaining_size))

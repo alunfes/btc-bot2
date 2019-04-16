@@ -153,25 +153,11 @@ class Bot:
             ave_p = Trade.price_tracing_order(status[0]['side'].lower(), status[0]['executed_size'])
             self.calc_and_log_pl(ave_p, status[0]['executed_size'])
             LogMaster.add_log({'dt': datetime.now(),'action_message': 'cancel order - cancel failed and partially executed. closed position.' + str(ave_p) + ' x' + str(status[0]['executed_size'])})
-            self.posi_side = ''
-            self.posi_id = ''
-            self.posi_price = 0
-            self.posi_size = 0
-            self.posi_status = ''
-            self.order_side = ''
-            self.order_id = ''
-            self.order_price = 0
-            self.order_size = 0
-            self.order_status = ''
-            self.order_dt = ''
+            self.posi_initialzie()
+            self.order_initailize()
         else:
             LogMaster.add_log({'dt': datetime.now(), 'action_message':'cancelled order'})
-            self.order_side = ''
-            self.order_id = ''
-            self.order_price = 0
-            self.order_size = 0
-            self.order_status = ''
-            self.order_dt = ''
+            self.order_initailize()
 
     def check_execution(self):
         status = Trade.get_order_status(self.order_id)
@@ -180,25 +166,13 @@ class Bot:
                 print(status[0])
                 self.calc_and_log_pl(status[0]['average_price'], status[0]['executed_size'])
                 LogMaster.add_log({'dt': datetime.now(), 'action_message':'pl order has been fully executed.'+'ave_price='+str(status[0]['average_price'])+' size='+str(status[0]['executed_size'])})
-                self.order_side = ''
-                self.order_id = ''
-                self.order_price = 0
-                self.order_size = 0
-                self.order_status = ''
-                self.order_size = 0
-                self.posi_side = ''
-                self.posi_price = 0
-                self.posi_size = 0
-                self.posi_status = ''
+                self.order_initailize()
+                self.posi_initialzie()
                 print('pl order has been fully executed')
             else:
                 if status[0]['outstanding_size'] == 0: #new entry has been fully executed
                     print('entry order has been fully executed')
-                    self.order_side = ''
-                    self.order_id = ''
-                    self.order_price = 0
-                    self.order_size = 0
-                    self.order_status = ''
+                    self.order_initailize()
                     self.posi_side = status[0]['side'].lower()
                     self.posi_price = status[0]['average_price']
                     self.posi_size = status[0]['executed_size']
@@ -221,12 +195,7 @@ class Bot:
                     self.order_status = 'new boarded' if self.order_status == 'new boarding' else 'pl boarded'
 
         elif (datetime.now() - self.order_dt).total_seconds() >= 60: #order has been expired
-            self.order_side = ''
-            self.order_id = ''
-            self.order_price = 0
-            self.order_size = 0
-            self.order_status = ''
-            self.order_dt = ''
+            self.order_initailize()
             print('order has been expired')
         else:
             print('order is not yet boarded')  # maybe order is not yet boarded
