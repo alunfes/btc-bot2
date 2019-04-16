@@ -275,12 +275,14 @@ class Bot:
                 elif predict[0] == 2:
                     self.entry_order('sell', MarketData2.ohlc_bot.close[-1], self.calc_opt_size())
             elif self.posi_side == '' and self.order_side != '': #no position and ordering
-                if (self.order_side == 'buy' and (predict[0] == 2 or predict[0] == 0)) or (self.order_side == 'sell' and (predict[0] == 1 or predict[0] == 0)):
+                if (self.order_side == 'buy' and self.posi_side=='' and (predict[0] == 2)) or (self.order_side == 'sell' and self.posi_side =='' and (predict[0] == 1)):#ノーポジでオーダーが判定を逆の時にキャンセル。
                     self.cancel_order()
             elif self.posi_side != '' and self.order_side == '': #holding position and no order
                 self.pl_order()
-            elif self.posi_side == 'buy' and (predict[0] == 2 or predict[0] == 0) or self.posi_side == 'sell' and (predict[0] == 1 or predict[0] == 0): #exit when oposit predict
+            elif self.posi_side == 'buy' and (predict[0] == 2) or self.posi_side == 'sell' and (predict[0] == 1): # ポジションが判定と逆の時にexit,　もしplがあればキャンセル。。
                 self.exit_order()
+                if self.order_status == 'pl ordering':
+                    self.cancel_order()
             elif self.posi_side != '':
                 self.calc_holding_pl()
             if self.order_side != '':
