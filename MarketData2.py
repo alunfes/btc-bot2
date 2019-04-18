@@ -10,8 +10,10 @@ from SystemFlg import SystemFlg
 
 class MarketData2:
     @classmethod
-    def initialize_from_bot_csv(cls, max_term, future_side_period, future_side_kijun):
-        cls.max_term = max_term + 5
+    def initialize_from_bot_csv(cls, num_term, window_term, future_side_period, future_side_kijun):
+        cls.num_term = num_term
+        cls.window_term = window_term
+        cls.max_term = num_term * window_term
         cls.future_side_period = future_side_period
         cls.future_side_kijun = future_side_kijun
         cls.ohlc_bot = OneMinutesData()
@@ -24,8 +26,10 @@ class MarketData2:
         cls.ohlc_bot = cls.calc_future_side(cls.future_side_period, cls.future_side_kijun, cls.ohlc_bot)
 
     @classmethod
-    def initialize_from_omd(cls, max_term, future_period, future_kijun, omd:OneMinutesData):
-        cls.max_term = max_term + 5
+    def initialize_from_omd(cls, num_term, window_term, future_period, future_kijun, omd:OneMinutesData):
+        cls.num_term = num_term
+        cls.window_term = window_term
+        cls.max_term = num_term * window_term
         cls.future_side_period = future_period
         cls.future_side_kijun = future_kijun
         cls.ohlc_bot = omd
@@ -157,45 +161,45 @@ class MarketData2:
 
     @classmethod
     def update_ma2(cls):
-        for i in range(cls.max_term):
-            term = i + 5
+        for i in range(cls.num_term):
+            term =  (i+1) * cls.window_term
             close_con = cls.ohlc_bot.close[len(cls.ohlc_bot.close) - term - (len(cls.ohlc_bot.ma[term]) - len(cls.ohlc_bot.close) + 1):]
             updates = list(pd.Series(close_con).rolling(window=term).mean().dropna())
             cls.ohlc_bot.ma[term].extend(updates)
 
     @classmethod
     def calc_ma_kairi2(cls, ohlc):
-        for i in range(cls.max_term):
-            term = i + 5
+        for i in range(cls.num_term):
+            term = (i+1) * cls.window_term
             ohlc.ma_kairi[term] = list([x / y for (x,y) in zip(ohlc.close, ohlc.ma[term])])
         return ohlc
 
     @classmethod
     def update_ma_kairi2(cls):
-        for i in range(cls.max_term):
-            term = i + 5
+        for i in range(cls.num_term):
+            term = (i+1) * cls.window_term
             close_con = cls.ohlc_bot.close[len(cls.ohlc_bot.ma_kairi[term]) - len(cls.ohlc_bot.close):]
             ma_con = cls.ohlc_bot.ma[term][len(cls.ohlc_bot.ma_kairi[term]) - len(cls.ohlc_bot.ma[term]):]
             cls.ohlc_bot.ma_kairi[term].extend(list([x / y for (x, y) in zip(close_con, ma_con)]))
 
     @classmethod
     def calc_momentum2(cls, ohlc):
-        for i in range(cls.max_term):
-            term = i + 5
+        for i in range(cls.num_term):
+            term = (i+1) * cls.window_term
             ohlc.momentum[term] = list(pd.Series(ohlc.close).diff(term-1))
         return ohlc
 
     @classmethod
     def update_momentum2(cls):
-        for i in range(cls.max_term):
-            term = i + 5
+        for i in range(cls.num_term):
+            term = (i+1) * cls.window_term
             close_con = cls.ohlc_bot.close[len(cls.ohlc_bot.close) - term - (len(cls.ohlc_bot.momentum[term]) - len(cls.ohlc_bot.close)+1)+1:]
             cls.ohlc_bot.momentum[term].extend(list(pd.Series(close_con).diff(term - 1).dropna()))
 
     @classmethod
     def calc_rsi2(cls, ohlc):
-        for i in range(cls.max_term):
-            term = i + 5
+        for i in range(cls.num_term):
+            term = (i+1) * cls.window_term
             diff = pd.Series([x - y for (x,y) in zip(ohlc.close, ohlc.open)])
             up, down = diff.copy(), diff.copy()
             up[up < 0] = 0
@@ -207,8 +211,8 @@ class MarketData2:
 
     @classmethod
     def update_rsi2(cls):
-        for i in range(cls.max_term):
-            term = i + 5
+        for i in range(cls.num_term):
+            term = (i+1) * cls.window_term
             close_con = cls.ohlc_bot.close[len(cls.ohlc_bot.close) - len(cls.ohlc_bot.rsi):]
             open_con = cls.ohlc_bot.open[len(cls.ohlc_bot.open) - len(cls.ohlc_bot.rsi):]
             diff = pd.Series([x - y for (x, y) in zip(close_con, open_con)])
