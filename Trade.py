@@ -307,15 +307,13 @@ class Trade:
             order_id = cls.order_wait_till_boarding(side, price, remaining_size, 100)['child_order_acceptance_id']
             while remaining_size > 0:
                 status = cls.get_order_status(order_id)
-                if abs(
-                        price - cls.get_opt_price()) <= 300 and remaining_size > 0:  # current order price is far from opt price
+                if abs(price - cls.get_opt_price()) <= 300 and remaining_size > 0:  # current order price is far from opt price
                     res = cls.cancel_and_wait_completion(order_id)
-                    if len(res) > 0:  # cancell failed order partially execugted
+                    if len(res) > 0:  # cancell failed order partially executed
                         remaining_size = res['outstanding_size']
                         sum_price_x_size += float(res['average_price']) * float(res['executed_size'] - pre_exe_size)
                         sum_size += float(res['executed_size'] - pre_exe_size)
-                        print('price tracing order - executed ' + str(res['executed_size'] - pre_exe_size) + ' @' + str(
-                            res['average_price']))
+                        print('price tracing order - executed ' + str(res['executed_size'] - pre_exe_size) + ' @' + str(res['average_price']))
                         if remaining_size <= 0:  # target size has been executed
                             break
                         else:  # place a new order for remaining size
@@ -327,29 +325,30 @@ class Trade:
                                 res['executed_size'] - pre_exe_size) + ' @' + str(res['average_price']))
                     else:
                         price = cls.get_opt_price()
-                        order_id = cls.order_wait_till_boarding(side, price, remaining_size, 100)[
-                            'child_order_acceptance_id']
+                        order_id = cls.order_wait_till_boarding(side, price, remaining_size, 100)['child_order_acceptance_id']
                         print('price tracing order - replaced order for ' + side + ', @' + str(price) + ' x ' + str(
                             remaining_size))
                         pre_exe_size = 0
                 if len(status) > 0:
                     if status[0]['outstanding_size'] == 0:  # excuted all portion
-                        sum_price_x_size += float(status[0]['average_price']) * float(
-                            status[0]['executed_size'] - pre_exe_size)
+                        sum_price_x_size += float(status[0]['average_price']) * float(status[0]['executed_size'] - pre_exe_size)
                         sum_size += float(status[0]['executed_size'] - pre_exe_size)
                         remaining_size = 0
                         pre_exe_size = 0
                         break
                     else:
                         if status[0]['outstanding_size'] < remaining_size:
-                            sum_price_x_size += float(status[0]['average_price']) * float(
-                                status[0]['executed_size'] - pre_exe_size)
+                            sum_price_x_size += float(status[0]['average_price']) * float(status[0]['executed_size'] - pre_exe_size)
                             sum_size += float(status[0]['executed_size'] - pre_exe_size)
                             remaining_size = status[0]['outstanding_size']
-                            print('price tracing order - executed ' + str(
-                                status[0]['executed_size'] - pre_exe_size) + ' @' + str(price))
+                            print('price tracing order - executed ' + str(status[0]['executed_size'] - pre_exe_size) + ' @' + str(price))
                             pre_exe_size = status[0]['executed_size']
                 time.sleep(0.2)
+            print('price tracing order has been completed.')
+            print('current positions:')
+            print(cls.get_positions())
+            print('current orders:')
+            print(cls.get_orders())
             print('ave price={}, exe size = {}'.format(sum_price_x_size / sum_size, sum_size))
             return sum_price_x_size / sum_size
         else:
