@@ -49,12 +49,13 @@ class Bot:
         self.sync_position_order()
 
     def sync_position_order(self):
-        position = Trade.get_positions()
+        position = Trade.get_positions()[0]
         orders = Trade.get_orders()
         if len(position) > 0:
             self.posi_side = position['side'].lower()
             self.posi_price = float(position['price'])
-            self.posi_size = position['size']
+            self.posi_size = float(position['size'])
+            self.posi_status = 'fully executed'
             print('synchronized position data, side='+str(self.posi_side)+', size='+str(self.posi_size)+', price='+str(self.posi_price))
         if len(orders) > 0:#need to update order status
             pass

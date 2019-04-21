@@ -1,92 +1,33 @@
 /Users/alun/Projects/btc-bot2/btc-bot2/bin/python /Users/alun/Projects/btc-bot2/Bot.py
+synchronized position data, side=buy, size=0.06, price=594345.0
 bot - updating crypto data..
 bot - initializing MarketData2..
 future side unique val
-buy     0.308986
-sell    0.288405
-no      0.215931
-both    0.186678
+buy     0.312802
+sell    0.296278
+both    0.222713
+no      0.168207
 Name: future_side, dtype: float64
 bot - training xgb model..
 bot - training completed..
 bot - updating crypto data..
 bot - started bot loop.
-bot elapsed_time:0.33[min]
-private access per min=0.8, num private access=1, num public access=0
-dt=2019-04-16 00:42:00, close=584499, predict=[2.], pl=0, num_trade=0, win_rate=0, posi_side=, posi_price=0, order_side=, order_price=0
-ok order - JRF20190415-154204-260389
-new entry: side = sell, price = 584499, size = 0.08
-order is not yet boarded
-order has been boarded
-entry order has been fully executed
-current position: side = sell, price = 584499.0, size = 0.08
-ok order - JRF20190415-154231-045890
-pl order: side = buy, price = 583599.0, size = 0.08
-order is not yet boarded
-order has been boarded
-bot elapsed_time:1.33[min]
-private access per min=39.83, num private access=90, num public access=44
-dt=2019-04-16 00:43:00, close=584552, predict=[2.], pl=-1.2, num_trade=0, win_rate=0, posi_side=sell, posi_price=584499.0, order_side=buy, order_price=583599.0
-bot elapsed_time:2.33[min]
-private access per min=49.05, num private access=160, num public access=114
-dt=2019-04-16 00:44:00, close=584476, predict=[1.], pl=-2.8, num_trade=0, win_rate=0, posi_side=sell, posi_price=584499.0, order_side=buy, order_price=583599.0
-exit order
-waiting cancell order JRF20190415-154231-045890
-order has been successfully cancelled
-started price tracing order
-ok order - JRF20190415-154408-653177
-confirmed the order has been boarded
-waiting cancell order JRF20190415-154408-653177
-cancel failed order has been partially executed. exe size=0.08
-price tracing order - executed 0.08 @584456.0
-order is temporary exhibited due to API access limitation!
-confirmed the order has been boarded
-price tracing order - replaced order for buy, @584424.0 x 0.0
-ave price=584456.0, exe size = 0.16
-pl = 3.44, num = 1, win_rate = 1.0
-ok order - JRF20190415-154421-261688
-new entry: side = buy, price = 584476, size = 0.08
-entry order has been fully executed
-current position: side = buy, price = 584341.0, size = 0.08
-ok order - JRF20190415-154423-746782
-pl order: side = sell, price = 585241.0, size = 0.08
-order is not yet boarded
-order has been boarded
-bot elapsed_time:3.33[min]
-private access per min=53.18, num private access=227, num public access=171
-dt=2019-04-16 00:45:00, close=584439, predict=[1.], pl=8.32, num_trade=1, win_rate=1.0, posi_side=buy, posi_price=584341.0, order_side=sell, order_price=585241.0
-bot elapsed_time:4.33[min]
-private access per min=56.73, num private access=299, num public access=243
-dt=2019-04-16 00:46:00, close=583966, predict=[2.], pl=-39.52, num_trade=1, win_rate=1.0, posi_side=buy, posi_price=584341.0, order_side=sell, order_price=585241.0
-exit order
-waiting cancell order JRF20190415-154423-746782
-order has been successfully cancelled
-started price tracing order
-ok order - JRF20190415-154610-654569
-confirmed the order has been boarded
-waiting cancell order JRF20190415-154610-654569
-order has been successfully cancelled
-ok order - JRF20190415-154620-748088
-confirmed the order has been boarded
-price tracing order - replaced order for sell, @583626.0 x 0.08
+ok order - JRF20190421-151454-372109
+pl order: side = sell, price = 595245.0, size = 0.06
+pl order is not boarded
+[]
+pl order boarded: 2019-04-22 00:14:55.064870
+pl partially executed, exe size=0.0, price=0.0
+pl = -35660.7, num = 1, win_rate = 0.0
+current position: side = buy, price = 594345.0, size = 0.0
+bot elapsed_time:0.12[min]
+private access per min=14.03, num private access=16, num public access=10
+dt=2019-04-22 00:15:00, close=594046, predict=[0.], pl=-35660.7, num_trade=1, win_rate=0.0, posi_side=buy, posi_price=594345.0, order_side=sell, order_price=595245.0
 Traceback (most recent call last):
-  File "/Users/alun/Projects/btc-bot2/Bot.py", line 329, in <module>
+  File "/Users/alun/Projects/btc-bot2/Bot.py", line 360, in <module>
     bot.start_bot(900)
-  File "/Users/alun/Projects/btc-bot2/Bot.py", line 314, in start_bot
-    self.exit_order()
-  File "/Users/alun/Projects/btc-bot2/Bot.py", line 128, in exit_order
-    ave_p = Trade.price_tracing_order(side, self.posi_size)
-  File "/Users/alun/Projects/btc-bot2/Trade.py", line 312, in price_tracing_order
-    if status[0]['outstanding_size'] == 0: #excuted all portion
-IndexError: list index out of range
-Exception ignored in: <module 'threading' from '/Users/alun/.pyenv/versions/3.6.3/lib/python3.6/threading.py'>
-Traceback (most recent call last):
-  File "/Users/alun/.pyenv/versions/3.6.3/lib/python3.6/threading.py", line 1294, in _shutdown
-    t.join()
-  File "/Users/alun/.pyenv/versions/3.6.3/lib/python3.6/threading.py", line 1056, in join
-    self._wait_for_tstate_lock()
-  File "/Users/alun/.pyenv/versions/3.6.3/lib/python3.6/threading.py", line 1072, in _wait_for_tstate_lock
-    elif lock.acquire(block, timeout):
+  File "/Users/alun/Projects/btc-bot2/Bot.py", line 350, in start_bot
+    time.sleep(0.5)
 KeyboardInterrupt
 
 Process finished with exit code 137 (interrupted by signal 9: SIGKILL)
