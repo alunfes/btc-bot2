@@ -13,7 +13,7 @@ class LogMaster:
         cls.index = 0
         cls.key_list = ['index','dt', 'open','high','low','close','posi_side', 'posi_price', 'posi_size', 'order_side',
                         'order_price', 'order_size', 'num_private_access', 'num_public_access', 'num_private_per_min',
-                        'num_trade', 'win_rate', 'prediction', 'api_error', 'action_message']
+                        'pl', 'num_trade', 'win_rate', 'prediction', 'api_error', 'action_message']
         cls.log_list = []
 
     @classmethod

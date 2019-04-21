@@ -29,6 +29,7 @@ class Trade:
         cls.num_private_access_per_min = 0
         cls.flg_api_limit = False
         cls.conti_order_error = 0
+        cls.adjusting_sleep = 0
         th = threading.Thread(target=cls.monitor_api)
         th.start()
 
@@ -41,14 +42,15 @@ class Trade:
         while SystemFlg.get_system_flg():
             elapsed_time = time.time() - start
             cls.num_private_access_per_min = round(cls.num_private_access / float(elapsed_time/60),2)
-            if cls.num_private_access_per_min > 195:
-                print('API private access reached limitation, suspend Trade for 60 sec!')
+            if cls.num_private_access_per_min > 95:
+                print('API private access reached limitation')
                 cls.cancel_all_orders()
                 #maybe need to add all posi close code
                 cls.flg_api_limit = True
-                time.sleep(60)
+                cls.adjusting_sleep = 0.3
+            elif cls.num_private_access_per_min <= 95:
                 cls.flg_api_limit = False
-                print('API private access suspension has been resumed')
+                cls.adjusting_sleep = 0
             time.sleep(1)
             i += 1
 
@@ -117,6 +119,7 @@ class Trade:
                     params={'product_code': 'FX_BTC_JPY', 'child_order_acceptance_id': id})
             except Exception as e:
                 print('error in get_order_status ' + e)
+                LogMaster.add_log({'dt': datetime.now(),'action_message': 'Trade-get order status error! '+str(e)})
             finally:
                 return res
         else:
@@ -257,6 +260,7 @@ class Trade:
         try:
             return cls.bf.cancel_order(id=order_id, symbol='BTC/JPY', params={"product_code": "FX_BTC_JPY"})
         except Exception as e:
+            LogMaster.add_log({'dt': datetime.now(), 'action_message': 'Trade-cancel order error! ' + str(e)})
             print(e)
 
     @classmethod
@@ -266,6 +270,7 @@ class Trade:
             res = cls.bf.fetch_balance()
         except Exception as e:
             print('error i get_current_asset ' + e)
+            LogMaster.add_log({'dt': datetime.now(), 'action_message': 'Trade-get current asset error! ' + str(e)})
         finally:
             return res['total']['BTC'] * cls.get_opt_price() + res['total']['JPY']
 

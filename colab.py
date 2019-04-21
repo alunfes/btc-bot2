@@ -1,6 +1,3 @@
-from MarketData2 import  MarketData2
-
-
 class Account:
     def __init__(self):
         self.realized_pl = 0
@@ -121,55 +118,62 @@ class Account:
             self.unexe_side[n] = side
             self.unexe_price[n] = price
             self.unexe_size[n] = size
-            self.unexe_dt[n] = MarketData2.ohlc_bot.close[ind]
+            self.unexe_dt[n] = MarketData2.ohlc_bot.dt[ind]
             self.unexe_i[n] = i
             self.unexe_cancel[n] = False
             self.unexe_info[n] = info
             self.__add_action_log("Entry Order for " + side + " @" + str(price) + " x " + str(size),i)
+            #print('entry, '+side+' @'+str(price)+' x'+str(size)+' n='+str(n))
 
     def __force_entry(self, prediction, unexe_key, ind, i):
         price = self.unexe_price[unexe_key]
+        self.__remove_unexe_key(unexe_key)
         if prediction == 1 or prediction == 2:
             n = len(self.unexe_side)
             self.unexe_side[n] = 'buy' if prediction == 1 else 'sell'
             self.unexe_price[n] = price
             self.unexe_size[n] = self.calc_opt_size(ind)
-            self.unexe_dt[n] = MarketData2.ohlc_bot.close[ind]
+            self.unexe_dt[n] = MarketData2.ohlc_bot.dt[ind]
             self.unexe_i[n] = i
             self.unexe_cancel[n] = False
             self.unexe_info[n] = 'entry after pl execution'
             self.__add_action_log('Force entry after pl execution',i)
             self.__execute(n, prediction, ind, i)
+            #print('force entry, '+self.unexe_side[n]+' @'+str(price)+' j='+str(j))
 
     def exit_all_positions(self, ind, i):
         if 'exit all' not in list(self.unexe_info.values()):
             side = 'buy' if self.holding_side == 'sell' else 'sell'
-            price = round((MarketData2.ohlc_bot.low[ind+1] + MarketData2.ohlc_bot.high[ind+1]) * 0.5)
+            price = round((MarketData2.ohlc_bot.open[ind+1] + MarketData2.ohlc_bot.close[ind+1]) * 0.5)
             self.entry_order(side, price, self.ave_holding_size,'exit all',ind,i)
             self.__add_action_log("Exit all",i)
+            #print('exit all order, '+side)
 
     def pl_order(self, pl_kijun, ind, i):
         side = 'buy' if self.holding_side == 'sell' else 'sell'
         price = self.ave_holding_price + pl_kijun if self.holding_side == 'buy' else self.ave_holding_price - pl_kijun
         self.entry_order(side, price, self.ave_holding_size, 'pl order', ind, i)
         self.__add_action_log("Entry PL Order" + side + " @" + str(price) + " x " + str(self.ave_holding_size),i)
+        #print('pl order, '+side)
 
     def cancel_all_orders(self, ind, i):
         if len(self.unexe_side) > 0 and self.cancel_all_orders_flg == False:
             self.cancel_all_orders_flg = True
             self.cancel_all_order_i = i
             self.__add_action_log("Cancelling All Orders",i)
+            #print('cancel all order,')
 
     def cancel_order(self, unexe_key, ind, i):
         if self.unexe_cancel[unexe_key] == False:
             self.unexe_cancel[unexe_key] = True
             self.unexe_i[unexe_key] = i
             self.__add_action_log("Cancelling order #" + str(unexe_key),i)
+            #print('cancel order, '+'key ='+str(unexe_key))
 
     def __check_cancel(self, ind, i):
         if self.cancel_all_orders_flg:
             if self.cancel_all_order_i < i:
-                self.__execute_cancel_all_orders()
+                self.__execute_cancel_all_orders(i)
         else:
             cancelled_index = ''
             for j in list(self.unexe_cancel.keys())[:]:
@@ -177,24 +181,31 @@ class Account:
                     self.__remove_unexe_key(j)
                     cancelled_index += str(j) + ','
             if cancelled_index != '':
-                self.__add_action_log("Cancelled orders #" + cancelled_index,i)
+                  self.__add_action_log("Cancelled orders #" + cancelled_index,i)
+                  #print('cancelled orders')
 
     def __execute_cancel(self, ind, i, unexe_key):
         self.__remove_unexe_key(unexe_key)
         self.__add_action_log("Cancelled order #" + str(unexe_key), i)
+        print('execited cancel')
 
-    def __execute_cancel_all_orders(self):
+    def __execute_cancel_all_orders(self,i):
         self.__initialize_unexe_data()
         self.__initialize_cancel_all_orders()
         self.__add_action_log("Cancelled all orders",i)
+        #print('execited cancel all')
 
     def __check_execution(self, prediction, ind, i):
         for j in list(self.unexe_side.keys())[:]:
+            #print(self.unexe_side)
+            #print(self.unexe_i)
             if self.unexe_i[j] < i:
                 if self.unexe_side[j] == 'buy' and MarketData2.ohlc_bot.low[ind] <= self.unexe_price[j]:
                     self.__execute(j, prediction, ind, i)
+                  #print('executed')
                 elif self.unexe_side[j] == 'sell' and MarketData2.ohlc_bot.high[ind] >= self.unexe_price[j]:
                     self.__execute(j, prediction, ind, i)
+                    #print('executed')
 
     def __execute(self, unexe_key, prediction, ind, i):
         if self.holding_side =='':
@@ -261,3 +272,86 @@ class Account:
         if pl > 0:
             self.num_win += 1
         self.realized_pl += pl
+
+
+
+
+from datetime import datetime
+
+
+class Sim:
+    @classmethod
+    def check_matched_index(cls, test_x):
+        key = list(cls.ohlc.ma_kairi.keys())[0]
+        test = list(test_x['ma_kairi'+str(key)])
+        kairi = cls.ohlc.ma_kairi[key]
+        for i in range(len(kairi)):
+            flg = True
+            for j in range(30):
+                if test[j] != kairi[i+j]:
+                    flg = False
+                    break
+            if flg:
+                return i
+        return -1
+
+    @classmethod
+    def start_sim(cls, test_x, prediction, pl_kijun, kairi_suspension_kijun, conservertive_trade, ohlc):
+        cls.ac = Account()
+        cls.ohlc = ohlc
+        start_ind = cls.check_matched_index(test_x)
+        for i in range(len(prediction) - 1):
+            ind = i + start_ind
+            if cls.ac.holding_side == '' and len(cls.ac.unexe_side) == 0 and abs(1.00 - ohlc.ma_kairi[list(ohlc.ma_kairi.keys())[-1]][ind]) < kairi_suspension_kijun:
+                if prediction[i] == 1:
+                    cls.ac.entry_order('buy', cls.ohlc.close[ind], cls.ac.calc_opt_size(ind),'new entry', ind, i)
+                elif prediction[i] == 2:
+                    cls.ac.entry_order('sell',cls.ohlc.close[ind], cls.ac.calc_opt_size(ind), 'new entry',ind, i)
+            if conservertive_trade:
+                # ポジションが判定と逆の時にexit,　もしplがあればキャンセル。
+                if (cls.ac.holding_side == 'buy' and (prediction[i] == 2 or prediction[i] == 0 or prediction[i] == 3)) or \
+                        (cls.ac.holding_side=='sell' and (prediction[i] == 1 or prediction[i] == 0 or prediction[i] == 3)):
+                    cls.ac.cancel_all_orders(ind,i)
+                    if cls.ac.holding_side !='' :
+                        cls.ac.exit_all_positions(ind,i)
+                #ノーポジでオーダーが判定を逆の時にキャンセル。
+                if cls.ac.holding_side =='':
+                    for j in list(cls.ac.unexe_side.keys())[:]:
+                        if (cls.ac.unexe_side[j] == 'buy' and (prediction[i] == 2 or prediction[i] == 0 or prediction[i] == 3)) or  (cls.ac.unexe_side[j]=='sell' and (prediction[i] == 1 or prediction[i] == 0 or prediction[i] == 3)):
+                            cls.ac.cancell_order(j,ind,i)
+            elif conservertive_trade==False: #non conservertive trade
+                # ポジションが判定と逆の時にexit,　もしplがあればキャンセル。
+                if (cls.ac.holding_side == 'buy' and prediction[i] == 2) or \
+                        (cls.ac.holding_side == 'sell' and prediction[i] == 1):
+                    cls.ac.cancel_all_orders(ind,i)
+                    if cls.ac.holding_side !='' :
+                        cls.ac.exit_all_positions(ind,i)
+                #ノーポジでオーダーが判定を逆の時にキャンセル。
+                if cls.ac.holding_side =='':
+                    for j in list(cls.ac.unexe_side.keys())[:]:
+                        if (cls.ac.unexe_side[j]  == 'buy' and cls.ac.holding_side=='' and prediction[i] == 2) or (
+                                cls.ac.unexe_side[j] == 'sell' and cls.ac.holding_side =='' and prediction[i] == 1):
+                            cls.ac.cancel_order(j,ind,i)
+            if abs(1.00 - ohlc.ma_kairi[list(ohlc.ma_kairi.keys())[-1]][ind]) >= kairi_suspension_kijun: #kairiが一定以上の時
+                if len(cls.ac.unexe_side) > 0:
+                    cls.ac.cancel_all_orders(ind,i)
+            if cls.ac.holding_side != '' and len(cls.ac.unexe_side) == 0 and cls.ac.cancel_all_orders_flg == False:
+                cls.ac.pl_order(pl_kijun,ind,i)
+            cls.ac.move_to_next(prediction[i],ind,i)
+        cls.ac.last_day_operation(len(prediction)+start_ind-1,len(prediction) - 1)
+        return (cls.ac.total_pl, cls.ac.num_trade, cls.ac.win_rate, cls.ac.total_pl_log)
+
+
+
+
+
+'''
+New Entry:
+self.order_size = outstanding size
+self.posi_size = executed size
+
+PL:
+self.order_size = outstanding size
+self.posi_size = original posi size - executed size
+
+'''

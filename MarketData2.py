@@ -154,8 +154,8 @@ class MarketData2:
 
     @classmethod
     def calc_ma2(cls, ohlc):
-        for i in range(cls.max_term):
-            term = i + 5
+        for i in range(cls.num_term):
+            term = (i+1) * cls.window_term
             ohlc.ma[term] = list(pd.Series(ohlc.close).rolling(window=term).mean())
         return ohlc
 

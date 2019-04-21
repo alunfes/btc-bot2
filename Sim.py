@@ -35,9 +35,9 @@ class Sim:
                 # ポジションが判定と逆の時にexit,　もしplがあればキャンセル。
                 if (cls.ac.holding_side == 'buy' and (prediction[i] == 2 or prediction[i] == 0 or prediction[i] == 3)) or \
                         (cls.ac.holding_side=='sell' and (prediction[i] == 1 or prediction[i] == 0 or prediction[i] == 3)):
-                    cls.ac.exit_all_positions(ind,i)
-                    if len(cls.ac.unexe_side) > 0:
-                        cls.ac.cancel_all_orders(ind,i)
+                    cls.ac.cancel_all_orders(ind, i)
+                    if cls.ac.holding_side != '':
+                        cls.ac.exit_all_positions(ind, i)
                 #ノーポジでオーダーが判定を逆の時にキャンセル。
                 for j in cls.ac.unexe_side:
                     if (cls.ac.unexe_side[j] == 'buy' and cls.ac.holding_side =='' and (prediction[i] == 2 or prediction[i] == 0 or prediction[i] == 3)) or  (cls.ac.unexe_side[j]=='sell' and cls.ac.holding_side =='' and (prediction[i] == 1 or prediction[i] == 0 or prediction[i] == 3)):
@@ -46,15 +46,15 @@ class Sim:
                 # ポジションが判定と逆の時にexit,　もしplがあればキャンセル。
                 if (cls.ac.holding_side == 'buy' and prediction[i] == 2) or \
                         (cls.ac.holding_side == 'sell' and prediction[i] == 1):
-                    cls.ac.exit_all_positions(ind,i)
-                    if len(cls.ac.unexe_side) > 0:
-                        cls.ac.cancel_all_orders(ind,i)
+                    cls.ac.cancel_all_orders(ind, i)
+                    if cls.ac.holding_side != '':
+                        cls.ac.exit_all_positions(ind, i)
                 #ノーポジでオーダーが判定を逆の時にキャンセル。
                 for j in cls.ac.unexe_side:
                     if (cls.ac.unexe_side[j]  == 'buy' and cls.ac.holding_side=='' and prediction[i] == 2) or (
                             cls.ac.unexe_side[j] == 'sell' and cls.ac.holding_side =='' and prediction[i] == 1):
                         cls.ac.cancel_all_orders(ind,i)
-            if abs(1.00 - ohlc.ma_kairi[5][ind]) >= kairi_suspension_kijun: #kairiが一定以上の時
+            if abs(1.00 - ohlc.ma_kairi[list(ohlc.ma_kairi.keys())[-1]][ind]) >= kairi_suspension_kijun: #kairiが一定以上の時
                 if len(cls.ac.unexe_side) > 0:
                     cls.ac.cancel_all_orders(ind,i)
             if cls.ac.holding_side != '' and len(cls.ac.unexe_side) == 0 and cls.ac.cancel_all_orders_flg == False:

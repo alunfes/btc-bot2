@@ -2,9 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f5cd5180-dfd9-4cd8-879d-6c34a9ce235f" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/colab.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Account.py" beforeDir="false" afterPath="$PROJECT_DIR$/Account.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bot.py" beforeDir="false" afterPath="$PROJECT_DIR$/Bot.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LogMaster.py" beforeDir="false" afterPath="$PROJECT_DIR$/LogMaster.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MarketData2.py" beforeDir="false" afterPath="$PROJECT_DIR$/MarketData2.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Sim.py" beforeDir="false" afterPath="$PROJECT_DIR$/Sim.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trade.py" beforeDir="false" afterPath="$PROJECT_DIR$/Trade.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -14,11 +19,44 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Bot.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2869">
-              <caret line="21" column="43" selection-start-line="21" selection-start-column="43" selection-end-line="21" selection-end-column="43" />
+            <state relative-caret-position="350">
+              <caret line="289" column="50" selection-start-line="289" selection-start-column="50" selection-end-line="289" selection-end-column="50" />
+              <folding>
+                <element signature="e#0#16#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/colab.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="358">
+              <caret line="354" column="51" selection-start-line="354" selection-start-column="51" selection-end-line="354" selection-end-column="51" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Trade.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1709">
+              <caret line="292" selection-start-line="292" selection-end-line="292" />
+              <folding>
+                <element signature="e#0#11#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/MarketData2.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="401">
+              <caret line="280" column="12" selection-start-line="280" selection-start-column="12" selection-end-line="280" selection-end-column="12" />
               <folding>
                 <element signature="e#0#16#0" expanded="true" />
               </folding>
@@ -29,7 +67,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/CatModel.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-44">
+            <state relative-caret-position="165">
               <caret line="16" column="61" selection-start-line="16" selection-start-column="61" selection-end-line="16" selection-end-column="61" />
               <folding>
                 <element signature="e#198#219#0" expanded="true" />
@@ -39,31 +77,19 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/MarketData2.py">
+        <entry file="file://$PROJECT_DIR$/Account.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="454">
-              <caret line="210" lean-forward="true" selection-start-line="210" selection-end-line="210" />
-              <folding>
-                <element signature="e#0#16#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="-370">
+              <caret line="29" column="30" selection-start-line="29" selection-start-column="30" selection-end-line="29" selection-end-column="30" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Account.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="294">
-              <caret line="83" column="33" selection-start-line="83" selection-start-column="33" selection-end-line="83" selection-end-column="33" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Sim.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="480">
-              <caret line="32" column="65" selection-start-line="32" selection-start-column="65" selection-end-line="32" selection-end-column="65" />
+            <state relative-caret-position="-184">
+              <caret line="14" column="41" selection-start-line="14" selection-start-column="41" selection-end-line="14" selection-end-column="41" />
               <folding>
                 <element signature="e#0#36#0" expanded="true" />
               </folding>
@@ -75,7 +101,7 @@
         <entry file="file://$PROJECT_DIR$/LogMaster.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="225">
-              <caret line="15" column="91" selection-start-line="15" selection-start-column="77" selection-end-line="15" selection-end-column="91" />
+              <caret line="15" column="99" selection-start-line="15" selection-start-column="99" selection-end-line="15" selection-end-column="99" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -86,20 +112,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/CryptowatchDataGetter.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-141">
+            <state relative-caret-position="90">
               <caret line="6" selection-start-line="6" selection-end-line="6" selection-end-column="30" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Trade.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1432">
-              <caret line="400" column="22" selection-start-line="400" selection-start-column="22" selection-end-line="400" selection-end-column="22" />
-              <folding>
-                <element signature="e#0#11#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -130,7 +144,13 @@
       <find>cancel_and_wait_completion</find>
       <find>cum_pl_log</find>
       <find>__initialize_unexe_data</find>
+      <find>unexe_ind</find>
+      <find>5</find>
+      <find>pl</find>
     </findStrings>
+    <replaceStrings>
+      <replace>unexe_key</replace>
+    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -153,13 +173,14 @@
         <option value="$PROJECT_DIR$/CatModel.py" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/OneMinutesData.py" />
-        <option value="$PROJECT_DIR$/LogMaster.py" />
         <option value="$PROJECT_DIR$/log.txt" />
-        <option value="$PROJECT_DIR$/Trade.py" />
-        <option value="$PROJECT_DIR$/Bot.py" />
-        <option value="$PROJECT_DIR$/MarketData2.py" />
         <option value="$PROJECT_DIR$/Account.py" />
+        <option value="$PROJECT_DIR$/MarketData2.py" />
+        <option value="$PROJECT_DIR$/LogMaster.py" />
+        <option value="$PROJECT_DIR$/Trade.py" />
         <option value="$PROJECT_DIR$/Sim.py" />
+        <option value="$PROJECT_DIR$/colab.py" />
+        <option value="$PROJECT_DIR$/Bot.py" />
       </list>
     </option>
   </component>
@@ -213,7 +234,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.CryptowatchDataGetter">
+  <component name="RunManager" selected="Python.Bot">
     <configuration name="Bot" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="btc-bot2" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -321,8 +342,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.CryptowatchDataGetter" />
         <item itemvalue="Python.Bot" />
+        <item itemvalue="Python.CryptowatchDataGetter" />
         <item itemvalue="Python.Trade" />
         <item itemvalue="Python.MasterThread" />
         <item itemvalue="Python.WebsocketMaster" />
@@ -343,46 +364,27 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="825" extended-state="6" />
+    <frame x="0" y="23" width="1440" height="825" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.24947146" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.3983629" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.37517053" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32968536" />
-      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
-      <window_info anchor="bottom" id="Python Console" order="10" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-    </layout>
-    <layout-to-restore>
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.24947146" />
+      <window_info content_ui="combo" id="Project" order="1" weight="0.24947146" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="0" weight="0.32968536" />
-      <window_info anchor="bottom" id="Event Log" order="1" side_tool="true" />
-      <window_info anchor="bottom" id="Version Control" order="2" />
+      <window_info anchor="bottom" id="Event Log" order="1" side_tool="true" weight="0.3287858" />
+      <window_info anchor="bottom" id="Message" order="2" />
       <window_info anchor="bottom" id="Python Console" order="3" />
-      <window_info anchor="bottom" id="Message" order="4" />
-      <window_info anchor="bottom" id="Find" order="5" />
-      <window_info anchor="bottom" id="Run" order="6" />
-      <window_info anchor="bottom" id="Debug" order="7" weight="0.3994528" />
-      <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
+      <window_info anchor="bottom" id="Find" order="4" />
+      <window_info anchor="bottom" id="Version Control" order="5" />
+      <window_info anchor="bottom" id="Cvs" order="6" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="7" weight="0.4" />
+      <window_info active="true" anchor="bottom" id="Run" order="8" visible="true" weight="0.27148703" />
+      <window_info anchor="bottom" id="Debug" order="9" weight="0.37517053" />
       <window_info anchor="bottom" id="TODO" order="10" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-    </layout-to-restore>
+    </layout>
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/btc-bot2/lib/python3.6/site-packages/websocket/_app.py">
@@ -401,16 +403,6 @@
       </provider>
     </entry>
     <entry file="file://$USER_HOME$/Downloads/USDJPY.hst" />
-    <entry file="file://$PROJECT_DIR$/MasterThread.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" selection-start-line="12" selection-end-line="12" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/btc-bot2/lib/python3.6/site-packages/pandas/core/series.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="138">
@@ -469,11 +461,11 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/.ipynb_checkpoints/one_min_data-checkpoint.csv">
-      <provider selected="true" editor-type-id="csv-text-editor">
-        <state relative-caret-position="-166237" />
-      </provider>
       <provider editor-type-id="csv-table-editor">
         <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
+      </provider>
+      <provider selected="true" editor-type-id="csv-text-editor">
+        <state relative-caret-position="-166237" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ex/ex.txt" />
@@ -564,26 +556,12 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/one_min_data.csv">
-      <provider selected="true" editor-type-id="csv-text-editor">
-        <state relative-caret-position="-33090">
-          <caret line="23982" selection-start-line="23982" selection-end-line="23982" />
-        </state>
-      </provider>
       <provider editor-type-id="csv-table-editor">
         <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" column="5" lean-forward="true" selection-start-line="3" selection-start-column="5" selection-end-line="3" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/CryptowatchDataGetter.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-141">
-          <caret line="6" selection-start-line="6" selection-end-line="6" selection-end-column="30" />
+      <provider selected="true" editor-type-id="csv-text-editor">
+        <state relative-caret-position="-33090">
+          <caret line="23982" selection-start-line="23982" selection-end-line="23982" />
         </state>
       </provider>
     </entry>
@@ -594,49 +572,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bot_log.csv">
-      <provider selected="true" editor-type-id="csv-text-editor">
-        <state relative-caret-position="270">
-          <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
-        </state>
-      </provider>
-      <provider editor-type-id="csv-table-editor">
-        <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LogMaster.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="91" selection-start-line="15" selection-start-column="77" selection-end-line="15" selection-end-column="91" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Trade.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1432">
-          <caret line="400" column="22" selection-start-line="400" selection-start-column="22" selection-end-line="400" selection-end-column="22" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Bot.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2869">
-          <caret line="21" column="43" selection-start-line="21" selection-start-column="43" selection-end-line="21" selection-end-column="43" />
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/CatModel.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-44">
+        <state relative-caret-position="165">
           <caret line="16" column="61" selection-start-line="16" selection-start-column="61" selection-end-line="16" selection-end-column="61" />
           <folding>
             <element signature="e#198#219#0" expanded="true" />
@@ -644,29 +582,100 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/CryptowatchDataGetter.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" selection-start-line="6" selection-end-line="6" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MasterThread.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" selection-start-line="12" selection-end-line="12" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LogMaster.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="15" column="99" selection-start-line="15" selection-start-column="99" selection-end-line="15" selection-end-column="99" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="5" lean-forward="true" selection-start-line="3" selection-start-column="5" selection-end-line="3" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Sim.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-184">
+          <caret line="14" column="41" selection-start-line="14" selection-start-column="41" selection-end-line="14" selection-end-column="41" />
+          <folding>
+            <element signature="e#0#36#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/MarketData2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="454">
-          <caret line="210" lean-forward="true" selection-start-line="210" selection-end-line="210" />
+        <state relative-caret-position="401">
+          <caret line="280" column="12" selection-start-line="280" selection-start-column="12" selection-end-line="280" selection-end-column="12" />
           <folding>
             <element signature="e#0#16#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Account.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="83" column="33" selection-start-line="83" selection-start-column="33" selection-end-line="83" selection-end-column="33" />
+    <entry file="file://$PROJECT_DIR$/bot_log.csv">
+      <provider editor-type-id="csv-table-editor">
+        <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
+      </provider>
+      <provider selected="true" editor-type-id="csv-text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="48" lean-forward="true" selection-start-line="11" selection-start-column="48" selection-end-line="11" selection-end-column="75" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Sim.py">
+    <entry file="file://$PROJECT_DIR$/Account.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="32" column="65" selection-start-line="32" selection-start-column="65" selection-end-line="32" selection-end-column="65" />
+        <state relative-caret-position="-370">
+          <caret line="29" column="30" selection-start-line="29" selection-start-column="30" selection-end-line="29" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Trade.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1709">
+          <caret line="292" selection-start-line="292" selection-end-line="292" />
           <folding>
-            <element signature="e#0#36#0" expanded="true" />
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/colab.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="358">
+          <caret line="354" column="51" selection-start-line="354" selection-start-column="51" selection-end-line="354" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Bot.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="350">
+          <caret line="289" column="50" selection-start-line="289" selection-start-column="50" selection-end-line="289" selection-end-column="50" />
+          <folding>
+            <element signature="e#0#16#0" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -52,6 +52,7 @@ class Bot:
         self.posi_price = 0
         self.posi_size = 0
         self.posi_status = ''
+        self.original_posi_size = 0
 
     def order_initailize(self):
         self.order_side = ''
@@ -91,6 +92,7 @@ class Bot:
             self.order_side = side
             self.order_price = price
             self.order_size = size
+            self.original_posi_size = size
             self.order_status = 'new boarding'
             self.order_dt = datetime.now()
             LogMaster.add_log({'dt':self.order_dt,'action_message':'new entry for '+side+' @'+str(price)+' x'+str(size)})
@@ -159,6 +161,8 @@ class Bot:
             LogMaster.add_log({'dt': datetime.now(), 'action_message':'cancelled order'})
             self.order_initailize()
 
+
+    '''
     def check_execution(self):
         status = Trade.get_order_status(self.order_id)
         if len(status) > 0:
@@ -169,6 +173,18 @@ class Bot:
                 self.order_initailize()
                 self.posi_initialzie()
                 print('pl order has been fully executed')
+            elif status[0]['executed_size'] > 0 and 'pl' in self.order_status: #pl is partially executed
+                print('pl partially executed')
+                self.calc_and_log_pl(status[0]['average_price'], status[0]['executed_size'])
+                self.order_size = status[0]['executed_size']
+                self.order_status = 'partially executed'
+                self.posi_status = 'partially executed'
+                self.posi_size -= status[0]['executed_size']
+                LogMaster.add_log({'dt': datetime.now(),
+                                   'action_message': 'pl order partially executed.' + 'price=' + str(
+                                       status[0]['average_price']) + ' size=' + str(status[0]['executed_size'])})
+                print('current position: side = {}, price = {}, size = {}'.format(self.posi_side, self.posi_price,
+                                                                                  self.posi_size))
             else:
                 if status[0]['outstanding_size'] == 0: #new entry has been fully executed
                     print('entry order has been fully executed')
@@ -179,7 +195,7 @@ class Bot:
                     self.posi_status = 'fully executed'
                     print('current position: side = {}, price = {}, size = {}'.format(self.posi_side, self.posi_price, self.posi_size))
                     LogMaster.add_log({'dt': datetime.now(), 'action_message':'entry order has been fully executed'})
-                elif status[0]['executed_size'] > self.posi_size: #entry order has been partially executed
+                elif status[0]['executed_size'] <= self.posi_size: #entry order has been partially executed
                     print('entry order partially executed')
                     self.order_size = status[0]['executed_size']
                     self.order_status = 'partially executed'
@@ -193,13 +209,86 @@ class Bot:
                 elif status[0]['child_order_state'] == 'ACTIVE' and 'boarded' not in self.order_status:
                     print('order has been boarded')
                     self.order_status = 'new boarded' if self.order_status == 'new boarding' else 'pl boarded'
-
-        elif (datetime.now() - self.order_dt).total_seconds() >= 60: #order has been expired
-            self.order_initailize()
-            print('order has been expired')
+        elif (datetime.now() - self.order_dt).total_seconds() >= 60: #order has been expired only when new entry
+            if self.posi_side == '':
+                self.order_initailize()
+                print('order has been expired')
+            else:
+                print('pl order can not found!')
+                orders = Trade.get_orders()
+                print('current orders={}'.format(orders))
+                LogMaster.add_log({'dt': datetime.now(),'action_message':'pl order can not found!'})
+                LogMaster.add_log({'dt': datetime.now(), 'action_message': orders})
         else:
             print('order is not yet boarded')  # maybe order is not yet boarded
             pass
+    '''
+
+
+    def check_execution(self):
+        status = Trade.get_order_status(self.order_id)
+        if len(status) == 0: #no order info
+            if self.order_status == 'pl ordering':#pl order not boarded
+                print('pl order is not boarded')
+            elif self.order_status == 'new boarding':
+                print('new entry is not boarded')#new entry not boarded
+        else: #order boarded or executed
+            if 'pl' in self.order_status: #in case pl order
+                if self.order_status == 'pl ordering':
+                    self.order_status = 'pl boarded'
+                    print('pl order boarded')
+                if status[0]['outstanding_size'] == 0: #pl order fully executed
+                    self.calc_and_log_pl(status[0]['average_price'], status[0]['executed_size'])
+                    LogMaster.add_log({'dt': datetime.now(), 'action_message':'pl order has been fully executed.'+'ave_price='+str(status[0]['average_price'])+' size='+str(status[0]['executed_size'])})
+                    self.order_initailize()
+                    if self.posi_size == status[0]['executed_size']: #posi size and executed size matched
+                        self.posi_initialzie()
+                        print('pl order has been fully executed')
+                    else: #posi size and executed size are not matched
+                        self.posi_size -= status[0]['executed_size']
+                        LogMaster.add_log({'dt': datetime.now(),'action_message':'pl executed size and current position is not matched!' + 'ave_price=' + str(status[0]['average_price']) + ' size=' + str(status[0]['executed_size'])})
+                        print('pl executed size and current position is not matched!')
+                elif self.posi_size > self.original_posi_size - status[0]['executed_size']: #pl order partially executed
+                    print('pl partially executed, '+'exe size='+str(status[0]['executed_size'])+ ', price='+str(status[0]['average_price']))
+                    self.calc_and_log_pl(status[0]['average_price'], status[0]['executed_size'])
+                    self.order_size = status[0]['outstanding_size']
+                    self.order_status = 'pl order partially executed'
+                    self.posi_status = 'pl order partially executed'
+                    self.posi_size = self.original_posi_size - status[0]['executed_size']
+                    LogMaster.add_log({'dt': datetime.now(),'action_message': 'pl order partially executed.' + 'price=' + str(status[0]['average_price']) + ' size=' + str(status[0]['executed_size'])})
+                    print('current position: side = {}, price = {}, size = {}'.format(self.posi_side, self.posi_price,self.posi_size))
+                else:#no change in pl order
+                    pass
+            else: #in case new entry
+                if self.order_status == 'new boarding':
+                    self.order_status = 'new boarded'
+                    print('new entry boarded')#new entry not boarded
+                if status[0]['outstanding_size'] == 0: #new entry fully executed
+                    LogMaster.add_log({'dt': datetime.now(), 'action_message':'pl order has been fully executed.'+'ave_price='+str(status[0]['average_price'])+' size='+str(status[0]['executed_size'])})
+                    if self.order_size == status[0]['executed_size']:
+                        self.posi_side = status[0]['side'].lower()
+                        self.posi_price = status[0]['average_price']
+                        self.posi_size = status[0]['executed_size']
+                        self.posi_status = 'fully executed'
+                        print('current position: side = {}, price = {}, size = {}'.format(self.posi_side, self.posi_price,self.posi_size))
+                        LogMaster.add_log({'dt': datetime.now(), 'action_message': 'entry order has been fully executed'})
+                        print('new entry order has been fully executed')
+                        self.order_initailize()
+                    else:
+                        print('somehow new order executed size is not matched with ordered size!, order_size='+str(self.order_size)+', executed_size='+str(status[0]['executed_size']))
+                        LogMaster.add_log({'dt': datetime.now(),'action_message': 'somehow new order executed size is not matched!, order_size='+str(self.order_size)+', executed_size='+str(status[0]['executed_size'])})
+                        self.order_initailize()
+                elif self.order_size > status[0]['outstanding_size']:#new entry order partially executed
+                    print('new entry order has been partially executed, ' + 'exe size=' + str(status[0]['executed_size']) + ', price=' + str(
+                    status[0]['average_price']))
+                    self.order_size = status[0]['outstanding_size']
+                    self.order_status = 'new entry order partially executed'
+                    self.posi_status = 'new entry order partially executed'
+                    self.posi_size = status[0]['executed_size']
+                    LogMaster.add_log({'dt': datetime.now(),'action_message': 'new entry order partially executed.' + 'price=' + str(status[0]['average_price']) + ' size=' + str(status[0]['executed_size'])})
+                    print('current position: side = {}, price = {}, size = {}'.format(self.posi_side, self.posi_price,self.posi_size))
+                else:#no change in new entry order
+                    pass
 
 
     def start_bot(self,pl_kijun):
@@ -210,7 +299,7 @@ class Bot:
         CryptowatchDataGetter.get_and_add_to_csv()
         print('bot - initializing MarketData2..')
         LogMaster.add_log({'action_message': 'bot - initializing MarketData2..'})
-        MarketData2.initialize_from_bot_csv(110, 100, 900)
+        MarketData2.initialize_from_bot_csv(110,1, 100, 900)
         train_df = MarketData2.generate_df(MarketData2.ohlc_bot)
         #print(train_df)
         #model = XgbModel()
@@ -234,6 +323,7 @@ class Bot:
         JST = pytz.timezone('Asia/Tokyo')
         start = time.time()
         while SystemFlg.get_system_flg():
+            time.sleep(Trade.adjusting_sleep)
             while datetime.now(tz=JST).hour == 3 and datetime.now(tz=JST).minute >= 50:
                 time.sleep(10) #wait for daily system maintenace
             if datetime.now(tz=JST).second == 1 or datetime.now(tz=JST).second == 2:
@@ -259,7 +349,7 @@ class Bot:
                                       'low':MarketData2.ohlc_bot.low[-1],'close':MarketData2.ohlc_bot.close[-1],'posi_side':self.posi_side,
                                        'posi_price':self.posi_price,'posi_size':self.posi_size,'order_side':self.order_side,'order_price':self.order_price,
                                        'order_size':self.order_size,'num_private_access':Trade.num_private_access, 'num_public_access':Trade.num_public_access,
-                                       'num_private_per_min':Trade.num_private_access_per_min,'num_trade':self.num_trade,'win_rate':self.win_rate,
+                                       'num_private_per_min':Trade.num_private_access_per_min,'num_trade':self.num_trade,'win_rate':self.win_rate, 'pl':self.pl+self.holding_pl,
                                        'prediction':predict[0]})
                     print('dt={}, close={}, predict={}, pl={}, num_trade={}, win_rate={}, posi_side={}, posi_price={}, order_side={}, order_price={}'.format(MarketData2.ohlc_bot.dt[-1],
                                                                         MarketData2.ohlc_bot.close[-1],
