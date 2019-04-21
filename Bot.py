@@ -18,10 +18,11 @@ import pytz
 
 
 '''
+catboost classifierの識別の確率など取れるのか確認。
+pl直後にpredictionにしたがってエントリーするsimだと、最適なfuture periodとkijungが違うかも。
 現状price tracing order時にplがずれるので、最初にaccount data get and check diff from initialize deposit as a account pl
 bot開始時に現在のholdingを確認して、それをbot posiに反映させて開始する
 厳密にupdate indexの計算の検証
-write log to csv
 ローソク足チャートにentry point, plなど表示
 daily maintenanceの時にMarketData, Tradeなどinitialize。（理想的には、colabで最新データ使ってtrainingして、学習済みmodelをdownload
 '''
@@ -45,6 +46,21 @@ class Bot:
         self.win_rate = 0
         self.margin_rate = 120.0
         self.leverage = 15.0
+        self.sync_position_order()
+
+    def sync_position_order(self):
+        position = Trade.get_positions()
+        orders = Trade.get_orders()
+        if len(position) > 0:
+            self.posi_side = position['side'].lower()
+            self.posi_price = float(position['price'])
+            self.posi_size = position['size']
+            print('synchronized position data, side='+str(self.posi_side)+', size='+str(self.posi_size)+', price='+str(self.posi_price))
+        if len(orders) > 0:#need to update order status
+            pass
+
+
+
 
     def posi_initialzie(self):
         self.posi_side = ''

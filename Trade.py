@@ -42,7 +42,7 @@ class Trade:
         while SystemFlg.get_system_flg():
             elapsed_time = time.time() - start
             cls.num_private_access_per_min = round(cls.num_private_access / float(elapsed_time/60),2)
-            if cls.num_private_access_per_min > 95:
+            if cls.num_private_access_per_min > 95 and elapsed_time > 60:
                 print('API private access reached limitation')
                 cls.cancel_all_orders()
                 #maybe need to add all posi close code
@@ -307,33 +307,49 @@ class Trade:
             order_id = cls.order_wait_till_boarding(side, price, remaining_size, 100)['child_order_acceptance_id']
             while remaining_size > 0:
                 status = cls.get_order_status(order_id)
-                if abs(price - cls.get_opt_price()) <= 300 and remaining_size > 0: #current order price is far from opt price
+                if abs(
+                        price - cls.get_opt_price()) <= 300 and remaining_size > 0:  # current order price is far from opt price
                     res = cls.cancel_and_wait_completion(order_id)
-                    if len(res) > 0:
-                        remaining_size -= res['executed_size']
+                    if len(res) > 0:  # cancell failed order partially execugted
+                        remaining_size = res['outstanding_size']
                         sum_price_x_size += float(res['average_price']) * float(res['executed_size'] - pre_exe_size)
                         sum_size += float(res['executed_size'] - pre_exe_size)
-                        print('price tracing order - executed ' + str(res['executed_size']-pre_exe_size) + ' @' + str(res['average_price']))
-                        if remaining_size == 0:
+                        print('price tracing order - executed ' + str(res['executed_size'] - pre_exe_size) + ' @' + str(
+                            res['average_price']))
+                        if remaining_size <= 0:  # target size has been executed
                             break
-                    price = cls.get_opt_price()
-                    order_id = cls.order_wait_till_boarding(side, price, remaining_size, 100)['child_order_acceptance_id']
-                    print('price tracing order - replaced order for '+side + ', @'+str(price)+' x '+str(remaining_size))
-                    pre_exe_size = 0
-                if status[0]['outstanding_size'] == 0: #excuted all portion
-                    sum_price_x_size += float(status[0]['average_price']) * float(status[0]['executed_size'] - pre_exe_size)
-                    sum_size += float(status[0]['executed_size'] - pre_exe_size)
-                    remaining_size = 0
-                    pre_exe_size = 0
-                    break
-                else:
-                    if status[0]['outstanding_size'] < remaining_size:
-                        sum_price_x_size += float(status[0]['average_price']) * float(status[0]['executed_size'] - pre_exe_size)
+                        else:  # place a new order for remaining size
+                            pre_exe_size = status[0]['executed_size']
+                            price = cls.get_opt_price()
+                            order_id = cls.order_wait_till_boarding(side, price, remaining_size, 100)[
+                                'child_order_acceptance_id']
+                            print('price tracing order - executed ' + str(
+                                res['executed_size'] - pre_exe_size) + ' @' + str(res['average_price']))
+                    else:
+                        price = cls.get_opt_price()
+                        order_id = cls.order_wait_till_boarding(side, price, remaining_size, 100)[
+                            'child_order_acceptance_id']
+                        print('price tracing order - replaced order for ' + side + ', @' + str(price) + ' x ' + str(
+                            remaining_size))
+                        pre_exe_size = 0
+                if len(status) > 0:
+                    if status[0]['outstanding_size'] == 0:  # excuted all portion
+                        sum_price_x_size += float(status[0]['average_price']) * float(
+                            status[0]['executed_size'] - pre_exe_size)
                         sum_size += float(status[0]['executed_size'] - pre_exe_size)
-                        remaining_size = status[0]['outstanding_size']
-                        print('price tracing order - executed '+str(status[0]['executed_size'] - pre_exe_size) + ' @'+str(price))
-                        pre_exe_size = status[0]['executed_size']
-                time.sleep(0.5)
+                        remaining_size = 0
+                        pre_exe_size = 0
+                        break
+                    else:
+                        if status[0]['outstanding_size'] < remaining_size:
+                            sum_price_x_size += float(status[0]['average_price']) * float(
+                                status[0]['executed_size'] - pre_exe_size)
+                            sum_size += float(status[0]['executed_size'] - pre_exe_size)
+                            remaining_size = status[0]['outstanding_size']
+                            print('price tracing order - executed ' + str(
+                                status[0]['executed_size'] - pre_exe_size) + ' @' + str(price))
+                            pre_exe_size = status[0]['executed_size']
+                time.sleep(0.2)
             print('ave price={}, exe size = {}'.format(sum_price_x_size / sum_size, sum_size))
             return sum_price_x_size / sum_size
         else:
@@ -410,7 +426,7 @@ class Trade:
     def cancel_and_wait_completion(cls, oid) -> dict:
         cls.cancel_order(oid)
         print('waiting cancell order ' + oid)
-        time.sleep(2)
+        time.sleep(1)
         while True:  # loop for check cancel completion or execution
             status = cls.get_order_status(oid)
             if len(status) > 0:
@@ -420,7 +436,7 @@ class Trade:
             else:
                 print('order has been successfully cancelled')
                 return []
-            time.sleep(0.5)
+            time.sleep(0.1)
 
     @classmethod
     def order_wait_till_boarding(cls, side, price, size, expire_m) -> dict:

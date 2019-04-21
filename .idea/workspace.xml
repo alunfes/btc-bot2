@@ -2,14 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f5cd5180-dfd9-4cd8-879d-6c34a9ce235f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/colab.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Account.py" beforeDir="false" afterPath="$PROJECT_DIR$/Account.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Bot.py" beforeDir="false" afterPath="$PROJECT_DIR$/Bot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LogMaster.py" beforeDir="false" afterPath="$PROJECT_DIR$/LogMaster.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MarketData2.py" beforeDir="false" afterPath="$PROJECT_DIR$/MarketData2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sim.py" beforeDir="false" afterPath="$PROJECT_DIR$/Sim.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Trade.py" beforeDir="false" afterPath="$PROJECT_DIR$/Trade.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/colab.py" beforeDir="false" afterPath="$PROJECT_DIR$/colab.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -22,8 +17,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Bot.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="350">
-              <caret line="289" column="50" selection-start-line="289" selection-start-column="50" selection-end-line="289" selection-end-column="50" />
+            <state relative-caret-position="282">
+              <caret line="58" column="55" lean-forward="true" selection-start-line="58" selection-start-column="55" selection-end-line="58" selection-end-column="55" />
               <folding>
                 <element signature="e#0#16#0" expanded="true" />
               </folding>
@@ -32,19 +27,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/colab.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="358">
-              <caret line="354" column="51" selection-start-line="354" selection-start-column="51" selection-end-line="354" selection-end-column="51" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Trade.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1709">
-              <caret line="292" selection-start-line="292" selection-end-line="292" />
+            <state relative-caret-position="310">
+              <caret line="50" column="54" selection-start-line="50" selection-start-column="54" selection-end-line="50" selection-end-column="54" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
@@ -147,6 +133,7 @@
       <find>unexe_ind</find>
       <find>5</find>
       <find>pl</find>
+      <find>lower</find>
     </findStrings>
     <replaceStrings>
       <replace>unexe_key</replace>
@@ -177,10 +164,10 @@
         <option value="$PROJECT_DIR$/Account.py" />
         <option value="$PROJECT_DIR$/MarketData2.py" />
         <option value="$PROJECT_DIR$/LogMaster.py" />
-        <option value="$PROJECT_DIR$/Trade.py" />
         <option value="$PROJECT_DIR$/Sim.py" />
         <option value="$PROJECT_DIR$/colab.py" />
         <option value="$PROJECT_DIR$/Bot.py" />
+        <option value="$PROJECT_DIR$/Trade.py" />
       </list>
     </option>
   </component>
@@ -378,7 +365,7 @@
       <window_info anchor="bottom" id="Version Control" order="5" />
       <window_info anchor="bottom" id="Cvs" order="6" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="7" weight="0.4" />
-      <window_info active="true" anchor="bottom" id="Run" order="8" visible="true" weight="0.27148703" />
+      <window_info active="true" anchor="bottom" id="Run" order="8" visible="true" weight="0.25648022" />
       <window_info anchor="bottom" id="Debug" order="9" weight="0.37517053" />
       <window_info anchor="bottom" id="TODO" order="10" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -653,27 +640,27 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/colab.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="31">
+          <caret line="365" column="12" selection-start-line="365" selection-start-column="12" selection-end-line="415" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Trade.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1709">
-          <caret line="292" selection-start-line="292" selection-end-line="292" />
+        <state relative-caret-position="310">
+          <caret line="50" column="54" selection-start-line="50" selection-start-column="54" selection-end-line="50" selection-end-column="54" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/colab.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="358">
-          <caret line="354" column="51" selection-start-line="354" selection-start-column="51" selection-end-line="354" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Bot.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="350">
-          <caret line="289" column="50" selection-start-line="289" selection-start-column="50" selection-end-line="289" selection-end-column="50" />
+        <state relative-caret-position="282">
+          <caret line="58" column="55" lean-forward="true" selection-start-line="58" selection-start-column="55" selection-end-line="58" selection-end-column="55" />
           <folding>
             <element signature="e#0#16#0" expanded="true" />
           </folding>
