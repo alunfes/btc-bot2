@@ -130,6 +130,7 @@ class Bot:
             self.order_side = side
             self.order_price = price
             self.order_size = self.posi_size
+            self.original_posi_size = self.posi_size
             self.order_status = 'pl ordering'
             self.order_dt = datetime.now()
             print('pl order: side = {}, price = {}, size = {}'.format(self.order_side, self.order_price, self.order_size))
@@ -293,7 +294,7 @@ class Bot:
         CryptowatchDataGetter.get_and_add_to_csv()
         print('bot - initializing MarketData2..')
         LogMaster.add_log({'action_message': 'bot - initializing MarketData2..'})
-        MarketData2.initialize_from_bot_csv(100, 1, 100, 500)
+        MarketData2.initialize_from_bot_csv(100, 1, 30, 500)
         train_df = MarketData2.generate_df(MarketData2.ohlc_bot)
         #print(train_df)
         #model = XgbModel()

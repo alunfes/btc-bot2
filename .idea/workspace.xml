@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f5cd5180-dfd9-4cd8-879d-6c34a9ce235f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Bot.py" beforeDir="false" afterPath="$PROJECT_DIR$/Bot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MarketData2.py" beforeDir="false" afterPath="$PROJECT_DIR$/MarketData2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trade.py" beforeDir="false" afterPath="$PROJECT_DIR$/Trade.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Untitled.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Untitled.ipynb" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -16,11 +12,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Bot.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="198" column="43" lean-forward="true" selection-start-line="198" selection-start-column="43" selection-end-line="198" selection-end-column="43" />
+            <state relative-caret-position="409">
+              <caret line="132" column="52" selection-start-line="132" selection-start-column="52" selection-end-line="132" selection-end-column="52" />
               <folding>
                 <element signature="e#0#16#0" expanded="true" />
               </folding>
@@ -29,22 +25,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/MarketData.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-4689">
-              <caret line="52" column="19" selection-start-line="52" selection-start-column="19" selection-end-line="52" selection-end-column="19" />
-              <folding>
-                <element signature="e#0#16#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Trade.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="490">
-              <caret line="437" column="29" selection-start-line="437" selection-start-column="29" selection-end-line="437" selection-end-column="29" />
+            <state relative-caret-position="2779">
+              <caret line="432" column="41" lean-forward="true" selection-start-line="432" selection-start-column="41" selection-end-line="432" selection-end-column="41" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
@@ -138,7 +122,6 @@
       <find>deep</find>
       <find>sendchildorder</find>
       <find>new entrying</find>
-      <find>calc_and_log_pl</find>
       <find>last</find>
       <find>tracing</find>
       <find>cancel_and_wait_completion</find>
@@ -148,6 +131,8 @@
       <find>5</find>
       <find>pl</find>
       <find>lower</find>
+      <find>waiting cancell order</find>
+      <find>calc_and_log_pl</find>
     </findStrings>
     <replaceStrings>
       <replace>unexe_key</replace>
@@ -180,8 +165,8 @@
         <option value="$PROJECT_DIR$/colab.py" />
         <option value="$PROJECT_DIR$/log.txt" />
         <option value="$PROJECT_DIR$/MarketData2.py" />
-        <option value="$PROJECT_DIR$/Bot.py" />
         <option value="$PROJECT_DIR$/Trade.py" />
+        <option value="$PROJECT_DIR$/Bot.py" />
       </list>
     </option>
   </component>
@@ -379,7 +364,7 @@
       <window_info anchor="bottom" id="Version Control" order="5" />
       <window_info anchor="bottom" id="Cvs" order="6" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="7" weight="0.4" />
-      <window_info anchor="bottom" id="Run" order="8" weight="0.25718194" />
+      <window_info active="true" anchor="bottom" id="Run" order="8" visible="true" weight="0.25718194" />
       <window_info anchor="bottom" id="Debug" order="9" weight="0.374829" />
       <window_info anchor="bottom" id="TODO" order="10" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -627,16 +612,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/MarketData2.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="19" column="33" selection-start-line="19" selection-start-column="33" selection-end-line="19" selection-end-column="33" />
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/colab.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="435">
@@ -661,22 +636,32 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Bot.py">
+    <entry file="file://$PROJECT_DIR$/Trade.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="198" column="43" lean-forward="true" selection-start-line="198" selection-start-column="43" selection-end-line="198" selection-end-column="43" />
+        <state relative-caret-position="2779">
+          <caret line="432" column="41" lean-forward="true" selection-start-line="432" selection-start-column="41" selection-end-line="432" selection-end-column="41" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MarketData2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="19" column="33" selection-start-line="19" selection-start-column="33" selection-end-line="19" selection-end-column="33" />
           <folding>
             <element signature="e#0#16#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Trade.py">
+    <entry file="file://$PROJECT_DIR$/Bot.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="490">
-          <caret line="437" column="29" selection-start-line="437" selection-start-column="29" selection-end-line="437" selection-end-column="29" />
+        <state relative-caret-position="409">
+          <caret line="132" column="52" selection-start-line="132" selection-start-column="52" selection-end-line="132" selection-end-column="52" />
           <folding>
-            <element signature="e#0#11#0" expanded="true" />
+            <element signature="e#0#16#0" expanded="true" />
           </folding>
         </state>
       </provider>
