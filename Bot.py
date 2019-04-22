@@ -63,8 +63,6 @@ class Bot:
             pass
 
 
-
-
     def posi_initialzie(self):
         self.posi_side = ''
         self.posi_id = ''

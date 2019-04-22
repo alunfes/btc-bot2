@@ -1,33 +1,367 @@
 /Users/alun/Projects/btc-bot2/btc-bot2/bin/python /Users/alun/Projects/btc-bot2/Bot.py
-synchronized position data, side=buy, size=0.06, price=594345.0
+synchronized position data, side=buy, size=0.06, price=600411.0
 bot - updating crypto data..
 bot - initializing MarketData2..
 future side unique val
-buy     0.312802
-sell    0.296278
-both    0.222713
-no      0.168207
+buy     0.308789
+sell    0.304098
+no      0.211359
+both    0.175754
 Name: future_side, dtype: float64
 bot - training xgb model..
 bot - training completed..
 bot - updating crypto data..
 bot - started bot loop.
-ok order - JRF20190421-151454-372109
-pl order: side = sell, price = 595245.0, size = 0.06
+ok order - JRF20190422-131305-272470
+pl order: side = sell, price = 600911.0, size = 0.06
 pl order is not boarded
 []
-pl order boarded: 2019-04-22 00:14:55.064870
-pl partially executed, exe size=0.0, price=0.0
-pl = -35660.7, num = 1, win_rate = 0.0
-current position: side = buy, price = 594345.0, size = 0.0
-bot elapsed_time:0.12[min]
-private access per min=14.03, num private access=16, num public access=10
-dt=2019-04-22 00:15:00, close=594046, predict=[0.], pl=-35660.7, num_trade=1, win_rate=0.0, posi_side=buy, posi_price=594345.0, order_side=sell, order_price=595245.0
+pl order boarded: 2019-04-22 22:13:06.395291
+bot elapsed_time:0.93[min]
+private access per min=52.4, num private access=93, num public access=86
+dt=2019-04-22 22:14:00, close=599730, predict=[1.], pl=-42.66, num_trade=0, win_rate=0, posi_side=buy, posi_price=600411.0, order_side=sell, order_price=600911.0
+bot elapsed_time:1.94[min]
+private access per min=64.8, num private access=181, num public access=174
+dt=2019-04-22 22:15:00, close=599602, predict=[1.], pl=-47.88, num_trade=0, win_rate=0, posi_side=buy, posi_price=600411.0, order_side=sell, order_price=600911.0
+bot elapsed_time:2.93[min]
+private access per min=71.13, num private access=269, num public access=262
+dt=2019-04-22 22:16:00, close=599650, predict=[2.], pl=-53.04, num_trade=0, win_rate=0, posi_side=buy, posi_price=600411.0, order_side=sell, order_price=600911.0
+exit order
+waiting cancell order JRF20190422-131305-272470
+order has been successfully cancelled
+started price tracing order
+ok order - JRF20190422-131605-130453
+confirmed the order has been boarded
+waiting cancell order JRF20190422-131605-130453
+cancel failed order has been partially executed. exe size=0.06
+price tracing order - executed 0.06 @599556.0
+price tracing order has been completed.
+current positions:
+[]
+current orders:
+[]
+ave price=599556.0, exe size = 0.06
+pl = -51.3, num = 1, win_rate = 0.0
+ok order - JRF20190422-131608-726851
+new entry: side = sell, price = 599650, size = 0.06
+new entry is not boarded
+[]
+new entry is not boarded
+[]
+new entry boarded: 2019-04-22 22:16:09.573135
+bot elapsed_time:3.93[min]
+private access per min=77.81, num private access=372, num public access=265
+dt=2019-04-22 22:17:00, close=599580, predict=[1.], pl=-104.34, num_trade=1, win_rate=0.0, posi_side=, posi_price=0, order_side=sell, order_price=599650
+cancel order
+waiting cancell order JRF20190422-131608-726851
+order has been successfully cancelled
+ok order - JRF20190422-131705-130870
+new entry: side = buy, price = 599580, size = 0.06
+new entry is not boarded
+[]
+new entry boarded: 2019-04-22 22:17:05.825927
+current position: side = buy, price = 599580.0, size = 0.06
+new entry order has been fully executed
+ok order - JRF20190422-131706-673254
+pl order: side = sell, price = 600080.0, size = 0.06
+pl order is not boarded
+[]
+pl order boarded: 2019-04-22 22:17:07.296309
+bot elapsed_time:4.93[min]
+private access per min=80.4, num private access=465, num public access=349
+dt=2019-04-22 22:18:00, close=599910, predict=[1.], pl=-26.099999999999998, num_trade=1, win_rate=0.0, posi_side=buy, posi_price=599580.0, order_side=sell, order_price=600080.0
+pl = -21.299999999999997, num = 2, win_rate = 0.5
+pl order has been fully executed
+ok order - JRF20190422-131804-274270
+new entry: side = buy, price = 599910, size = 0.06
+new entry is not boarded
+[]
+new entry boarded: 2019-04-22 22:18:04.938320
+bot elapsed_time:5.93[min]
+private access per min=83.4, num private access=566, num public access=351
+dt=2019-04-22 22:19:00, close=600232, predict=[1.], pl=8.580000000000002, num_trade=2, win_rate=0.5, posi_side=, posi_price=0, order_side=buy, order_price=599910
+new entry order has been expired: 2019-04-22 22:19:11.116622
+status
+[]
+get orders
+[]
+ok order - JRF20190422-131911-131908
+new entry: side = buy, price = 600232, size = 0.06
+new entry is not boarded
+[]
+new entry boarded: 2019-04-22 22:19:12.555573
+current position: side = buy, price = 600232.0, size = 0.06
+new entry order has been fully executed
+ok order - JRF20190422-131913-131913
+pl order: side = sell, price = 600732.0, size = 0.06
+pl order is not boarded
+[]
+pl order is not boarded
+[{'id': 'JRF20190422-131913-131913', 'info': {'id': 0, 'child_order_id': 'JFX20190422-131913-523597F', 'product_code': 'FX_BTC_JPY', 'side': 'SELL', 'child_order_type': 'LIMIT', 'price': 600732.0, 'average_price': 0.0, 'size': 0.06, 'child_order_state': 'ACTIVE', 'expire_date': '2019-04-23T13:19:13', 'child_order_date': '2019-04-22T13:19:13', 'child_order_acceptance_id': 'JRF20190422-131913-131913', 'outstanding_size': 0.06, 'cancel_size': 0.0, 'executed_size': 0.0, 'total_commission': 0.0}, 'timestamp': 1555939153000, 'datetime': '2019-04-22T13:19:13.000Z', 'lastTradeTimestamp': None, 'status': 'open', 'symbol': 'BTC/JPY', 'type': 'limit', 'side': 'sell', 'price': 600732.0, 'cost': 0.0, 'amount': 0.06, 'filled': 0.0, 'remaining': 0.06, 'fee': {'cost': 0.0, 'currency': None, 'rate': None}}]
+pl order boarded: 2019-04-22 22:19:14.549014
+bot elapsed_time:6.93[min]
+private access per min=84.72, num private access=659, num public access=424
+dt=2019-04-22 22:20:00, close=600400, predict=[1.], pl=-13.379999999999997, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:7.94[min]
+private access per min=85.75, num private access=753, num public access=518
+dt=2019-04-22 22:21:00, close=600057, predict=[1.], pl=-26.999999999999996, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:8.93[min]
+private access per min=86.26, num private access=844, num public access=609
+dt=2019-04-22 22:22:00, close=599921, predict=[1.], pl=-37.019999999999996, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:9.93[min]
+private access per min=86.91, num private access=937, num public access=702
+dt=2019-04-22 22:23:00, close=599833, predict=[1.], pl=-42.06, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:10.93[min]
+private access per min=87.57, num private access=1032, num public access=797
+dt=2019-04-22 22:24:00, close=599971, predict=[1.], pl=-35.339999999999996, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:11.93[min]
+private access per min=87.9, num private access=1124, num public access=889
+dt=2019-04-22 22:25:00, close=599963, predict=[1.], pl=-37.199999999999996, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:12.94[min]
+private access per min=88.17, num private access=1216, num public access=981
+dt=2019-04-22 22:26:00, close=599796, predict=[1.], pl=-47.64, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:13.93[min]
+private access per min=88.35, num private access=1306, num public access=1071
+dt=2019-04-22 22:27:00, close=600005, predict=[1.], pl=-35.099999999999994, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:14.93[min]
+private access per min=88.59, num private access=1398, num public access=1163
+dt=2019-04-22 22:28:00, close=600040, predict=[1.], pl=-32.4, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:15.94[min]
+private access per min=88.75, num private access=1490, num public access=1255
+dt=2019-04-22 22:29:00, close=600030, predict=[1.], pl=-34.86, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:16.93[min]
+private access per min=88.89, num private access=1580, num public access=1345
+dt=2019-04-22 22:30:00, close=599990, predict=[1.], pl=-34.08, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:17.94[min]
+private access per min=88.56, num private access=1664, num public access=1429
+dt=2019-04-22 22:31:00, close=599991, predict=[1.], pl=-35.4, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:18.94[min]
+private access per min=88.37, num private access=1748, num public access=1513
+dt=2019-04-22 22:32:00, close=600173, predict=[0.], pl=-26.519999999999996, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:19.93[min]
+private access per min=88.34, num private access=1836, num public access=1601
+dt=2019-04-22 22:33:00, close=600034, predict=[0.], pl=-33.18, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:20.93[min]
+private access per min=88.24, num private access=1922, num public access=1687
+dt=2019-04-22 22:34:00, close=600059, predict=[0.], pl=-31.559999999999995, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:21.94[min]
+private access per min=88.22, num private access=2010, num public access=1775
+dt=2019-04-22 22:35:00, close=599976, predict=[0.], pl=-36.54, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:22.94[min]
+private access per min=88.11, num private access=2096, num public access=1861
+dt=2019-04-22 22:36:00, close=599880, predict=[1.], pl=-38.22, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:23.93[min]
+private access per min=88.1, num private access=2183, num public access=1948
+dt=2019-04-22 22:37:00, close=599900, predict=[1.], pl=-41.28, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:24.94[min]
+private access per min=88.08, num private access=2271, num public access=2036
+dt=2019-04-22 22:38:00, close=599787, predict=[1.], pl=-50.22, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:25.93[min]
+private access per min=88.04, num private access=2358, num public access=2123
+dt=2019-04-22 22:39:00, close=599922, predict=[1.], pl=-44.64, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:26.93[min]
+private access per min=88.15, num private access=2449, num public access=2214
+dt=2019-04-22 22:40:00, close=600000, predict=[1.], pl=-36.9, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:27.94[min]
+private access per min=88.13, num private access=2537, num public access=2302
+dt=2019-04-22 22:41:00, close=599866, predict=[1.], pl=-45.06, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:28.94[min]
+private access per min=88.15, num private access=2626, num public access=2391
+dt=2019-04-22 22:42:00, close=599900, predict=[1.], pl=-40.739999999999995, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:29.94[min]
+private access per min=88.08, num private access=2711, num public access=2476
+dt=2019-04-22 22:43:00, close=599872, predict=[1.], pl=-41.64, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:30.93[min]
+private access per min=88.05, num private access=2798, num public access=2563
+dt=2019-04-22 22:44:00, close=599667, predict=[1.], pl=-53.099999999999994, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:31.94[min]
+private access per min=87.96, num private access=2884, num public access=2649
+dt=2019-04-22 22:45:00, close=599936, predict=[1.], pl=-37.92, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:32.94[min]
+private access per min=87.94, num private access=2971, num public access=2736
+dt=2019-04-22 22:46:00, close=599783, predict=[1.], pl=-45.66, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:33.93[min]
+private access per min=87.88, num private access=3057, num public access=2822
+dt=2019-04-22 22:47:00, close=599782, predict=[1.], pl=-49.26, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:34.94[min]
+private access per min=87.62, num private access=3135, num public access=2900
+dt=2019-04-22 22:48:00, close=599754, predict=[1.], pl=-49.92, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:35.94[min]
+private access per min=87.48, num private access=3218, num public access=2983
+dt=2019-04-22 22:49:00, close=599859, predict=[0.], pl=-42.3, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:36.93[min]
+private access per min=87.42, num private access=3303, num public access=3068
+dt=2019-04-22 22:50:00, close=599904, predict=[0.], pl=-41.459999999999994, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:37.93[min]
+private access per min=87.33, num private access=3386, num public access=3151
+dt=2019-04-22 22:51:00, close=599953, predict=[0.], pl=-39.239999999999995, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:38.94[min]
+private access per min=87.31, num private access=3474, num public access=3239
+dt=2019-04-22 22:52:00, close=599926, predict=[0.], pl=-39.839999999999996, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:39.94[min]
+private access per min=87.2, num private access=3557, num public access=3322
+dt=2019-04-22 22:53:00, close=599788, predict=[0.], pl=-53.22, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:40.93[min]
+private access per min=87.07, num private access=3638, num public access=3403
+dt=2019-04-22 22:54:00, close=599666, predict=[1.], pl=-55.26, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:41.93[min]
+private access per min=87.07, num private access=3725, num public access=3490
+dt=2019-04-22 22:55:00, close=599586, predict=[1.], pl=-62.4, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:42.93[min]
+private access per min=87.07, num private access=3812, num public access=3577
+dt=2019-04-22 22:56:00, close=599460, predict=[1.], pl=-71.22, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:43.94[min]
+private access per min=87.1, num private access=3901, num public access=3666
+dt=2019-04-22 22:57:00, close=599211, predict=[1.], pl=-91.92, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:44.94[min]
+private access per min=87.05, num private access=3986, num public access=3751
+dt=2019-04-22 22:58:00, close=599314, predict=[1.], pl=-70.86, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:45.93[min]
+private access per min=86.96, num private access=4068, num public access=3833
+dt=2019-04-22 22:59:00, close=599319, predict=[1.], pl=-76.56, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:46.93[min]
+private access per min=86.84, num private access=4149, num public access=3914
+dt=2019-04-22 23:00:00, close=599320, predict=[1.], pl=-77.22, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:47.94[min]
+private access per min=86.66, num private access=4228, num public access=3993
+dt=2019-04-22 23:01:00, close=599036, predict=[1.], pl=-91.61999999999999, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:48.93[min]
+private access per min=86.55, num private access=4309, num public access=4074
+dt=2019-04-22 23:02:00, close=598889, predict=[1.], pl=-102.84, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:49.93[min]
+private access per min=86.38, num private access=4386, num public access=4151
+dt=2019-04-22 23:03:00, close=599309, predict=[1.], pl=-76.68, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:50.93[min]
+private access per min=86.19, num private access=4463, num public access=4228
+dt=2019-04-22 23:04:00, close=599224, predict=[1.], pl=-79.44, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:51.94[min]
+private access per min=86.03, num private access=4541, num public access=4306
+dt=2019-04-22 23:05:00, close=599085, predict=[1.], pl=-97.02, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:52.93[min]
+private access per min=85.94, num private access=4622, num public access=4387
+dt=2019-04-22 23:06:00, close=598988, predict=[1.], pl=-99.36, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:53.94[min]
+private access per min=85.94, num private access=4708, num public access=4473
+dt=2019-04-22 23:07:00, close=598968, predict=[1.], pl=-93.6, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:54.94[min]
+private access per min=85.88, num private access=4791, num public access=4556
+dt=2019-04-22 23:08:00, close=599240, predict=[1.], pl=-74.22, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:55.93[min]
+private access per min=85.84, num private access=4874, num public access=4639
+dt=2019-04-22 23:09:00, close=599300, predict=[1.], pl=-77.94, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:56.94[min]
+private access per min=85.8, num private access=4958, num public access=4723
+dt=2019-04-22 23:10:00, close=599557, predict=[1.], pl=-63.12, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:57.94[min]
+private access per min=85.75, num private access=5041, num public access=4806
+dt=2019-04-22 23:11:00, close=599494, predict=[1.], pl=-66.12, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:58.93[min]
+private access per min=85.71, num private access=5124, num public access=4889
+dt=2019-04-22 23:12:00, close=599604, predict=[1.], pl=-59.339999999999996, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:59.93[min]
+private access per min=85.83, num private access=5217, num public access=4982
+dt=2019-04-22 23:13:00, close=599769, predict=[0.], pl=-47.64, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:60.94[min]
+private access per min=85.94, num private access=5310, num public access=5075
+dt=2019-04-22 23:14:00, close=599613, predict=[1.], pl=-55.559999999999995, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:61.94[min]
+private access per min=85.98, num private access=5399, num public access=5164
+dt=2019-04-22 23:15:00, close=599694, predict=[0.], pl=-51.53999999999999, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:62.94[min]
+private access per min=86.09, num private access=5491, num public access=5256
+dt=2019-04-22 23:16:00, close=600156, predict=[1.], pl=-28.799999999999997, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:63.94[min]
+private access per min=86.13, num private access=5580, num public access=5345
+dt=2019-04-22 23:17:00, close=600262, predict=[1.], pl=-20.999999999999996, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:64.93[min]
+private access per min=86.22, num private access=5672, num public access=5437
+dt=2019-04-22 23:18:00, close=600104, predict=[1.], pl=-33.239999999999995, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:65.93[min]
+private access per min=86.32, num private access=5764, num public access=5529
+dt=2019-04-22 23:19:00, close=600030, predict=[1.], pl=-30.479999999999997, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:66.93[min]
+private access per min=86.35, num private access=5854, num public access=5619
+dt=2019-04-22 23:20:00, close=600057, predict=[1.], pl=-31.559999999999995, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:67.93[min]
+private access per min=86.39, num private access=5942, num public access=5707
+dt=2019-04-22 23:21:00, close=599926, predict=[0.], pl=-43.98, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:68.93[min]
+private access per min=86.46, num private access=6033, num public access=5798
+dt=2019-04-22 23:22:00, close=599824, predict=[0.], pl=-47.099999999999994, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:69.93[min]
+private access per min=86.53, num private access=6125, num public access=5890
+dt=2019-04-22 23:23:00, close=599904, predict=[1.], pl=-43.08, num_trade=2, win_rate=0.5, posi_side=buy, posi_price=600232.0, order_side=sell, order_price=600732.0
+bot elapsed_time:70.93[min]
+private access per min=86.59, num private access=6216, num public access=5981
+cryptowatch download error!
+before=0,after=1555942980
 Traceback (most recent call last):
-  File "/Users/alun/Projects/btc-bot2/Bot.py", line 360, in <module>
-    bot.start_bot(900)
-  File "/Users/alun/Projects/btc-bot2/Bot.py", line 350, in start_bot
-    time.sleep(0.5)
+  File "/Users/alun/Projects/btc-bot2/btc-bot2/lib/python3.6/site-packages/urllib3/connection.py", line 159, in _new_conn
+    (self._dns_host, self.port), self.timeout, **extra_kw)
+  File "/Users/alun/Projects/btc-bot2/btc-bot2/lib/python3.6/site-packages/urllib3/util/connection.py", line 57, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+  File "/Users/alun/.pyenv/versions/3.6.3/lib/python3.6/socket.py", line 745, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno 8] nodename nor servname provided, or not known
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/alun/Projects/btc-bot2/btc-bot2/lib/python3.6/site-packages/urllib3/connectionpool.py", line 600, in urlopen
+    chunked=chunked)
+  File "/Users/alun/Projects/btc-bot2/btc-bot2/lib/python3.6/site-packages/urllib3/connectionpool.py", line 343, in _make_request
+    self._validate_conn(conn)
+  File "/Users/alun/Projects/btc-bot2/btc-bot2/lib/python3.6/site-packages/urllib3/connectionpool.py", line 839, in _validate_conn
+    conn.connect()
+  File "/Users/alun/Projects/btc-bot2/btc-bot2/lib/python3.6/site-packages/urllib3/connection.py", line 301, in connect
+    conn = self._new_conn()
+  File "/Users/alun/Projects/btc-bot2/btc-bot2/lib/python3.6/site-packages/urllib3/connection.py", line 168, in _new_conn
+    self, "Failed to establish a new connection: %s" % e)
+urllib3.exceptions.NewConnectionError: <urllib3.connection.VerifiedHTTPSConnection object at 0x120e008d0>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/alun/Projects/btc-bot2/btc-bot2/lib/python3.6/site-packages/requests/adapters.py", line 449, in send
+    timeout=timeout
+  File "/Users/alun/Projects/btc-bot2/btc-bot2/lib/python3.6/site-packages/urllib3/connectionpool.py", line 638, in urlopen
+    _stacktrace=sys.exc_info()[2])
+  File "/Users/alun/Projects/btc-bot2/btc-bot2/lib/python3.6/site-packages/urllib3/util/retry.py", line 398, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='api.cryptowat.ch', port=443): Max retries exceeded with url: /markets/bitflyer/btcfxjpy/ohlc?periods=60&before=0&after=1555942980 (Caused by NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x120e008d0>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known',))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/alun/Projects/btc-bot2/CryptowatchDataGetter.py", line 37, in get_data_from_crptowatch
+    res = requests.get(url, params=query)
+  File "/Users/alun/Projects/btc-bot2/btc-bot2/lib/python3.6/site-packages/requests/api.py", line 75, in get
+    return request('get', url, params=params, **kwargs)
+  File "/Users/alun/Projects/btc-bot2/btc-bot2/lib/python3.6/site-packages/requests/api.py", line 60, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/Users/alun/Projects/btc-bot2/btc-bot2/lib/python3.6/site-packages/requests/sessions.py", line 533, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/Users/alun/Projects/btc-bot2/btc-bot2/lib/python3.6/site-packages/requests/sessions.py", line 646, in send
+    r = adapter.send(request, **kwargs)
+  File "/Users/alun/Projects/btc-bot2/btc-bot2/lib/python3.6/site-packages/requests/adapters.py", line 516, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='api.cryptowat.ch', port=443): Max retries exceeded with url: /markets/bitflyer/btcfxjpy/ohlc?periods=60&before=0&after=1555942980 (Caused by NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x120e008d0>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known',))
+Traceback (most recent call last):
+  File "/Users/alun/Projects/btc-bot2/Bot.py", line 389, in <module>
+
+  File "/Users/alun/Projects/btc-bot2/Bot.py", line 332, in start_bot
+    if res == 0:
+  File "/Users/alun/Projects/btc-bot2/CryptowatchDataGetter.py", line 53, in get_data_after_specific_ut
+    if str(result).index(str(int(target_ut // 1))) > 0:
+ValueError: substring not found
+Exception ignored in: <module 'threading' from '/Users/alun/.pyenv/versions/3.6.3/lib/python3.6/threading.py'>
+Traceback (most recent call last):
+  File "/Users/alun/.pyenv/versions/3.6.3/lib/python3.6/threading.py", line 1294, in _shutdown
+    t.join()
+  File "/Users/alun/.pyenv/versions/3.6.3/lib/python3.6/threading.py", line 1056, in join
+    self._wait_for_tstate_lock()
+  File "/Users/alun/.pyenv/versions/3.6.3/lib/python3.6/threading.py", line 1072, in _wait_for_tstate_lock
+    elif lock.acquire(block, timeout):
 KeyboardInterrupt
 
 Process finished with exit code 137 (interrupted by signal 9: SIGKILL)
