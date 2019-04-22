@@ -106,6 +106,7 @@ class Trade:
         {'id': 0, 'child_order_id': 'JFX20190218-133228-026751F', 'product_code': 'FX_BTC_JPY', 'side': 'BUY', 'child_order_type': 'LIMIT', 'price': 300000.0, 'average_price': 0.0, 'size': 0.01, 'child_order_state': 'ACTIVE', 'expire_date': '2019-03-20T13:32:16', 'child_order_date': '2019-02-18T13:32:16', 'child_order_acceptance_id': 'JRF20190218-133216-339861', 'outstanding_size': 0.01, 'cancel_size': 0.0, 'executed_size': 0.0, 'total_commission': 0.0}
     {'id': 729015336, 'child_order_id': 'JFX20181130-101920-984655F', 'product_code': 'FX_BTC_JPY', 'side': 'SELL', 'child_order_type': 'MARKET', 'price': 0.0, 'average_price': 459261.0, 'size': 0.2, 'child_order_state': 'COMPLETED', 'expire_date': '2019-11-30T10:19:20.167', 'child_order_date': '2018-11-30T10:19:20.167', 'child_order_acceptance_id': 'JUL20181130-101920-024232', 'outstanding_size': 0.0, 'cancel_size': 0.0, 'executed_size': 0.2, 'total_commission': 0.0}
     {'id': 727994097, 'child_order_id': 'JFX20181130-035459-398879F', 'product_code': 'FX_BTC_JPY', 'side': 'BUY', 'child_order_type': 'LIMIT', 'price': 484534.0, 'average_price': 484351.0, 'size': 0.2, 'child_order_state': 'COMPLETED', 'expire_date': '2018-12-30T03:54:59', 'child_order_date': '2018-11-30T03:54:59', 'child_order_acceptance_id': 'JRF20181130-035459-218762', 'outstanding_size': 0.0, 'cancel_size': 0.0, 'executed_size': 0.2, 'total_commission': 0.0}
+    [{'id': 1151189020, 'child_order_id': 'JFX20190422-121505-060051F', 'product_code': 'FX_BTC_JPY', 'side': 'BUY', 'child_order_type': 'LIMIT', 'price': 601306.0, 'average_price': 601306.0, 'size': 0.06, 'child_order_state': 'CANCELED', 'expire_date': '2019-04-22T13:55:05', 'child_order_date': '2019-04-22T12:15:05', 'child_order_acceptance_id': 'JRF20190422-121505-247049', 'outstanding_size': 0.0, 'cancel_size': 0.02, 'executed_size': 0.04, 'total_commission': 0.0}]
     *expired / cancelled order are not shown in the order status, return []
     '''
 
@@ -429,9 +430,12 @@ class Trade:
         while True:  # loop for check cancel completion or execution
             status = cls.get_order_status(oid)
             if len(status) > 0:
-                if status[0]['child_order_state'] == 'COMPLETED':
+                if (status[0]['child_order_state'] == 'COMPLETED' or status[0]['child_order_state'] == 'CANCELED') and status[0]['executed_size'] > 0:
                     print('cancel failed order has been partially executed. exe size='+str(status[0]['executed_size']))
                     return status[0]
+                elif (status[0]['child_order_state'] == 'COMPLETED' or status[0]['child_order_state'] == 'CANCELED') and status[0]['executed_size'] == 0:
+                    print('order has been successfully cancelled')
+                    return []
             else:
                 print('order has been successfully cancelled')
                 return []
@@ -452,8 +456,9 @@ class Trade:
 
 if __name__ == '__main__':
     Trade.initialize()
-    col = Trade.get_collateral()
-    print(col)
+    print(Trade.get_order_status('JRF20190422-121505-247049'))
+    #col = Trade.get_collateral()
+    #print(col)
 
     '''
     Trade.initialize()

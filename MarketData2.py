@@ -156,72 +156,80 @@ class MarketData2:
     def calc_ma2(cls, ohlc):
         for i in range(cls.num_term):
             term = (i+1) * cls.window_term
-            ohlc.ma[term] = list(pd.Series(ohlc.close).rolling(window=term).mean())
+            if term > 1:
+                ohlc.ma[term] = list(pd.Series(ohlc.close).rolling(window=term).mean())
         return ohlc
 
     @classmethod
     def update_ma2(cls):
         for i in range(cls.num_term):
             term =  (i+1) * cls.window_term
-            close_con = cls.ohlc_bot.close[len(cls.ohlc_bot.close) - term - (len(cls.ohlc_bot.ma[term]) - len(cls.ohlc_bot.close) + 1):]
-            updates = list(pd.Series(close_con).rolling(window=term).mean().dropna())
-            cls.ohlc_bot.ma[term].extend(updates)
+            if term > 1:
+                close_con = cls.ohlc_bot.close[len(cls.ohlc_bot.close) - term - (len(cls.ohlc_bot.ma[term]) - len(cls.ohlc_bot.close) + 1):]
+                updates = list(pd.Series(close_con).rolling(window=term).mean().dropna())
+                cls.ohlc_bot.ma[term].extend(updates)
 
     @classmethod
     def calc_ma_kairi2(cls, ohlc):
         for i in range(cls.num_term):
             term = (i+1) * cls.window_term
-            ohlc.ma_kairi[term] = list([x / y for (x,y) in zip(ohlc.close, ohlc.ma[term])])
+            if term > 1:
+                ohlc.ma_kairi[term] = list([x / y for (x,y) in zip(ohlc.close, ohlc.ma[term])])
         return ohlc
 
     @classmethod
     def update_ma_kairi2(cls):
         for i in range(cls.num_term):
             term = (i+1) * cls.window_term
-            close_con = cls.ohlc_bot.close[len(cls.ohlc_bot.ma_kairi[term]) - len(cls.ohlc_bot.close):]
-            ma_con = cls.ohlc_bot.ma[term][len(cls.ohlc_bot.ma_kairi[term]) - len(cls.ohlc_bot.ma[term]):]
-            cls.ohlc_bot.ma_kairi[term].extend(list([x / y for (x, y) in zip(close_con, ma_con)]))
+            if term > 1:
+                close_con = cls.ohlc_bot.close[len(cls.ohlc_bot.ma_kairi[term]) - len(cls.ohlc_bot.close):]
+                ma_con = cls.ohlc_bot.ma[term][len(cls.ohlc_bot.ma_kairi[term]) - len(cls.ohlc_bot.ma[term]):]
+                cls.ohlc_bot.ma_kairi[term].extend(list([x / y for (x, y) in zip(close_con, ma_con)]))
 
     @classmethod
     def calc_momentum2(cls, ohlc):
         for i in range(cls.num_term):
             term = (i+1) * cls.window_term
-            ohlc.momentum[term] = list(pd.Series(ohlc.close).diff(term-1))
+            if term > 1:
+                ohlc.momentum[term] = list(pd.Series(ohlc.close).diff(term-1))
         return ohlc
 
     @classmethod
     def update_momentum2(cls):
         for i in range(cls.num_term):
             term = (i+1) * cls.window_term
-            close_con = cls.ohlc_bot.close[len(cls.ohlc_bot.close) - term - (len(cls.ohlc_bot.momentum[term]) - len(cls.ohlc_bot.close)+1)+1:]
-            cls.ohlc_bot.momentum[term].extend(list(pd.Series(close_con).diff(term - 1).dropna()))
+            if term > 1:
+                close_con = cls.ohlc_bot.close[len(cls.ohlc_bot.close) - term - (len(cls.ohlc_bot.momentum[term]) - len(cls.ohlc_bot.close)+1)+1:]
+                cls.ohlc_bot.momentum[term].extend(list(pd.Series(close_con).diff(term - 1).dropna()))
 
     @classmethod
     def calc_rsi2(cls, ohlc):
         for i in range(cls.num_term):
             term = (i+1) * cls.window_term
-            diff = pd.Series([x - y for (x,y) in zip(ohlc.close, ohlc.open)])
-            up, down = diff.copy(), diff.copy()
-            up[up < 0] = 0
-            down[down > 0] = 0
-            up_sma = up.rolling(window = term, center = False).mean()
-            down_sma = down.abs().rolling(window=term, center=False).mean()
-            ohlc.rsi[term] = list(100.0 - (100.0 / (1.0 + up_sma / down_sma)))
+            if term > 1:
+                diff = pd.Series([x - y for (x,y) in zip(ohlc.close, ohlc.open)])
+                up, down = diff.copy(), diff.copy()
+                up[up < 0] = 0
+                down[down > 0] = 0
+                up_sma = up.rolling(window = term, center = False).mean()
+                down_sma = down.abs().rolling(window=term, center=False).mean()
+                ohlc.rsi[term] = list(100.0 - (100.0 / (1.0 + up_sma / down_sma)))
         return ohlc
 
     @classmethod
     def update_rsi2(cls):
         for i in range(cls.num_term):
             term = (i+1) * cls.window_term
-            close_con = cls.ohlc_bot.close[len(cls.ohlc_bot.close) - len(cls.ohlc_bot.rsi):]
-            open_con = cls.ohlc_bot.open[len(cls.ohlc_bot.open) - len(cls.ohlc_bot.rsi):]
-            diff = pd.Series([x - y for (x, y) in zip(close_con, open_con)])
-            up, down = diff.copy(), diff.copy()
-            up[up < 0] = 0
-            down[down > 0] = 0
-            up_sma = up.rolling(window=term, center=False).mean()
-            down_sma = down.abs().rolling(window=term, center=False).mean()
-            cls.ohlc_bot.rsi[term].extend(list(100.0 - (100.0 / (1.0 + up_sma / down_sma))))
+            if term > 1:
+                close_con = cls.ohlc_bot.close[len(cls.ohlc_bot.close) - len(cls.ohlc_bot.rsi):]
+                open_con = cls.ohlc_bot.open[len(cls.ohlc_bot.open) - len(cls.ohlc_bot.rsi):]
+                diff = pd.Series([x - y for (x, y) in zip(close_con, open_con)])
+                up, down = diff.copy(), diff.copy()
+                up[up < 0] = 0
+                down[down > 0] = 0
+                up_sma = up.rolling(window=term, center=False).mean()
+                down_sma = down.abs().rolling(window=term, center=False).mean()
+                cls.ohlc_bot.rsi[term].extend(list(100.0 - (100.0 / (1.0 + up_sma / down_sma))))
 
     @classmethod
     def update_ma(cls):

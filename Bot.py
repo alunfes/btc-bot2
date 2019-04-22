@@ -13,6 +13,7 @@ from CryptowatchDataGetter import CryptowatchDataGetter
 from LogMaster import LogMaster
 from Trade import Trade
 from datetime import datetime
+import datetime as dt
 #import datetime
 import pytz
 
@@ -46,15 +47,16 @@ class Bot:
         self.win_rate = 0
         self.margin_rate = 120.0
         self.leverage = 15.0
+        self.JST = pytz.timezone('Asia/Tokyo')
         self.sync_position_order()
 
     def sync_position_order(self):
-        position = Trade.get_positions()[0]
+        position = Trade.get_positions()
         orders = Trade.get_orders()
         if len(position) > 0:
-            self.posi_side = position['side'].lower()
-            self.posi_price = float(position['price'])
-            self.posi_size = float(position['size'])
+            self.posi_side = position[0]['side'].lower()
+            self.posi_price = float(position[0]['price'])
+            self.posi_size = float(position[0]['size'])
             self.posi_status = 'fully executed'
             print('synchronized position data, side='+str(self.posi_side)+', size='+str(self.posi_size)+', price='+str(self.posi_price))
         if len(orders) > 0:#need to update order status
@@ -189,13 +191,39 @@ class Bot:
                 print('new entry is not boarded')#new entry not boarded¥
                 print(Trade.get_orders())
             elif self.order_status == 'pl boarded':
-                print('pl order has been expired: ' +str(datetime.now()))
-                self.order_initailize()
-                LogMaster.add_log({'dt': datetime.now(),'action_message': 'pl order has been expired'})
+                if self.order_dt.astimezone(tz=self.JST) + dt.timedelta(seconds=60) < datetime.now(tz=self.JST):
+                    flg_check_expiration = True
+                    for i in range(3):
+                        time.sleep(1)
+                        status = Trade.get_order_status(self.order_id)
+                        if len(status) > 0:
+                            flg_check_expiration = False
+                            break
+                    if flg_check_expiration:
+                        print('pl order has been expired: ' +str(datetime.now()))
+                        print('status')
+                        print(status)
+                        print('get orders')
+                        print(Trade.get_orders())
+                        self.order_initailize()
+                        LogMaster.add_log({'dt': datetime.now(),'action_message': 'pl order has been expired'})
             elif self.order_status == 'new boarded':
-                print('new entry order has been expired: ' +str(datetime.now()))
-                self.order_initailize()
-                LogMaster.add_log({'dt': datetime.now(),'action_message': 'new entry order has been expired'})
+                if self.order_dt.astimezone(tz=self.JST)     + dt.timedelta(seconds=60) < datetime.now(tz=self.JST):
+                    flg_check_expiration = True
+                    for i in range(3):
+                        time.sleep(1)
+                        status = Trade.get_order_status(self.order_id)
+                        if len(status) > 0:
+                            flg_check_expiration = False
+                            break
+                    if flg_check_expiration:
+                        print('new entry order has been expired: ' +str(datetime.now()))
+                        print('status')
+                        print(status)
+                        print('get orders')
+                        print(Trade.get_orders())
+                        self.order_initailize()
+                        LogMaster.add_log({'dt': datetime.now(),'action_message': 'new entry order has been expired'})
             else:
                 print('unknown status!')
         else: #order boarded or executed
@@ -265,7 +293,7 @@ class Bot:
         CryptowatchDataGetter.get_and_add_to_csv()
         print('bot - initializing MarketData2..')
         LogMaster.add_log({'action_message': 'bot - initializing MarketData2..'})
-        MarketData2.initialize_from_bot_csv(110,1, 100, 900)
+        MarketData2.initialize_from_bot_csv(100, 1, 100, 500)
         train_df = MarketData2.generate_df(MarketData2.ohlc_bot)
         #print(train_df)
         #model = XgbModel()
@@ -290,13 +318,13 @@ class Bot:
         start = time.time()
         while SystemFlg.get_system_flg():
             time.sleep(Trade.adjusting_sleep)
-            while datetime.now(tz=JST).hour == 3 and datetime.now(tz=JST).minute >= 50:
+            while datetime.now(tz=self.JST).hour == 3 and datetime.now(tz=self.JST).minute >= 50:
                 time.sleep(10) #wait for daily system maintenace
                 self.cancel_order()
                 self.exit_order()
                 SystemFlg.set_system_flg(False)
                 break
-            if datetime.now(tz=JST).second == 1 or datetime.now(tz=JST).second == 2:
+            if datetime.now(tz=self.JST).second == 1 or datetime.now(tz=self.JST).second == 2:
                 elapsed_time = time.time() - start
                 print("bot elapsed_time:{0}".format(round(elapsed_time/60,2)) + "[min]")
                 print('private access per min={}, num private access={}, num public access={}'.format(Trade.num_private_access_per_min, Trade.num_private_access, Trade.num_public_access))
@@ -357,7 +385,7 @@ if __name__ == '__main__':
     Trade.initialize()
     LogMaster.initialize()
     bot = Bot()
-    bot.start_bot(900)
+    bot.start_bot(500)
 
 
 
