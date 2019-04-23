@@ -320,15 +320,13 @@ class Trade:
                         else:  # place a new order for remaining size
                             pre_exe_size = status[0]['executed_size']
                             price = cls.get_opt_price()
-                            order_id = cls.order_wait_till_boarding(side, price, remaining_size, 100)[
-                                'child_order_acceptance_id']
-                            print('price tracing order - executed ' + str(
-                                res['executed_size'] - pre_exe_size) + ' @' + str(res['average_price']))
+                            order_id = cls.order_wait_till_boarding(side, price, remaining_size, 100)['child_order_acceptance_id']
+                            print('price tracing order - placed new order for remaining size. size = '+str(remaining_size))
+                            #print('price tracing order - executed ' + str(res['executed_size'] - pre_exe_size) + ' @' + str(res['average_price']))
                     else:
                         price = cls.get_opt_price()
                         order_id = cls.order_wait_till_boarding(side, price, remaining_size, 100)['child_order_acceptance_id']
-                        print('price tracing order - replaced order for ' + side + ', @' + str(price) + ' x ' + str(
-                            remaining_size))
+                        print('price tracing order - replaced order for ' + side + ', @' + str(price) + ' x ' + str(remaining_size))
                         pre_exe_size = 0
                 if len(status) > 0:
                     if status[0]['outstanding_size'] == 0:  # excuted all portion
@@ -345,6 +343,7 @@ class Trade:
                             print('price tracing order - executed ' + str(status[0]['executed_size'] - pre_exe_size) + ' @' + str(price))
                             pre_exe_size = status[0]['executed_size']
                 time.sleep(0.2)
+            Trade.cancel_all_orders()
             print('price tracing order has been completed.')
             print('current positions:')
             print(cls.get_positions())
@@ -422,8 +421,23 @@ class Trade:
                 i += 1
             time.sleep(10)
 
+    '''
+    new entryしたオーダーが1秒後にもまだboardしておらず、cancel and wait orderでorder status取得できず、誤ってsuccessfully cancelledと判定されうるので、
+    最初にorder statusが存在することを確認している。
+    5秒経ってもorder statusが確認できない時はcancelledとして処理する。
+    '''
     @classmethod
     def cancel_and_wait_completion(cls, oid) -> dict:
+        status = cls.get_order_status(oid)
+        if len(status) == 0:
+            n = 0
+            while len(status) == 0:
+                time.sleep(1)
+                n += 1
+                status = cls.get_order_status(oid)
+                if n > 5:
+                    print('cancel_and_wait_completion -  order status is not available!')
+                    return []
         cls.cancel_order(oid)
         print('waiting cancell order ' + oid)
         time.sleep(1)

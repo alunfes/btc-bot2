@@ -96,7 +96,7 @@ class Bot:
         if pl > 0:
             self.num_win += 1
         self.win_rate = round(float(self.num_win) / float(self.num_trade),2)
-        print('pl = {}, num = {}, win_rate = {}'.format(self.pl, self.num_trade, self.win_rate))
+        #print('pl = {}, num = {}, win_rate = {}'.format(self.pl, self.num_trade, self.win_rate))
 
     def calc_holding_pl(self):
         lastp = Trade.get_last_price()
@@ -200,10 +200,6 @@ class Bot:
                             break
                     if flg_check_expiration:
                         print('pl order has been expired: ' +str(datetime.now()))
-                        print('status')
-                        print(status)
-                        print('get orders')
-                        print(Trade.get_orders())
                         self.order_initailize()
                         LogMaster.add_log({'dt': datetime.now(),'action_message': 'pl order has been expired'})
             elif self.order_status == 'new boarded':
@@ -217,10 +213,6 @@ class Bot:
                             break
                     if flg_check_expiration:
                         print('new entry order has been expired: ' +str(datetime.now()))
-                        print('status')
-                        print(status)
-                        print('get orders')
-                        print(Trade.get_orders())
                         self.order_initailize()
                         LogMaster.add_log({'dt': datetime.now(),'action_message': 'new entry order has been expired'})
             else:

@@ -39,8 +39,9 @@ class CryptowatchDataGetter:
         except:
             print('cryptowatch download error!'+str(res))
             print('before={},after={}'.format(query['before'], query['after']))
-            import traceback
-            traceback.print_exc()
+            #import traceback
+            #traceback.print_exc()
+            result = ''
         return result
 
     @classmethod
@@ -50,7 +51,7 @@ class CryptowatchDataGetter:
         while flg_down_success == False:
             result = cls.get_data_from_crptowatch(after=target_ut)
             num_down += 1
-            if str(result).index(str(int(target_ut // 1))) > 0:
+            if len(result) > 0 and str(result).index(str(int(target_ut // 1))) > 0:
                 flg_down_success = True
                 omd = cls.convert_json_to_ohlc(result)
                 startind  = omd.unix_time.index(target_ut)
