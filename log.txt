@@ -2,1078 +2,1001 @@
 bot - updating crypto data..
 bot - initializing MarketData2..
 future side unique val
-buy     0.312215
-sell    0.300733
-no      0.203566
-both    0.183485
+buy     0.310994
+sell    0.302899
+no      0.197444
+both    0.188662
 Name: future_side, dtype: float64
 bot - training xgb model..
 bot - training completed..
 bot - updating crypto data..
 bot - started bot loop.
-bot elapsed_time:0.18[min]
-private access per min=3.14, num private access=3, num public access=0
-dt=2019-04-24 01:00:00, close=629401, predict=[2.], pl=0, num_trade=0, win_rate=0, posi_side=, posi_price=0, order_side=, order_price=0
-ok order - JRF20190423-160004-346665
-new entry: side = sell, price = 629401, size = 0.05
+bot elapsed_time:0.46[min]
+private access per min=2.03, num private access=5, num public access=0
+dt=2019-04-24 21:37:00, close=616624, predict=[3.], pl=0, num_trade=0, win_rate=0, posi_side=, posi_price=0, posi_size=0, order_side=, order_price=0, order_size=0
+bot elapsed_time:1.47[min]
+private access per min=2.02, num private access=7, num public access=0
+dt=2019-04-24 21:38:00, close=616300, predict=[3.], pl=0, num_trade=0, win_rate=0, posi_side=, posi_price=0, posi_size=0, order_side=, order_price=0, order_size=0
+bot elapsed_time:2.47[min]
+private access per min=2.01, num private access=9, num public access=0
+dt=2019-04-24 21:39:00, close=616605, predict=[3.], pl=0, num_trade=0, win_rate=0, posi_side=, posi_price=0, posi_size=0, order_side=, order_price=0, order_size=0
+bot elapsed_time:3.47[min]
+private access per min=2.01, num private access=11, num public access=0
+dt=2019-04-24 21:41:00, close=616909, predict=[3.], pl=0, num_trade=0, win_rate=0, posi_side=, posi_price=0, posi_size=0, order_side=, order_price=0, order_size=0
+bot elapsed_time:4.47[min]
+private access per min=2.19, num private access=13, num public access=0
+dt=2019-04-24 21:41:00, close=616909, predict=[3.], pl=0, num_trade=0, win_rate=0, posi_side=, posi_price=0, posi_size=0, order_side=, order_price=0, order_size=0
+bot elapsed_time:5.47[min]
+private access per min=2.01, num private access=15, num public access=0
+dt=2019-04-24 21:42:00, close=617021, predict=[3.], pl=0, num_trade=0, win_rate=0, posi_side=, posi_price=0, posi_size=0, order_side=, order_price=0, order_size=0
+bot elapsed_time:6.47[min]
+private access per min=2.0, num private access=17, num public access=0
+dt=2019-04-24 21:43:00, close=617325, predict=[3.], pl=0, num_trade=0, win_rate=0, posi_side=, posi_price=0, posi_size=0, order_side=, order_price=0, order_size=0
+bot elapsed_time:7.47[min]
+private access per min=2.0, num private access=19, num public access=0
+dt=2019-04-24 21:44:00, close=617441, predict=[2.], pl=0, num_trade=0, win_rate=0, posi_side=, posi_price=0, posi_size=0, order_side=, order_price=0, order_size=0
+ok order - JRF20190424-124403-768512
+new entry: side = sell, price = 617441, size = 0.05
 new entry is not boarded
-[]
-new entry boarded: 2019-04-24 01:00:05.854447
-current position: side = sell, price = 629533.0, size = 0.05
-new entry order has been fully executed
-ok order - JRF20190423-160006-134112
-pl order: side = buy, price = 629033.0, size = 0.05
+new entry boarded: 2019-04-24 21:44:04.340475
+new entry order has been completedave_price=617441.0size=0.05
+position unmatch was detected! Synchronize with account position data.
+posi_side=,posi_price=0,posi_size=0
+[{'product_code': 'FX_BTC_JPY', 'side': 'SELL', 'price': 617441.0, 'size': 0.05, 'commission': 0.0, 'swap_point_accumulate': 0.0, 'require_collateral': 2058.1366666666668, 'open_date': '2019-04-24T12:44:03.953', 'leverage': 15.0, 'pnl': 0.35, 'sfd': 0.0}]
+synchronized position data, side=sell, size=0.05, price=617441
+current position: side=sell,price=617441,size=0.05
+ok order - JRF20190424-124404-768520
+pl order: side = buy, price = 616941, size = 0.05
 pl order is not boarded
-[]
-pl order boarded: 2019-04-24 01:00:07.384582
-bot elapsed_time:1.19[min]
-private access per min=45.45, num private access=90, num public access=80
-dt=2019-04-24 01:01:00, close=629802, predict=[1.], pl=-17.65, num_trade=0, win_rate=0, posi_side=sell, posi_price=629533.0, order_side=buy, order_price=629033.0
+pl order boarded: 2019-04-24 21:44:05.685870
+synchronized position data, side=sell, size=0.05, price=617441
+synchronized order data, side=buy, size=0.05, price=616941
+bot elapsed_time:8.47[min]
+private access per min=12.33, num private access=119, num public access=91
+dt=2019-04-24 21:45:00, close=617495, predict=[3.], pl=-2.45, num_trade=0, win_rate=0, posi_side=sell, posi_price=617441, posi_size=0.05, order_side=buy, order_price=616941, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=617441
+synchronized order data, side=buy, size=0.05, price=616941
+bot elapsed_time:9.47[min]
+private access per min=20.21, num private access=214, num public access=184
+dt=2019-04-24 21:46:00, close=617566, predict=[3.], pl=-6.95, num_trade=0, win_rate=0, posi_side=sell, posi_price=617441, posi_size=0.05, order_side=buy, order_price=616941, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=617441
+synchronized order data, side=buy, size=0.05, price=616941
+bot elapsed_time:10.47[min]
+private access per min=26.49, num private access=307, num public access=275
+dt=2019-04-24 21:47:00, close=617665, predict=[3.], pl=-10.3, num_trade=0, win_rate=0, posi_side=sell, posi_price=617441, posi_size=0.05, order_side=buy, order_price=616941, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=617441
+synchronized order data, side=buy, size=0.05, price=616941
+bot elapsed_time:11.46[min]
+private access per min=32.13, num private access=403, num public access=369
+dt=2019-04-24 21:48:00, close=617498, predict=[1.], pl=-3.9, num_trade=0, win_rate=0, posi_side=sell, posi_price=617441, posi_size=0.05, order_side=buy, order_price=616941, order_size=0.05
 exit order
-waiting cancell order JRF20190423-160006-134112
+waiting cancell order JRF20190424-124404-768520
 order has been successfully cancelled
 started price tracing order
-ok order - JRF20190423-160106-001202
+ok order - JRF20190424-124806-769645
 confirmed the order has been boarded
-waiting cancell order JRF20190423-160106-001202
+waiting cancell order JRF20190424-124806-769645
 cancel failed order has been partially executed. exe size=0.05
-price tracing order - executed 0.05 @629844.0
+price tracing order - executed 0.05 @617483.0
 price tracing order has been completed.
 current positions:
 []
 current orders:
 []
-ave price=629844.0, exe size = 0.05
-ok order - JRF20190423-160109-001214
-new entry: side = buy, price = 629802, size = 0.05
+ave price=617483.0, exe size = 0.05
+ok order - JRF20190424-124808-660365
+new entry: side = buy, price = 617498, size = 0.05
 new entry is not boarded
-[]
-new entry boarded: 2019-04-24 01:01:11.000532
-current position: side = buy, price = 629802.0, size = 0.05
-new entry order has been fully executed
-ok order - JRF20190423-160112-001224
-pl order: side = sell, price = 630302.0, size = 0.05
+new entry is not boarded
+new entry boarded: 2019-04-24 21:48:10.270850
+new entry order has been completedave_price=617498.0size=0.05
+position unmatch was detected! Synchronize with account position data.
+posi_side=,posi_price=0,posi_size=0
+[{'product_code': 'FX_BTC_JPY', 'side': 'BUY', 'price': 617498.0, 'size': 0.05, 'commission': 0.0, 'swap_point_accumulate': 0.0, 'require_collateral': 2058.326666666667, 'open_date': '2019-04-24T12:48:13.663', 'leverage': 15.0, 'pnl': 0.1, 'sfd': 0.0}]
+synchronized position data, side=buy, size=0.05, price=617498
+current position: side=buy,price=617498,size=0.05
+ok order - JRF20190424-124814-184888
+pl order: side = sell, price = 617998, size = 0.05
 pl order is not boarded
-[]
-pl order boarded: 2019-04-24 01:01:13.371142
-bot elapsed_time:2.19[min]
-private access per min=62.49, num private access=186, num public access=157
-dt=2019-04-24 01:02:00, close=629975, predict=[1.], pl=-8.850000000000001, num_trade=1, win_rate=0.0, posi_side=buy, posi_price=629802.0, order_side=sell, order_price=630302.0
-bot elapsed_time:3.19[min]
-private access per min=69.38, num private access=276, num public access=247
-dt=2019-04-24 01:03:00, close=629940, predict=[2.], pl=-9.200000000000001, num_trade=1, win_rate=0.0, posi_side=buy, posi_price=629802.0, order_side=sell, order_price=630302.0
+pl order boarded: 2019-04-24 21:48:15.513423
+synchronized position data, side=buy, size=0.05, price=617498
+synchronized order data, side=sell, size=0.05, price=617998
+bot elapsed_time:12.47[min]
+private access per min=37.6, num private access=509, num public access=447
+dt=2019-04-24 21:49:00, close=617267, predict=[3.], pl=-13.0, num_trade=1, win_rate=0.0, posi_side=buy, posi_price=617498, posi_size=0.05, order_side=sell, order_price=617998, order_size=0.05
+synchronized position data, side=buy, size=0.05, price=617498
+synchronized order data, side=sell, size=0.05, price=617998
+bot elapsed_time:13.47[min]
+private access per min=41.35, num private access=601, num public access=537
+dt=2019-04-24 21:51:00, close=617232, predict=[1.], pl=-15.299999999999999, num_trade=1, win_rate=0.0, posi_side=buy, posi_price=617498, posi_size=0.05, order_side=sell, order_price=617998, order_size=0.05
+synchronized position data, side=buy, size=0.05, price=617498
+synchronized order data, side=sell, size=0.05, price=617998
+bot elapsed_time:14.47[min]
+private access per min=44.54, num private access=692, num public access=626
+dt=2019-04-24 21:51:00, close=617232, predict=[1.], pl=-49.550000000000004, num_trade=1, win_rate=0.0, posi_side=buy, posi_price=617498, posi_size=0.05, order_side=sell, order_price=617998, order_size=0.05
+synchronized position data, side=buy, size=0.05, price=617498
+synchronized order data, side=sell, size=0.05, price=617998
+bot elapsed_time:15.47[min]
+private access per min=47.23, num private access=780, num public access=712
+dt=2019-04-24 21:52:00, close=616097, predict=[3.], pl=-76.94999999999999, num_trade=1, win_rate=0.0, posi_side=buy, posi_price=617498, posi_size=0.05, order_side=sell, order_price=617998, order_size=0.05
+synchronized position data, side=buy, size=0.05, price=617498
+synchronized order data, side=sell, size=0.05, price=617998
+bot elapsed_time:16.47[min]
+private access per min=49.84, num private access=872, num public access=802
+dt=2019-04-24 21:53:00, close=616223, predict=[3.], pl=-62.9, num_trade=1, win_rate=0.0, posi_side=buy, posi_price=617498, posi_size=0.05, order_side=sell, order_price=617998, order_size=0.05
+synchronized position data, side=buy, size=0.05, price=617498
+synchronized order data, side=sell, size=0.05, price=617998
+bot elapsed_time:17.47[min]
+private access per min=52.1, num private access=965, num public access=893
+dt=2019-04-24 21:54:00, close=615921, predict=[3.], pl=-81.05, num_trade=1, win_rate=0.0, posi_side=buy, posi_price=617498, posi_size=0.05, order_side=sell, order_price=617998, order_size=0.05
+synchronized position data, side=buy, size=0.05, price=617498
+synchronized order data, side=sell, size=0.05, price=617998
+bot elapsed_time:18.46[min]
+private access per min=54.24, num private access=1057, num public access=983
+dt=2019-04-24 21:55:00, close=616200, predict=[3.], pl=-67.0, num_trade=1, win_rate=0.0, posi_side=buy, posi_price=617498, posi_size=0.05, order_side=sell, order_price=617998, order_size=0.05
+synchronized position data, side=buy, size=0.05, price=617498
+synchronized order data, side=sell, size=0.05, price=617998
+bot elapsed_time:19.47[min]
+private access per min=56.12, num private access=1151, num public access=1075
+dt=2019-04-24 21:57:00, close=616206, predict=[3.], pl=-66.19999999999999, num_trade=1, win_rate=0.0, posi_side=buy, posi_price=617498, posi_size=0.05, order_side=sell, order_price=617998, order_size=0.05
+synchronized position data, side=buy, size=0.05, price=617498
+synchronized order data, side=sell, size=0.05, price=617998
+bot elapsed_time:20.47[min]
+private access per min=57.78, num private access=1244, num public access=1166
+dt=2019-04-24 21:57:00, close=616206, predict=[3.], pl=-58.75, num_trade=1, win_rate=0.0, posi_side=buy, posi_price=617498, posi_size=0.05, order_side=sell, order_price=617998, order_size=0.05
+synchronized position data, side=buy, size=0.05, price=617498
+synchronized order data, side=sell, size=0.05, price=617998
+bot elapsed_time:21.47[min]
+private access per min=59.29, num private access=1335, num public access=1255
+dt=2019-04-24 21:58:00, close=616602, predict=[3.], pl=-46.95, num_trade=1, win_rate=0.0, posi_side=buy, posi_price=617498, posi_size=0.05, order_side=sell, order_price=617998, order_size=0.05
+synchronized position data, side=buy, size=0.05, price=617498
+synchronized order data, side=sell, size=0.05, price=617998
+bot elapsed_time:22.47[min]
+private access per min=60.47, num private access=1422, num public access=1340
+dt=2019-04-24 21:59:00, close=616410, predict=[3.], pl=-54.85, num_trade=1, win_rate=0.0, posi_side=buy, posi_price=617498, posi_size=0.05, order_side=sell, order_price=617998, order_size=0.05
+synchronized position data, side=buy, size=0.05, price=617498
+synchronized order data, side=sell, size=0.05, price=617998
+bot elapsed_time:23.47[min]
+private access per min=61.62, num private access=1511, num public access=1427
+dt=2019-04-24 22:00:00, close=616640, predict=[3.], pl=-46.35, num_trade=1, win_rate=0.0, posi_side=buy, posi_price=617498, posi_size=0.05, order_side=sell, order_price=617998, order_size=0.05
+synchronized position data, side=buy, size=0.05, price=617498
+synchronized order data, side=sell, size=0.05, price=617998
+bot elapsed_time:24.47[min]
+private access per min=62.77, num private access=1600, num public access=1514
+dt=2019-04-24 22:01:00, close=617089, predict=[2.], pl=-27.3, num_trade=1, win_rate=0.0, posi_side=buy, posi_price=617498, posi_size=0.05, order_side=sell, order_price=617998, order_size=0.05
 exit order
-waiting cancell order JRF20190423-160112-001224
+waiting cancell order JRF20190424-124814-184888
 order has been successfully cancelled
 started price tracing order
-ok order - JRF20190423-160305-347691
+ok order - JRF20190424-130105-317030
 confirmed the order has been boarded
-waiting cancell order JRF20190423-160305-347691
+waiting cancell order JRF20190424-130105-317030
+order has been successfully cancelled
+ok order - JRF20190424-130108-575128
+confirmed the order has been boarded
+price tracing order - replaced order for sell, @617012.0 x 0.05
+waiting cancell order JRF20190424-130108-575128
+order has been successfully cancelled
+ok order - JRF20190424-130111-774323
+confirmed the order has been boarded
+price tracing order - replaced order for sell, @617080.0 x 0.05
+waiting cancell order JRF20190424-130111-774323
 cancel failed order has been partially executed. exe size=0.05
-price tracing order - executed 0.05 @630062.0
+price tracing order - executed 0.05 @617080.0
 price tracing order has been completed.
 current positions:
 []
 current orders:
 []
-ave price=630062.0, exe size = 0.05
-ok order - JRF20190423-160309-718608
-new entry: side = sell, price = 629940, size = 0.05
+ave price=617080.0, exe size = 0.05
+ok order - JRF20190424-130115-189253
+new entry: side = sell, price = 617089, size = 0.05
 new entry is not boarded
-[]
-new entry boarded: 2019-04-24 01:03:09.967055
-current position: side = sell, price = 630098.0, size = 0.05
-new entry order has been fully executed
-ok order - JRF20190423-160310-135391
-pl order: side = buy, price = 629598.0, size = 0.05
+new entry boarded: 2019-04-24 22:01:16.680522
+new entry order has been completedave_price=617096.0size=0.05
+position unmatch was detected! Synchronize with account position data.
+posi_side=,posi_price=0,posi_size=0
+[{'product_code': 'FX_BTC_JPY', 'side': 'SELL', 'price': 617096.0, 'size': 0.05, 'commission': 0.0, 'swap_point_accumulate': 0.0, 'require_collateral': 2056.9866666666667, 'open_date': '2019-04-24T13:01:15.647', 'leverage': 15.0, 'pnl': -1.6, 'sfd': 0.0}]
+synchronized position data, side=sell, size=0.05, price=617096
+current position: side=sell,price=617096,size=0.05
+ok order - JRF20190424-130117-317095
+pl order: side = buy, price = 616596, size = 0.05
 pl order is not boarded
-[]
-pl order boarded: 2019-04-24 01:03:11.257685
-bot elapsed_time:4.19[min]
-private access per min=75.71, num private access=376, num public access=329
-dt=2019-04-24 01:04:00, close=630077, predict=[2.], pl=-0.4000000000000008, num_trade=2, win_rate=0.5, posi_side=sell, posi_price=630098.0, order_side=buy, order_price=629598.0
-bot elapsed_time:5.19[min]
-private access per min=77.86, num private access=465, num public access=418
-dt=2019-04-24 01:05:00, close=630042, predict=[2.], pl=0.4499999999999993, num_trade=2, win_rate=0.5, posi_side=sell, posi_price=630098.0, order_side=buy, order_price=629598.0
-bot elapsed_time:6.18[min]
-private access per min=79.74, num private access=555, num public access=508
-dt=2019-04-24 01:06:00, close=630007, predict=[2.], pl=3.4499999999999993, num_trade=2, win_rate=0.5, posi_side=sell, posi_price=630098.0, order_side=buy, order_price=629598.0
-bot elapsed_time:7.19[min]
-private access per min=81.47, num private access=649, num public access=602
-dt=2019-04-24 01:07:00, close=629883, predict=[2.], pl=7.85, num_trade=2, win_rate=0.5, posi_side=sell, posi_price=630098.0, order_side=buy, order_price=629598.0
-bot elapsed_time:8.19[min]
-private access per min=82.71, num private access=742, num public access=695
-dt=2019-04-24 01:08:00, close=629800, predict=[1.], pl=13.599999999999998, num_trade=2, win_rate=0.5, posi_side=sell, posi_price=630098.0, order_side=buy, order_price=629598.0
+pl order boarded: 2019-04-24 22:01:18.371804
+synchronized position data, side=sell, size=0.05, price=617096
+synchronized order data, side=buy, size=0.05, price=616596
+bot elapsed_time:25.46[min]
+private access per min=64.27, num private access=1704, num public access=1588
+dt=2019-04-24 22:02:00, close=617432, predict=[2.], pl=-38.8, num_trade=2, win_rate=0.0, posi_side=sell, posi_price=617096, posi_size=0.05, order_side=buy, order_price=616596, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=617096
+synchronized order data, side=buy, size=0.05, price=616596
+bot elapsed_time:26.47[min]
+private access per min=65.3, num private access=1796, num public access=1678
+dt=2019-04-24 22:03:00, close=617309, predict=[2.], pl=-35.55, num_trade=2, win_rate=0.0, posi_side=sell, posi_price=617096, posi_size=0.05, order_side=buy, order_price=616596, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=617096
+synchronized order data, side=buy, size=0.05, price=616596
+bot elapsed_time:27.48[min]
+private access per min=66.26, num private access=1890, num public access=1770
+dt=2019-04-24 22:04:00, close=616992, predict=[2.], pl=-18.1, num_trade=2, win_rate=0.0, posi_side=sell, posi_price=617096, posi_size=0.05, order_side=buy, order_price=616596, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=617096
+synchronized order data, side=buy, size=0.05, price=616596
+bot elapsed_time:28.47[min]
+private access per min=67.13, num private access=1982, num public access=1860
+dt=2019-04-24 22:05:00, close=617195, predict=[2.], pl=-28.2, num_trade=2, win_rate=0.0, posi_side=sell, posi_price=617096, posi_size=0.05, order_side=buy, order_price=616596, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=617096
+synchronized order data, side=buy, size=0.05, price=616596
+bot elapsed_time:29.47[min]
+private access per min=67.97, num private access=2074, num public access=1950
+dt=2019-04-24 22:06:00, close=616935, predict=[2.], pl=-16.75, num_trade=2, win_rate=0.0, posi_side=sell, posi_price=617096, posi_size=0.05, order_side=buy, order_price=616596, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=617096
+synchronized order data, side=buy, size=0.05, price=616596
+bot elapsed_time:30.47[min]
+private access per min=68.79, num private access=2168, num public access=2042
+dt=2019-04-24 22:07:00, close=617125, predict=[2.], pl=-25.1, num_trade=2, win_rate=0.0, posi_side=sell, posi_price=617096, posi_size=0.05, order_side=buy, order_price=616596, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=617096
+synchronized order data, side=buy, size=0.05, price=616596
+bot elapsed_time:31.47[min]
+private access per min=69.56, num private access=2262, num public access=2134
+dt=2019-04-24 22:08:00, close=617542, predict=[2.], pl=-46.3, num_trade=2, win_rate=0.0, posi_side=sell, posi_price=617096, posi_size=0.05, order_side=buy, order_price=616596, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=617096
+synchronized order data, side=buy, size=0.05, price=616596
+bot elapsed_time:32.46[min]
+private access per min=70.28, num private access=2356, num public access=2226
+dt=2019-04-24 22:09:00, close=617390, predict=[3.], pl=-38.2, num_trade=2, win_rate=0.0, posi_side=sell, posi_price=617096, posi_size=0.05, order_side=buy, order_price=616596, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=617096
+synchronized order data, side=buy, size=0.05, price=616596
+bot elapsed_time:33.47[min]
+private access per min=70.94, num private access=2448, num public access=2316
+dt=2019-04-24 22:10:00, close=617958, predict=[3.], pl=-68.2, num_trade=2, win_rate=0.0, posi_side=sell, posi_price=617096, posi_size=0.05, order_side=buy, order_price=616596, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=617096
+synchronized order data, side=buy, size=0.05, price=616596
+bot elapsed_time:34.46[min]
+private access per min=71.52, num private access=2540, num public access=2406
+dt=2019-04-24 22:11:00, close=617906, predict=[3.], pl=-65.3, num_trade=2, win_rate=0.0, posi_side=sell, posi_price=617096, posi_size=0.05, order_side=buy, order_price=616596, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=617096
+synchronized order data, side=buy, size=0.05, price=616596
+bot elapsed_time:35.47[min]
+private access per min=71.97, num private access=2628, num public access=2492
+dt=2019-04-24 22:12:00, close=618239, predict=[3.], pl=-83.0, num_trade=2, win_rate=0.0, posi_side=sell, posi_price=617096, posi_size=0.05, order_side=buy, order_price=616596, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=617096
+synchronized order data, side=buy, size=0.05, price=616596
+bot elapsed_time:36.46[min]
+private access per min=72.45, num private access=2718, num public access=2580
+dt=2019-04-24 22:13:00, close=618300, predict=[3.], pl=-82.4, num_trade=2, win_rate=0.0, posi_side=sell, posi_price=617096, posi_size=0.05, order_side=buy, order_price=616596, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=617096
+synchronized order data, side=buy, size=0.05, price=616596
+bot elapsed_time:37.47[min]
+private access per min=72.9, num private access=2808, num public access=2668
+dt=2019-04-24 22:14:00, close=618293, predict=[2.], pl=-82.0, num_trade=2, win_rate=0.0, posi_side=sell, posi_price=617096, posi_size=0.05, order_side=buy, order_price=616596, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=617096
+synchronized order data, side=buy, size=0.05, price=616596
+bot elapsed_time:38.47[min]
+private access per min=73.3, num private access=2896, num public access=2754
+dt=2019-04-24 22:15:00, close=618107, predict=[3.], pl=-73.5, num_trade=2, win_rate=0.0, posi_side=sell, posi_price=617096, posi_size=0.05, order_side=buy, order_price=616596, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=617096
+synchronized order data, side=buy, size=0.05, price=616596
+bot elapsed_time:39.47[min]
+private access per min=73.71, num private access=2986, num public access=2842
+dt=2019-04-24 22:16:00, close=618273, predict=[2.], pl=-85.75, num_trade=2, win_rate=0.0, posi_side=sell, posi_price=617096, posi_size=0.05, order_side=buy, order_price=616596, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=617096
+synchronized order data, side=buy, size=0.05, price=616596
+bot elapsed_time:40.47[min]
+private access per min=74.07, num private access=3074, num public access=2928
+dt=2019-04-24 22:17:00, close=617692, predict=[2.], pl=-57.8, num_trade=2, win_rate=0.0, posi_side=sell, posi_price=617096, posi_size=0.05, order_side=buy, order_price=616596, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=617096
+synchronized order data, side=buy, size=0.05, price=616596
+bot elapsed_time:41.46[min]
+private access per min=74.47, num private access=3166, num public access=3018
+dt=2019-04-24 22:18:00, close=617875, predict=[3.], pl=-58.2, num_trade=2, win_rate=0.0, posi_side=sell, posi_price=617096, posi_size=0.05, order_side=buy, order_price=616596, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=617096
+synchronized order data, side=buy, size=0.05, price=616596
+bot elapsed_time:42.47[min]
+private access per min=74.89, num private access=3259, num public access=3109
+dt=2019-04-24 22:19:00, close=617747, predict=[3.], pl=-52.55, num_trade=2, win_rate=0.0, posi_side=sell, posi_price=617096, posi_size=0.05, order_side=buy, order_price=616596, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=617096
+synchronized order data, side=buy, size=0.05, price=616596
+bot elapsed_time:43.47[min]
+private access per min=75.26, num private access=3349, num public access=3197
+dt=2019-04-24 22:20:00, close=617736, predict=[3.], pl=-54.95, num_trade=2, win_rate=0.0, posi_side=sell, posi_price=617096, posi_size=0.05, order_side=buy, order_price=616596, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=617096
+synchronized order data, side=buy, size=0.05, price=616596
+bot elapsed_time:44.47[min]
+private access per min=75.63, num private access=3442, num public access=3288
+dt=2019-04-24 22:21:00, close=617842, predict=[2.], pl=-61.05, num_trade=2, win_rate=0.0, posi_side=sell, posi_price=617096, posi_size=0.05, order_side=buy, order_price=616596, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=617096
+synchronized order data, side=buy, size=0.05, price=616596
+bot elapsed_time:45.47[min]
+private access per min=75.98, num private access=3534, num public access=3378
+dt=2019-04-24 22:22:00, close=617117, predict=[3.], pl=-24.15, num_trade=2, win_rate=0.0, posi_side=sell, posi_price=617096, posi_size=0.05, order_side=buy, order_price=616596, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=617096
+synchronized order data, side=buy, size=0.05, price=616596
+bot elapsed_time:46.47[min]
+private access per min=76.27, num private access=3624, num public access=3466
+dt=2019-04-24 22:23:00, close=617094, predict=[3.], pl=-21.75, num_trade=2, win_rate=0.0, posi_side=sell, posi_price=617096, posi_size=0.05, order_side=buy, order_price=616596, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=617096
+synchronized order data, side=buy, size=0.05, price=616596
+bot elapsed_time:47.47[min]
+private access per min=76.61, num private access=3715, num public access=3555
+dt=2019-04-24 22:24:00, close=617148, predict=[2.], pl=-25.35, num_trade=2, win_rate=0.0, posi_side=sell, posi_price=617096, posi_size=0.05, order_side=buy, order_price=616596, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=617096
+synchronized order data, side=buy, size=0.05, price=616596
+bot elapsed_time:48.47[min]
+private access per min=76.86, num private access=3805, num public access=3643
+dt=2019-04-24 22:25:00, close=616700, predict=[3.], pl=-5.5, num_trade=2, win_rate=0.0, posi_side=sell, posi_price=617096, posi_size=0.05, order_side=buy, order_price=616596, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=617096
+synchronized order data, side=buy, size=0.05, price=616596
+bot elapsed_time:49.48[min]
+private access per min=77.09, num private access=3894, num public access=3730
+dt=2019-04-24 22:26:00, close=617169, predict=[3.], pl=-30.25, num_trade=2, win_rate=0.0, posi_side=sell, posi_price=617096, posi_size=0.05, order_side=buy, order_price=616596, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=617096
+synchronized order data, side=buy, size=0.05, price=616596
+bot elapsed_time:50.47[min]
+private access per min=77.24, num private access=3979, num public access=3813
+dt=2019-04-24 22:27:00, close=617187, predict=[3.], pl=-27.75, num_trade=2, win_rate=0.0, posi_side=sell, posi_price=617096, posi_size=0.05, order_side=buy, order_price=616596, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=617096
+synchronized order data, side=buy, size=0.05, price=616596
+bot elapsed_time:51.47[min]
+private access per min=77.5, num private access=4070, num public access=3902
+dt=2019-04-24 22:28:00, close=617341, predict=[3.], pl=-41.45, num_trade=2, win_rate=0.0, posi_side=sell, posi_price=617096, posi_size=0.05, order_side=buy, order_price=616596, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=617096
+synchronized order data, side=buy, size=0.05, price=616596
+bot elapsed_time:52.46[min]
+private access per min=77.81, num private access=4164, num public access=3994
+dt=2019-04-24 22:29:00, close=617842, predict=[3.], pl=-63.2, num_trade=2, win_rate=0.0, posi_side=sell, posi_price=617096, posi_size=0.05, order_side=buy, order_price=616596, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=617096
+synchronized order data, side=buy, size=0.05, price=616596
+bot elapsed_time:53.46[min]
+private access per min=78.06, num private access=4255, num public access=4083
+dt=2019-04-24 22:31:00, close=617186, predict=[3.], pl=-41.5, num_trade=2, win_rate=0.0, posi_side=sell, posi_price=617096, posi_size=0.05, order_side=buy, order_price=616596, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=617096
+synchronized order data, side=buy, size=0.05, price=616596
+bot elapsed_time:54.47[min]
+private access per min=78.33, num private access=4349, num public access=4175
+dt=2019-04-24 22:31:00, close=617186, predict=[3.], pl=-52.15, num_trade=2, win_rate=0.0, posi_side=sell, posi_price=617096, posi_size=0.05, order_side=buy, order_price=616596, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=617096
+synchronized order data, side=buy, size=0.05, price=616596
+bot elapsed_time:55.47[min]
+private access per min=78.59, num private access=4441, num public access=4265
+dt=2019-04-24 22:32:00, close=617616, predict=[3.], pl=-49.0, num_trade=2, win_rate=0.0, posi_side=sell, posi_price=617096, posi_size=0.05, order_side=buy, order_price=616596, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=617096
+synchronized order data, side=buy, size=0.05, price=616596
+bot elapsed_time:56.48[min]
+private access per min=78.73, num private access=4528, num public access=4350
+dt=2019-04-24 22:33:00, close=617598, predict=[2.], pl=-49.65, num_trade=2, win_rate=0.0, posi_side=sell, posi_price=617096, posi_size=0.05, order_side=buy, order_price=616596, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=617096
+synchronized order data, side=buy, size=0.05, price=616596
+bot elapsed_time:57.47[min]
+private access per min=78.72, num private access=4606, num public access=4426
+dt=2019-04-24 22:34:00, close=618016, predict=[2.], pl=-68.2, num_trade=2, win_rate=0.0, posi_side=sell, posi_price=617096, posi_size=0.05, order_side=buy, order_price=616596, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=617096
+synchronized order data, side=buy, size=0.05, price=616596
+bot elapsed_time:58.47[min]
+private access per min=78.8, num private access=4690, num public access=4508
+dt=2019-04-24 22:35:00, close=618176, predict=[3.], pl=-76.9, num_trade=2, win_rate=0.0, posi_side=sell, posi_price=617096, posi_size=0.05, order_side=buy, order_price=616596, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=617096
+synchronized order data, side=buy, size=0.05, price=616596
+bot elapsed_time:59.47[min]
+private access per min=78.85, num private access=4772, num public access=4588
+dt=2019-04-24 22:36:00, close=618383, predict=[3.], pl=-85.4, num_trade=2, win_rate=0.0, posi_side=sell, posi_price=617096, posi_size=0.05, order_side=buy, order_price=616596, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=617096
+synchronized order data, side=buy, size=0.05, price=616596
+bot elapsed_time:60.47[min]
+private access per min=78.89, num private access=4852, num public access=4666
+dt=2019-04-24 22:38:00, close=618033, predict=[3.], pl=-71.1, num_trade=2, win_rate=0.0, posi_side=sell, posi_price=617096, posi_size=0.05, order_side=buy, order_price=616596, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=617096
+synchronized order data, side=buy, size=0.05, price=616596
+bot elapsed_time:61.47[min]
+private access per min=78.95, num private access=4935, num public access=4747
+dt=2019-04-24 22:38:00, close=618033, predict=[3.], pl=-66.5, num_trade=2, win_rate=0.0, posi_side=sell, posi_price=617096, posi_size=0.05, order_side=buy, order_price=616596, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=617096
+synchronized order data, side=buy, size=0.05, price=616596
+bot elapsed_time:62.47[min]
+private access per min=78.95, num private access=5014, num public access=4824
+dt=2019-04-24 22:39:00, close=617208, predict=[3.], pl=-28.0, num_trade=2, win_rate=0.0, posi_side=sell, posi_price=617096, posi_size=0.05, order_side=buy, order_price=616596, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=617096
+synchronized order data, side=buy, size=0.05, price=616596
+bot elapsed_time:63.48[min]
+private access per min=79.02, num private access=5098, num public access=4906
+dt=2019-04-24 22:40:00, close=617017, predict=[3.], pl=-19.25, num_trade=2, win_rate=0.0, posi_side=sell, posi_price=617096, posi_size=0.05, order_side=buy, order_price=616596, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=617096
+synchronized order data, side=buy, size=0.05, price=616596
+bot elapsed_time:64.47[min]
+private access per min=79.07, num private access=5180, num public access=4986
+dt=2019-04-24 22:41:00, close=616942, predict=[3.], pl=-15.2, num_trade=2, win_rate=0.0, posi_side=sell, posi_price=617096, posi_size=0.05, order_side=buy, order_price=616596, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=617096
+synchronized order data, side=buy, size=0.05, price=616596
+bot elapsed_time:65.47[min]
+private access per min=79.2, num private access=5267, num public access=5071
+dt=2019-04-24 22:42:00, close=616867, predict=[3.], pl=-10.95, num_trade=2, win_rate=0.0, posi_side=sell, posi_price=617096, posi_size=0.05, order_side=buy, order_price=616596, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=617096
+synchronized order data, side=buy, size=0.05, price=616596
+bot elapsed_time:66.48[min]
+private access per min=79.3, num private access=5354, num public access=5156
+dt=2019-04-24 22:43:00, close=616970, predict=[3.], pl=-15.6, num_trade=2, win_rate=0.0, posi_side=sell, posi_price=617096, posi_size=0.05, order_side=buy, order_price=616596, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=617096
+synchronized order data, side=buy, size=0.05, price=616596
+bot elapsed_time:67.47[min]
+private access per min=79.42, num private access=5442, num public access=5242
+dt=2019-04-24 22:44:00, close=616800, predict=[3.], pl=-7.6, num_trade=2, win_rate=0.0, posi_side=sell, posi_price=617096, posi_size=0.05, order_side=buy, order_price=616596, order_size=0.05
+pl order has been completed.ave_price=616596.0 size=0.05
+bot elapsed_time:68.47[min]
+private access per min=78.63, num private access=5466, num public access=5262
+dt=2019-04-24 22:45:00, close=616419, predict=[3.], pl=26.85, num_trade=3, win_rate=0.33, posi_side=, posi_price=0, posi_size=0, order_side=, order_price=0, order_size=0
+bot elapsed_time:69.47[min]
+private access per min=77.57, num private access=5468, num public access=5262
+dt=2019-04-24 22:46:00, close=616662, predict=[3.], pl=26.85, num_trade=3, win_rate=0.33, posi_side=, posi_price=0, posi_size=0, order_side=, order_price=0, order_size=0
+bot elapsed_time:70.47[min]
+private access per min=76.5, num private access=5470, num public access=5262
+dt=2019-04-24 22:48:00, close=616326, predict=[3.], pl=26.85, num_trade=3, win_rate=0.33, posi_side=, posi_price=0, posi_size=0, order_side=, order_price=0, order_size=0
+bot elapsed_time:71.47[min]
+private access per min=75.47, num private access=5472, num public access=5262
+dt=2019-04-24 22:48:00, close=616326, predict=[3.], pl=26.85, num_trade=3, win_rate=0.33, posi_side=, posi_price=0, posi_size=0, order_side=, order_price=0, order_size=0
+bot elapsed_time:72.47[min]
+private access per min=74.46, num private access=5474, num public access=5262
+dt=2019-04-24 22:49:00, close=616183, predict=[3.], pl=26.85, num_trade=3, win_rate=0.33, posi_side=, posi_price=0, posi_size=0, order_side=, order_price=0, order_size=0
+bot elapsed_time:73.47[min]
+private access per min=73.49, num private access=5476, num public access=5262
+dt=2019-04-24 22:50:00, close=616366, predict=[3.], pl=26.85, num_trade=3, win_rate=0.33, posi_side=, posi_price=0, posi_size=0, order_side=, order_price=0, order_size=0
+bot elapsed_time:74.47[min]
+private access per min=72.56, num private access=5478, num public access=5262
+dt=2019-04-24 22:51:00, close=616368, predict=[3.], pl=26.85, num_trade=3, win_rate=0.33, posi_side=, posi_price=0, posi_size=0, order_side=, order_price=0, order_size=0
+bot elapsed_time:75.47[min]
+private access per min=71.63, num private access=5480, num public access=5262
+dt=2019-04-24 22:52:00, close=616224, predict=[3.], pl=26.85, num_trade=3, win_rate=0.33, posi_side=, posi_price=0, posi_size=0, order_side=, order_price=0, order_size=0
+bot elapsed_time:76.47[min]
+private access per min=70.73, num private access=5482, num public access=5262
+dt=2019-04-24 22:53:00, close=616109, predict=[3.], pl=26.85, num_trade=3, win_rate=0.33, posi_side=, posi_price=0, posi_size=0, order_side=, order_price=0, order_size=0
+bot elapsed_time:77.47[min]
+private access per min=69.85, num private access=5484, num public access=5262
+dt=2019-04-24 22:54:00, close=616129, predict=[3.], pl=26.85, num_trade=3, win_rate=0.33, posi_side=, posi_price=0, posi_size=0, order_side=, order_price=0, order_size=0
+bot elapsed_time:78.47[min]
+private access per min=68.99, num private access=5486, num public access=5262
+dt=2019-04-24 22:55:00, close=616386, predict=[3.], pl=26.85, num_trade=3, win_rate=0.33, posi_side=, posi_price=0, posi_size=0, order_side=, order_price=0, order_size=0
+bot elapsed_time:79.47[min]
+private access per min=68.17, num private access=5488, num public access=5262
+dt=2019-04-24 22:56:00, close=616278, predict=[3.], pl=26.85, num_trade=3, win_rate=0.33, posi_side=, posi_price=0, posi_size=0, order_side=, order_price=0, order_size=0
+bot elapsed_time:80.46[min]
+private access per min=67.35, num private access=5490, num public access=5262
+dt=2019-04-24 22:57:00, close=615997, predict=[3.], pl=26.85, num_trade=3, win_rate=0.33, posi_side=, posi_price=0, posi_size=0, order_side=, order_price=0, order_size=0
+bot elapsed_time:81.47[min]
+private access per min=66.57, num private access=5492, num public access=5262
+dt=2019-04-24 22:59:00, close=615404, predict=[3.], pl=26.85, num_trade=3, win_rate=0.33, posi_side=, posi_price=0, posi_size=0, order_side=, order_price=0, order_size=0
+bot elapsed_time:82.47[min]
+private access per min=65.79, num private access=5494, num public access=5262
+dt=2019-04-24 22:59:00, close=615404, predict=[3.], pl=26.85, num_trade=3, win_rate=0.33, posi_side=, posi_price=0, posi_size=0, order_side=, order_price=0, order_size=0
+bot elapsed_time:83.47[min]
+private access per min=65.03, num private access=5496, num public access=5262
+dt=2019-04-24 23:00:00, close=615412, predict=[3.], pl=26.85, num_trade=3, win_rate=0.33, posi_side=, posi_price=0, posi_size=0, order_side=, order_price=0, order_size=0
+bot elapsed_time:84.47[min]
+private access per min=64.3, num private access=5498, num public access=5262
+dt=2019-04-24 23:01:00, close=615038, predict=[3.], pl=26.85, num_trade=3, win_rate=0.33, posi_side=, posi_price=0, posi_size=0, order_side=, order_price=0, order_size=0
+bot elapsed_time:85.46[min]
+private access per min=63.57, num private access=5500, num public access=5262
+dt=2019-04-24 23:02:00, close=615209, predict=[3.], pl=26.85, num_trade=3, win_rate=0.33, posi_side=, posi_price=0, posi_size=0, order_side=, order_price=0, order_size=0
+bot elapsed_time:86.47[min]
+private access per min=62.86, num private access=5502, num public access=5262
+dt=2019-04-24 23:03:00, close=615862, predict=[3.], pl=26.85, num_trade=3, win_rate=0.33, posi_side=, posi_price=0, posi_size=0, order_side=, order_price=0, order_size=0
+bot elapsed_time:87.47[min]
+private access per min=62.18, num private access=5504, num public access=5262
+dt=2019-04-24 23:04:00, close=615441, predict=[3.], pl=26.85, num_trade=3, win_rate=0.33, posi_side=, posi_price=0, posi_size=0, order_side=, order_price=0, order_size=0
+bot elapsed_time:88.47[min]
+private access per min=61.51, num private access=5506, num public access=5262
+dt=2019-04-24 23:05:00, close=616018, predict=[3.], pl=26.85, num_trade=3, win_rate=0.33, posi_side=, posi_price=0, posi_size=0, order_side=, order_price=0, order_size=0
+bot elapsed_time:89.48[min]
+private access per min=60.85, num private access=5508, num public access=5262
+dt=2019-04-24 23:06:00, close=616359, predict=[3.], pl=26.85, num_trade=3, win_rate=0.33, posi_side=, posi_price=0, posi_size=0, order_side=, order_price=0, order_size=0
+bot elapsed_time:90.47[min]
+private access per min=60.2, num private access=5510, num public access=5262
+dt=2019-04-24 23:07:00, close=616702, predict=[3.], pl=26.85, num_trade=3, win_rate=0.33, posi_side=, posi_price=0, posi_size=0, order_side=, order_price=0, order_size=0
+bot elapsed_time:91.47[min]
+private access per min=59.58, num private access=5512, num public access=5262
+dt=2019-04-24 23:08:00, close=616427, predict=[3.], pl=26.85, num_trade=3, win_rate=0.33, posi_side=, posi_price=0, posi_size=0, order_side=, order_price=0, order_size=0
+bot elapsed_time:92.47[min]
+private access per min=58.98, num private access=5514, num public access=5262
+dt=2019-04-24 23:09:00, close=616492, predict=[3.], pl=26.85, num_trade=3, win_rate=0.33, posi_side=, posi_price=0, posi_size=0, order_side=, order_price=0, order_size=0
+bot elapsed_time:93.47[min]
+private access per min=58.36, num private access=5516, num public access=5262
+dt=2019-04-24 23:10:00, close=616309, predict=[3.], pl=26.85, num_trade=3, win_rate=0.33, posi_side=, posi_price=0, posi_size=0, order_side=, order_price=0, order_size=0
+bot elapsed_time:94.47[min]
+private access per min=57.77, num private access=5518, num public access=5262
+dt=2019-04-24 23:11:00, close=616490, predict=[2.], pl=26.85, num_trade=3, win_rate=0.33, posi_side=, posi_price=0, posi_size=0, order_side=, order_price=0, order_size=0
+ok order - JRF20190424-141104-067772
+new entry: side = sell, price = 616490, size = 0.05
+new entry is not boarded
+new entry boarded: 2019-04-24 23:11:05.039210
+new entry order has been completedave_price=616530.0size=0.05
+position unmatch was detected! Synchronize with account position data.
+posi_side=,posi_price=0,posi_size=0
+[{'product_code': 'FX_BTC_JPY', 'side': 'SELL', 'price': 616530.0, 'size': 0.05, 'commission': 0.0, 'swap_point_accumulate': 0.0, 'require_collateral': 2055.1, 'open_date': '2019-04-24T14:11:04.37', 'leverage': 15.0, 'pnl': 0.0, 'sfd': 0.0}]
+synchronized position data, side=sell, size=0.05, price=616530
+current position: side=sell,price=616530,size=0.05
+ok order - JRF20190424-141105-691539
+pl order: side = buy, price = 616030, size = 0.05
+pl order is not boarded
+pl order boarded: 2019-04-24 23:11:06.397039
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:95.47[min]
+private access per min=58.17, num private access=5613, num public access=5348
+dt=2019-04-24 23:12:00, close=616790, predict=[2.], pl=-10.35, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:96.47[min]
+private access per min=58.43, num private access=5698, num public access=5431
+dt=2019-04-24 23:13:00, close=616984, predict=[2.], pl=-19.75, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:97.48[min]
+private access per min=58.69, num private access=5783, num public access=5514
+dt=2019-04-24 23:14:00, close=616942, predict=[2.], pl=-18.15, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:98.46[min]
+private access per min=58.92, num private access=5864, num public access=5593
+dt=2019-04-24 23:15:00, close=617452, predict=[2.], pl=-44.05, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:99.48[min]
+private access per min=59.19, num private access=5950, num public access=5677
+dt=2019-04-24 23:16:00, close=617143, predict=[2.], pl=-31.5, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:100.47[min]
+private access per min=59.44, num private access=6033, num public access=5758
+dt=2019-04-24 23:17:00, close=617100, predict=[2.], pl=-25.8, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:101.47[min]
+private access per min=59.64, num private access=6114, num public access=5837
+dt=2019-04-24 23:18:00, close=617200, predict=[2.], pl=-26.8, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:102.47[min]
+private access per min=59.92, num private access=6203, num public access=5924
+dt=2019-04-24 23:19:00, close=617145, predict=[2.], pl=-28.2, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:103.48[min]
+private access per min=60.22, num private access=6293, num public access=6012
+dt=2019-04-24 23:20:00, close=616965, predict=[2.], pl=-21.3, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:104.47[min]
+private access per min=60.5, num private access=6382, num public access=6099
+dt=2019-04-24 23:21:00, close=617236, predict=[2.], pl=-34.35, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:105.47[min]
+private access per min=60.74, num private access=6471, num public access=6186
+dt=2019-04-24 23:22:00, close=617349, predict=[2.], pl=-37.7, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:106.47[min]
+private access per min=61.03, num private access=6562, num public access=6275
+dt=2019-04-24 23:23:00, close=616914, predict=[3.], pl=-17.15, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:107.46[min]
+private access per min=61.31, num private access=6653, num public access=6364
+dt=2019-04-24 23:24:00, close=617112, predict=[3.], pl=-25.5, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:108.46[min]
+private access per min=61.59, num private access=6745, num public access=6454
+dt=2019-04-24 23:25:00, close=617081, predict=[2.], pl=-25.5, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:109.47[min]
+private access per min=61.87, num private access=6837, num public access=6544
+dt=2019-04-24 23:26:00, close=616920, predict=[3.], pl=-17.55, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:110.47[min]
+private access per min=62.12, num private access=6928, num public access=6633
+dt=2019-04-24 23:27:00, close=616485, predict=[3.], pl=3.5, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:111.47[min]
+private access per min=62.41, num private access=7022, num public access=6725
+dt=2019-04-24 23:28:00, close=616299, predict=[3.], pl=13.95, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:112.47[min]
+private access per min=62.69, num private access=7117, num public access=6818
+dt=2019-04-24 23:29:00, close=616199, predict=[3.], pl=17.95, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:113.47[min]
+private access per min=62.94, num private access=7209, num public access=6908
+dt=2019-04-24 23:30:00, close=616545, predict=[2.], pl=0.0, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:114.47[min]
+private access per min=63.24, num private access=7304, num public access=7001
+dt=2019-04-24 23:31:00, close=616639, predict=[2.], pl=0.0, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:115.47[min]
+private access per min=63.48, num private access=7397, num public access=7092
+dt=2019-04-24 23:32:00, close=616298, predict=[3.], pl=15.1, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:116.47[min]
+private access per min=63.73, num private access=7490, num public access=7183
+dt=2019-04-24 23:33:00, close=616385, predict=[3.], pl=11.45, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:117.47[min]
+private access per min=63.99, num private access=7584, num public access=7275
+dt=2019-04-24 23:34:00, close=616582, predict=[2.], pl=6.05, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:118.47[min]
+private access per min=64.23, num private access=7676, num public access=7365
+dt=2019-04-24 23:35:00, close=616991, predict=[3.], pl=-19.6, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:119.47[min]
+private access per min=64.41, num private access=7763, num public access=7450
+dt=2019-04-24 23:36:00, close=616935, predict=[2.], pl=-20.05, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:120.48[min]
+private access per min=64.6, num private access=7850, num public access=7535
+dt=2019-04-24 23:37:00, close=616640, predict=[2.], pl=-6.300000000000001, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:121.47[min]
+private access per min=64.77, num private access=7936, num public access=7619
+dt=2019-04-24 23:39:00, close=616919, predict=[2.], pl=-17.2, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:122.46[min]
+private access per min=64.98, num private access=8026, num public access=7707
+dt=2019-04-24 23:39:00, close=616919, predict=[2.], pl=-31.5, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:123.46[min]
+private access per min=65.18, num private access=8116, num public access=7795
+dt=2019-04-24 23:40:00, close=617618, predict=[2.], pl=-51.45, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:124.47[min]
+private access per min=65.39, num private access=8208, num public access=7885
+dt=2019-04-24 23:41:00, close=617782, predict=[2.], pl=-58.8, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:125.47[min]
+private access per min=65.58, num private access=8298, num public access=7973
+cryptowatch download error!
+before=0,after=1556116860
+cryptowatch download error!
+before=0,after=1556116860
+cryptowatch download error!
+before=0,after=1556116860
+cryptowatch download error!
+before=0,after=1556116860
+cryptowatch download error!
+before=0,after=1556116860
+cryptowatch download error!
+before=0,after=1556116860
+crypto watch data download error!
+crypto watch data download error!
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:126.46[min]
+private access per min=65.76, num private access=8385, num public access=8058
+cryptowatch download error!
+before=0,after=1556116860
+cryptowatch download error!
+before=0,after=1556116860
+dt=2019-04-24 23:43:00, close=617876, predict=[3.], pl=-65.3, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:127.46[min]
+private access per min=65.92, num private access=8472, num public access=8143
+dt=2019-04-24 23:44:00, close=617880, predict=[3.], pl=-63.150000000000006, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:128.47[min]
+private access per min=66.12, num private access=8563, num public access=8232
+dt=2019-04-24 23:45:00, close=616922, predict=[3.], pl=-16.55, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:129.47[min]
+private access per min=66.3, num private access=8654, num public access=8321
+dt=2019-04-24 23:46:00, close=616839, predict=[3.], pl=-10.3, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:130.46[min]
+private access per min=66.5, num private access=8745, num public access=8410
+dt=2019-04-24 23:47:00, close=617185, predict=[2.], pl=-31.9, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:131.47[min]
+private access per min=66.69, num private access=8838, num public access=8501
+dt=2019-04-24 23:48:00, close=616935, predict=[3.], pl=-16.1, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:132.47[min]
+private access per min=66.86, num private access=8927, num public access=8588
+dt=2019-04-24 23:49:00, close=616899, predict=[3.], pl=-16.65, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:133.47[min]
+private access per min=67.01, num private access=9014, num public access=8673
+dt=2019-04-24 23:50:00, close=617073, predict=[3.], pl=-25.75, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:134.48[min]
+private access per min=67.21, num private access=9108, num public access=8765
+dt=2019-04-24 23:51:00, close=617328, predict=[3.], pl=-37.9, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:135.48[min]
+private access per min=67.38, num private access=9199, num public access=8854
+dt=2019-04-24 23:52:00, close=617562, predict=[3.], pl=-46.35, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:136.47[min]
+private access per min=67.52, num private access=9286, num public access=8939
+dt=2019-04-24 23:54:00, close=617666, predict=[2.], pl=-56.3, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:137.46[min]
+private access per min=67.67, num private access=9374, num public access=9025
+dt=2019-04-24 23:54:00, close=617666, predict=[2.], pl=-46.8, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:138.47[min]
+private access per min=67.85, num private access=9466, num public access=9115
+dt=2019-04-24 23:55:00, close=617375, predict=[3.], pl=-38.25, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:139.47[min]
+private access per min=68.01, num private access=9556, num public access=9203
+dt=2019-04-24 23:56:00, close=617162, predict=[3.], pl=-27.25, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:140.48[min]
+private access per min=68.19, num private access=9651, num public access=9296
+dt=2019-04-24 23:57:00, close=617201, predict=[0.], pl=-31.5, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:141.47[min]
+private access per min=68.37, num private access=9743, num public access=9386
+dt=2019-04-24 23:58:00, close=617291, predict=[2.], pl=-36.5, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:142.46[min]
+private access per min=68.55, num private access=9838, num public access=9479
+dt=2019-04-24 23:59:00, close=617145, predict=[3.], pl=-26.55, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:143.46[min]
+private access per min=68.75, num private access=9935, num public access=9574
+dt=2019-04-25 00:00:00, close=617217, predict=[2.], pl=-38.3, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:144.47[min]
+private access per min=68.93, num private access=10031, num public access=9668
+cryptowatch download error!
+before=0,after=1556118000
+cryptowatch download error!
+before=0,after=1556118000
+cryptowatch download error!
+before=0,after=1556118000
+cryptowatch download error!
+before=0,after=1556118000
+cryptowatch download error!
+before=0,after=1556118000
+cryptowatch download error!
+before=0,after=1556118000
+crypto watch data download error!
+crypto watch data download error!
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:145.47[min]
+private access per min=69.07, num private access=10120, num public access=9755
+cryptowatch download error!
+before=0,after=1556118000
+cryptowatch download error!
+before=0,after=1556118000
+dt=2019-04-25 00:02:00, close=617724, predict=[3.], pl=-55.1, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:146.47[min]
+private access per min=69.22, num private access=10211, num public access=9844
+dt=2019-04-25 00:03:00, close=617711, predict=[2.], pl=-59.75, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:147.47[min]
+private access per min=69.4, num private access=10307, num public access=9938
+dt=2019-04-25 00:04:00, close=617908, predict=[2.], pl=-68.3, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:148.47[min]
+private access per min=69.57, num private access=10401, num public access=10030
+dt=2019-04-25 00:05:00, close=618054, predict=[2.], pl=-73.05, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:149.47[min]
+private access per min=69.73, num private access=10495, num public access=10122
+dt=2019-04-25 00:06:00, close=618128, predict=[2.], pl=-77.4, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:150.46[min]
+private access per min=69.87, num private access=10586, num public access=10211
+dt=2019-04-25 00:07:00, close=618365, predict=[2.], pl=-90.35, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:151.47[min]
+private access per min=70.02, num private access=10678, num public access=10301
+dt=2019-04-25 00:08:00, close=618229, predict=[2.], pl=-82.7, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:152.48[min]
+private access per min=70.15, num private access=10770, num public access=10391
+dt=2019-04-25 00:09:00, close=617842, predict=[3.], pl=-65.55, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:153.47[min]
+private access per min=70.3, num private access=10862, num public access=10481
+dt=2019-04-25 00:10:00, close=618120, predict=[2.], pl=-76.6, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:154.47[min]
+private access per min=70.45, num private access=10957, num public access=10574
+dt=2019-04-25 00:11:00, close=618180, predict=[2.], pl=-79.2, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:155.47[min]
+private access per min=70.61, num private access=11051, num public access=10666
+dt=2019-04-25 00:12:00, close=618419, predict=[2.], pl=-92.55, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:156.47[min]
+private access per min=70.74, num private access=11143, num public access=10756
+dt=2019-04-25 00:13:00, close=618305, predict=[2.], pl=-84.55, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
+synchronized position data, side=sell, size=0.05, price=616530
+synchronized order data, side=buy, size=0.05, price=616030
+bot elapsed_time:157.47[min]
+private access per min=70.87, num private access=11234, num public access=10845
+dt=2019-04-25 00:14:00, close=618107, predict=[1.], pl=-82.4, num_trade=3, win_rate=0.33, posi_side=sell, posi_price=616530, posi_size=0.05, order_side=buy, order_price=616030, order_size=0.05
 exit order
-waiting cancell order JRF20190423-160310-135391
+waiting cancell order JRF20190424-141105-691539
 order has been successfully cancelled
 started price tracing order
-ok order - JRF20190423-160804-530235
+ok order - JRF20190424-151405-720966
 confirmed the order has been boarded
-waiting cancell order JRF20190423-160804-530235
+waiting cancell order JRF20190424-151405-720966
 cancel failed order has been partially executed. exe size=0.05
-price tracing order - executed 0.05 @629734.0
+price tracing order - executed 0.05 @618129.0
 price tracing order has been completed.
 current positions:
 []
 current orders:
 []
-ave price=629734.0, exe size = 0.05
-ok order - JRF20190423-160808-816415
-new entry: side = buy, price = 629800, size = 0.05
+ave price=618129.0, exe size = 0.05
+ok order - JRF20190424-151408-611456
+new entry: side = buy, price = 618107, size = 0.05
 new entry is not boarded
-[]
-new entry boarded: 2019-04-24 01:08:09.267365
-current position: side = buy, price = 629716.0, size = 0.05
-new entry order has been fully executed
-ok order - JRF20190423-160809-137499
-pl order: side = sell, price = 630216.0, size = 0.05
+new entry boarded: 2019-04-25 00:14:09.100014
+new entry order has been completedave_price=618107.0size=0.05
+position unmatch was detected! Synchronize with account position data.
+posi_side=,posi_price=0,posi_size=0
+[{'product_code': 'FX_BTC_JPY', 'side': 'BUY', 'price': 618107.0, 'size': 0.05, 'commission': 0.0, 'swap_point_accumulate': 0.0, 'require_collateral': 2060.3566666666666, 'open_date': '2019-04-24T15:14:08.643', 'leverage': 15.0, 'pnl': 1.0, 'sfd': 0.0}]
+synchronized position data, side=buy, size=0.05, price=618107
+current position: side=buy,price=618107,size=0.05
+ok order - JRF20190424-151410-720988
+pl order: side = sell, price = 618607, size = 0.05
 pl order is not boarded
-[]
-pl order boarded: 2019-04-24 01:08:10.707842
-bot elapsed_time:9.19[min]
-private access per min=84.43, num private access=841, num public access=776
-dt=2019-04-24 01:09:00, close=629465, predict=[1.], pl=4.999999999999998, num_trade=3, win_rate=0.67, posi_side=buy, posi_price=629716.0, order_side=sell, order_price=630216.0
-bot elapsed_time:10.19[min]
-private access per min=84.9, num private access=931, num public access=866
-dt=2019-04-24 01:10:00, close=629220, predict=[1.], pl=-17.1, num_trade=3, win_rate=0.67, posi_side=buy, posi_price=629716.0, order_side=sell, order_price=630216.0
-bot elapsed_time:11.19[min]
-private access per min=84.62, num private access=1013, num public access=948
-dt=2019-04-24 01:11:00, close=629122, predict=[1.], pl=-13.3, num_trade=3, win_rate=0.67, posi_side=buy, posi_price=629716.0, order_side=sell, order_price=630216.0
-bot elapsed_time:12.18[min]
-private access per min=85.18, num private access=1104, num public access=1039
-dt=2019-04-24 01:12:00, close=628852, predict=[1.], pl=-27.75, num_trade=3, win_rate=0.67, posi_side=buy, posi_price=629716.0, order_side=sell, order_price=630216.0
-bot elapsed_time:13.19[min]
-private access per min=85.71, num private access=1197, num public access=1132
-dt=2019-04-24 01:13:00, close=629244, predict=[1.], pl=-8.25, num_trade=3, win_rate=0.67, posi_side=buy, posi_price=629716.0, order_side=sell, order_price=630216.0
-bot elapsed_time:14.19[min]
-private access per min=86.13, num private access=1289, num public access=1224
-dt=2019-04-24 01:14:00, close=629167, predict=[1.], pl=-12.350000000000001, num_trade=3, win_rate=0.67, posi_side=buy, posi_price=629716.0, order_side=sell, order_price=630216.0
-bot elapsed_time:15.2[min]
-private access per min=86.31, num private access=1379, num public access=1314
-dt=2019-04-24 01:15:00, close=629004, predict=[1.], pl=-17.700000000000003, num_trade=3, win_rate=0.67, posi_side=buy, posi_price=629716.0, order_side=sell, order_price=630216.0
-bot elapsed_time:16.19[min]
-private access per min=86.29, num private access=1464, num public access=1399
-dt=2019-04-24 01:16:00, close=628912, predict=[1.], pl=-24.4, num_trade=3, win_rate=0.67, posi_side=buy, posi_price=629716.0, order_side=sell, order_price=630216.0
-bot elapsed_time:17.19[min]
-private access per min=86.2, num private access=1549, num public access=1484
-dt=2019-04-24 01:17:00, close=628962, predict=[1.], pl=-16.950000000000003, num_trade=3, win_rate=0.67, posi_side=buy, posi_price=629716.0, order_side=sell, order_price=630216.0
-bot elapsed_time:18.19[min]
-private access per min=86.44, num private access=1640, num public access=1575
-dt=2019-04-24 01:18:00, close=628929, predict=[1.], pl=-22.800000000000004, num_trade=3, win_rate=0.67, posi_side=buy, posi_price=629716.0, order_side=sell, order_price=630216.0
-bot elapsed_time:19.19[min]
-private access per min=86.55, num private access=1728, num public access=1663
-dt=2019-04-24 01:19:00, close=628484, predict=[1.], pl=-45.050000000000004, num_trade=3, win_rate=0.67, posi_side=buy, posi_price=629716.0, order_side=sell, order_price=630216.0
-bot elapsed_time:20.18[min]
-private access per min=86.57, num private access=1815, num public access=1750
-dt=2019-04-24 01:20:00, close=628702, predict=[1.], pl=-33.35, num_trade=3, win_rate=0.67, posi_side=buy, posi_price=629716.0, order_side=sell, order_price=630216.0
-bot elapsed_time:21.19[min]
-private access per min=86.43, num private access=1899, num public access=1834
-dt=2019-04-24 01:21:00, close=628600, predict=[1.], pl=-37.15, num_trade=3, win_rate=0.67, posi_side=buy, posi_price=629716.0, order_side=sell, order_price=630216.0
-bot elapsed_time:22.18[min]
-private access per min=86.34, num private access=1983, num public access=1918
-dt=2019-04-24 01:22:00, close=628499, predict=[1.], pl=-49.50000000000001, num_trade=3, win_rate=0.67, posi_side=buy, posi_price=629716.0, order_side=sell, order_price=630216.0
-bot elapsed_time:23.19[min]
-private access per min=86.39, num private access=2071, num public access=2006
-dt=2019-04-24 01:23:00, close=628217, predict=[1.], pl=-59.949999999999996, num_trade=3, win_rate=0.67, posi_side=buy, posi_price=629716.0, order_side=sell, order_price=630216.0
-bot elapsed_time:24.18[min]
-private access per min=86.58, num private access=2161, num public access=2096
-dt=2019-04-24 01:24:00, close=628476, predict=[1.], pl=-46.5, num_trade=3, win_rate=0.67, posi_side=buy, posi_price=629716.0, order_side=sell, order_price=630216.0
-bot elapsed_time:25.19[min]
-private access per min=86.65, num private access=2250, num public access=2185
-dt=2019-04-24 01:25:00, close=628577, predict=[1.], pl=-32.75, num_trade=3, win_rate=0.67, posi_side=buy, posi_price=629716.0, order_side=sell, order_price=630216.0
-bot elapsed_time:26.19[min]
-private access per min=86.72, num private access=2339, num public access=2274
-dt=2019-04-24 01:26:00, close=629134, predict=[2.], pl=-24.050000000000004, num_trade=3, win_rate=0.67, posi_side=buy, posi_price=629716.0, order_side=sell, order_price=630216.0
+pl order boarded: 2019-04-25 00:14:10.956143
+synchronized position data, side=buy, size=0.05, price=618107
+synchronized order data, side=sell, size=0.05, price=618607
+bot elapsed_time:158.47[min]
+private access per min=71.1, num private access=11342, num public access=10932
+dt=2019-04-25 00:15:00, close=618156, predict=[2.], pl=-75.5, num_trade=4, win_rate=0.25, posi_side=buy, posi_price=618107, posi_size=0.05, order_side=sell, order_price=618607, order_size=0.05
 exit order
-waiting cancell order JRF20190423-160809-137499
+waiting cancell order JRF20190424-151410-720988
 order has been successfully cancelled
 started price tracing order
-ok order - JRF20190423-162606-136967
+ok order - JRF20190424-151505-363571
 confirmed the order has been boarded
-waiting cancell order JRF20190423-162606-136967
+waiting cancell order JRF20190424-151505-363571
+order has been successfully cancelled
+ok order - JRF20190424-151508-140291
+confirmed the order has been boarded
+price tracing order - replaced order for sell, @618232.0 x 0.05
+waiting cancell order JRF20190424-151508-140291
+order has been successfully cancelled
+ok order - JRF20190424-151511-140309
+confirmed the order has been boarded
+price tracing order - replaced order for sell, @618234.0 x 0.05
+waiting cancell order JRF20190424-151511-140309
+order has been successfully cancelled
+ok order - JRF20190424-151513-140326
+confirmed the order has been boarded
+price tracing order - replaced order for sell, @618224.0 x 0.05
+waiting cancell order JRF20190424-151513-140326
+order has been successfully cancelled
+ok order - JRF20190424-151516-611766
+confirmed the order has been boarded
+price tracing order - replaced order for sell, @618174.0 x 0.05
+waiting cancell order JRF20190424-151516-611766
+order has been successfully cancelled
+ok order - JRF20190424-151519-089598
+confirmed the order has been boarded
+price tracing order - replaced order for sell, @618274.0 x 0.05
+waiting cancell order JRF20190424-151519-089598
+order has been successfully cancelled
+ok order - JRF20190424-151522-611801
+confirmed the order has been boarded
+price tracing order - replaced order for sell, @618258.0 x 0.05
+waiting cancell order JRF20190424-151522-611801
+order has been successfully cancelled
+ok order - JRF20190424-151525-089632
+confirmed the order has been boarded
+price tracing order - replaced order for sell, @618247.0 x 0.05
+waiting cancell order JRF20190424-151525-089632
 cancel failed order has been partially executed. exe size=0.05
-price tracing order - executed 0.05 @628940.0
+price tracing order - executed 0.05 @618247.0
 price tracing order has been completed.
 current positions:
 []
 current orders:
 []
-ave price=628940.0, exe size = 0.05
-ok order - JRF20190423-162611-823283
-new entry: side = sell, price = 629134, size = 0.05
+ave price=618247.0, exe size = 0.05
+ok order - JRF20190424-151528-611824
+new entry: side = sell, price = 618156, size = 0.05
 new entry is not boarded
-[]
-new entry boarded: 2019-04-24 01:26:12.630673
-current position: side = sell, price = 629134.0, size = 0.05
-new entry order has been fully executed
-ok order - JRF20190423-162617-144809
-pl order: side = buy, price = 628634.0, size = 0.05
+new entry boarded: 2019-04-25 00:15:28.957806
+new entry order has been completedave_price=618235.0size=0.05
+position unmatch was detected! Synchronize with account position data.
+posi_side=,posi_price=0,posi_size=0
+[{'product_code': 'FX_BTC_JPY', 'side': 'SELL', 'price': 618235.0, 'size': 0.05, 'commission': 0.0, 'swap_point_accumulate': 0.0, 'require_collateral': 2060.7833333333333, 'open_date': '2019-04-24T15:15:28.403', 'leverage': 15.0, 'pnl': -1.8, 'sfd': 0.0}]
+synchronized position data, side=sell, size=0.05, price=618235
+current position: side=sell,price=618235,size=0.05
+ok order - JRF20190424-151529-611843
+pl order: side = buy, price = 617735, size = 0.05
 pl order is not boarded
-[]
-pl order boarded: 2019-04-24 01:26:18.506217
-bot elapsed_time:27.19[min]
-private access per min=87.05, num private access=2435, num public access=2344
-dt=2019-04-24 01:27:00, close=629232, predict=[2.], pl=-36.0, num_trade=4, win_rate=0.5, posi_side=sell, posi_price=629134.0, order_side=buy, order_price=628634.0
-bot elapsed_time:28.19[min]
-private access per min=87.03, num private access=2522, num public access=2431
-dt=2019-04-24 01:28:00, close=629276, predict=[2.], pl=-31.45, num_trade=4, win_rate=0.5, posi_side=sell, posi_price=629134.0, order_side=buy, order_price=628634.0
-bot elapsed_time:29.19[min]
-private access per min=87.1, num private access=2610, num public access=2519
-dt=2019-04-24 01:29:00, close=629456, predict=[2.], pl=-42.25, num_trade=4, win_rate=0.5, posi_side=sell, posi_price=629134.0, order_side=buy, order_price=628634.0
-bot elapsed_time:30.19[min]
-private access per min=86.92, num private access=2692, num public access=2601
-dt=2019-04-24 01:30:00, close=629649, predict=[2.], pl=-48.3, num_trade=4, win_rate=0.5, posi_side=sell, posi_price=629134.0, order_side=buy, order_price=628634.0
-bot elapsed_time:31.18[min]
-private access per min=86.89, num private access=2777, num public access=2686
-dt=2019-04-24 01:31:00, close=629433, predict=[1.], pl=-36.25, num_trade=4, win_rate=0.5, posi_side=sell, posi_price=629134.0, order_side=buy, order_price=628634.0
-exit order
-waiting cancell order JRF20190423-162617-144809
-order has been successfully cancelled
-started price tracing order
-ok order - JRF20190423-163105-458612
-confirmed the order has been boarded
-waiting cancell order JRF20190423-163105-458612
-cancel failed order has been partially executed. exe size=0.05
-price tracing order - executed 0.05 @629442.0
-price tracing order has been completed.
-current positions:
-[]
-current orders:
-[]
-ave price=629442.0, exe size = 0.05
-ok order - JRF20190423-163110-507819
-new entry: side = buy, price = 629433, size = 0.05
-new entry is not boarded
-[]
-new entry boarded: 2019-04-24 01:31:10.958190
-bot elapsed_time:32.19[min]
-private access per min=87.36, num private access=2880, num public access=2689
-dt=2019-04-24 01:32:00, close=629783, predict=[1.], pl=-51.65, num_trade=5, win_rate=0.4, posi_side=, posi_price=0, order_side=buy, order_price=629433
-new entry order has been expired: 2019-04-24 01:32:14.363154
-ok order - JRF20190423-163214-508422
-new entry: side = buy, price = 629783, size = 0.05
-new entry is not boarded
-[]
-new entry boarded: 2019-04-24 01:32:15.705512
-bot elapsed_time:33.19[min]
-private access per min=87.69, num private access=2978, num public access=2690
-dt=2019-04-24 01:33:00, close=630293, predict=[1.], pl=-51.65, num_trade=5, win_rate=0.4, posi_side=, posi_price=0, order_side=buy, order_price=629783
-new entry order has been expired: 2019-04-24 01:33:19.614069
-ok order - JRF20190423-163320-650298
-new entry: side = buy, price = 630293, size = 0.05
-new entry is not boarded
-[]
-new entry boarded: 2019-04-24 01:33:21.074871
-current position: side = buy, price = 630293.0, size = 0.05
-new entry order has been fully executed
-ok order - JRF20190423-163326-345332
-pl order: side = sell, price = 630793.0, size = 0.05
 pl order is not boarded
-[]
-pl order boarded: 2019-04-24 01:33:26.818417
-bot elapsed_time:34.19[min]
-private access per min=87.94, num private access=3075, num public access=2746
-dt=2019-04-24 01:34:00, close=630513, predict=[1.], pl=-32.199999999999996, num_trade=5, win_rate=0.4, posi_side=buy, posi_price=630293.0, order_side=sell, order_price=630793.0
-pl order has been fully executed
-ok order - JRF20190423-163433-650905
-new entry: side = buy, price = 630513, size = 0.05
-new entry is not boarded
-[]
-new entry boarded: 2019-04-24 01:34:34.178836
-bot elapsed_time:35.19[min]
-private access per min=88.16, num private access=3171, num public access=2791
-dt=2019-04-24 01:35:00, close=630669, predict=[1.], pl=10.750000000000004, num_trade=6, win_rate=0.5, posi_side=, posi_price=0, order_side=buy, order_price=630513
-new entry order has been expired: 2019-04-24 01:35:39.923859
-ok order - JRF20190423-163540-651375
-new entry: side = buy, price = 630669, size = 0.05
-new entry is not boarded
-[]
-new entry boarded: 2019-04-24 01:35:41.258994
-bot elapsed_time:36.19[min]
-private access per min=88.41, num private access=3269, num public access=2792
-dt=2019-04-24 01:36:00, close=631058, predict=[1.], pl=10.750000000000004, num_trade=6, win_rate=0.5, posi_side=, posi_price=0, order_side=buy, order_price=630669
-new entry order has been expired: 2019-04-24 01:36:45.033720
-ok order - JRF20190423-163645-347318
-new entry: side = buy, price = 631058, size = 0.05
-new entry is not boarded
-[]
-new entry boarded: 2019-04-24 01:36:46.517537
-current position: side = buy, price = 630939.0, size = 0.05
-new entry order has been fully executed
-ok order - JRF20190423-163647-713501
-pl order: side = sell, price = 631439.0, size = 0.05
-pl order is not boarded
-[]
-pl order boarded: 2019-04-24 01:36:47.822656
-bot elapsed_time:37.19[min]
-private access per min=88.73, num private access=3369, num public access=2816
-dt=2019-04-24 01:37:00, close=630956, predict=[1.], pl=-10.449999999999998, num_trade=6, win_rate=0.5, posi_side=buy, posi_price=630939.0, order_side=sell, order_price=631439.0
-bot elapsed_time:38.18[min]
-private access per min=88.82, num private access=3461, num public access=2908
-dt=2019-04-24 01:38:00, close=631035, predict=[1.], pl=-9.899999999999997, num_trade=6, win_rate=0.5, posi_side=buy, posi_price=630939.0, order_side=sell, order_price=631439.0
-bot elapsed_time:39.18[min]
-private access per min=88.88, num private access=3552, num public access=2999
-dt=2019-04-24 01:39:00, close=630737, predict=[1.], pl=-24.799999999999997, num_trade=6, win_rate=0.5, posi_side=buy, posi_price=630939.0, order_side=sell, order_price=631439.0
-bot elapsed_time:40.18[min]
-private access per min=88.98, num private access=3645, num public access=3092
-dt=2019-04-24 01:40:00, close=630873, predict=[3.], pl=-23.9, num_trade=6, win_rate=0.5, posi_side=buy, posi_price=630939.0, order_side=sell, order_price=631439.0
-bot elapsed_time:41.19[min]
-private access per min=89.02, num private access=3736, num public access=3183
-dt=2019-04-24 01:41:00, close=630841, predict=[3.], pl=-19.749999999999996, num_trade=6, win_rate=0.5, posi_side=buy, posi_price=630939.0, order_side=sell, order_price=631439.0
-bot elapsed_time:42.19[min]
-private access per min=89.05, num private access=3827, num public access=3274
-dt=2019-04-24 01:42:00, close=631275, predict=[3.], pl=3.8500000000000014, num_trade=6, win_rate=0.5, posi_side=buy, posi_price=630939.0, order_side=sell, order_price=631439.0
-bot elapsed_time:43.19[min]
-private access per min=89.11, num private access=3918, num public access=3365
-dt=2019-04-24 01:43:00, close=631385, predict=[2.], pl=7.5000000000000036, num_trade=6, win_rate=0.5, posi_side=buy, posi_price=630939.0, order_side=sell, order_price=631439.0
-exit order
-waiting cancell order JRF20190423-163647-713501
-order has been successfully cancelled
-started price tracing order
-ok order - JRF20190423-164306-350529
-confirmed the order has been boarded
-waiting cancell order JRF20190423-164306-350529
-order has been successfully cancelled
-ok order - JRF20190423-164310-070049
-confirmed the order has been boarded
-price tracing order - replaced order for sell, @631296.0 x 0.05
-waiting cancell order JRF20190423-164310-070049
-cancel failed order has been partially executed. exe size=0.05
-price tracing order - executed 0.05 @631296.0
-price tracing order has been completed.
-current positions:
-[]
-current orders:
-[]
-ave price=631296.0, exe size = 0.05
-ok order - JRF20190423-164316-350657
-new entry: side = sell, price = 631385, size = 0.05
-new entry is not boarded
-[]
-new entry boarded: 2019-04-24 01:43:16.855670
-bot elapsed_time:44.19[min]
-private access per min=89.4, num private access=4020, num public access=3370
-dt=2019-04-24 01:44:00, close=631262, predict=[2.], pl=25.350000000000005, num_trade=7, win_rate=0.57, posi_side=, posi_price=0, order_side=sell, order_price=631385
-current position: side = sell, price = 631385.0, size = 0.05
-new entry order has been fully executed
-ok order - JRF20190423-164408-144687
-pl order: side = buy, price = 630885.0, size = 0.05
-pl order is not boarded
-[]
-pl order boarded: 2019-04-24 01:44:09.052668
-bot elapsed_time:45.19[min]
-private access per min=89.51, num private access=4115, num public access=3454
-dt=2019-04-24 01:45:00, close=631457, predict=[2.], pl=2.600000000000004, num_trade=7, win_rate=0.57, posi_side=sell, posi_price=631385.0, order_side=buy, order_price=630885.0
-pl order has been fully executed
-ok order - JRF20190423-164553-515435
-new entry: side = sell, price = 631457, size = 0.05
-new entry is not boarded
-[]
-new entry boarded: 2019-04-24 01:45:54.086669
-bot elapsed_time:46.19[min]
-private access per min=89.53, num private access=4205, num public access=3527
-dt=2019-04-24 01:46:00, close=630631, predict=[3.], pl=52.900000000000006, num_trade=8, win_rate=0.62, posi_side=, posi_price=0, order_side=sell, order_price=631457
-new entry order has been expired: 2019-04-24 01:47:00.722799
-bot elapsed_time:47.19[min]
-private access per min=89.69, num private access=4302, num public access=3527
-dt=2019-04-24 01:47:00, close=630695, predict=[3.], pl=52.900000000000006, num_trade=8, win_rate=0.62, posi_side=, posi_price=0, order_side=, order_price=0
-bot elapsed_time:48.19[min]
-private access per min=87.87, num private access=4302, num public access=3527
-dt=2019-04-24 01:48:00, close=630435, predict=[1.], pl=52.900000000000006, num_trade=8, win_rate=0.62, posi_side=, posi_price=0, order_side=, order_price=0
-ok order - JRF20190423-164803-516611
-new entry: side = buy, price = 630435, size = 0.05
-new entry is not boarded
-[]
-new entry boarded: 2019-04-24 01:48:04.400390
-current position: side = buy, price = 630384.0, size = 0.05
-new entry order has been fully executed
-ok order - JRF20190423-164804-719242
-pl order: side = sell, price = 630884.0, size = 0.05
-pl order is not boarded
-[]
-pl order boarded: 2019-04-24 01:48:05.855105
-bot elapsed_time:49.19[min]
-private access per min=87.98, num private access=4396, num public access=3614
-dt=2019-04-24 01:49:00, close=630006, predict=[1.], pl=13.450000000000005, num_trade=8, win_rate=0.62, posi_side=buy, posi_price=630384.0, order_side=sell, order_price=630884.0
-bot elapsed_time:50.19[min]
-private access per min=88.05, num private access=4488, num public access=3706
-dt=2019-04-24 01:50:00, close=630386, predict=[1.], pl=24.650000000000006, num_trade=8, win_rate=0.62, posi_side=buy, posi_price=630384.0, order_side=sell, order_price=630884.0
-bot elapsed_time:51.19[min]
-private access per min=88.14, num private access=4581, num public access=3799
-dt=2019-04-24 01:51:00, close=630626, predict=[3.], pl=39.400000000000006, num_trade=8, win_rate=0.62, posi_side=buy, posi_price=630384.0, order_side=sell, order_price=630884.0
-bot elapsed_time:52.18[min]
-private access per min=88.23, num private access=4673, num public access=3891
-dt=2019-04-24 01:52:00, close=630650, predict=[1.], pl=43.35000000000001, num_trade=8, win_rate=0.62, posi_side=buy, posi_price=630384.0, order_side=sell, order_price=630884.0
-bot elapsed_time:53.19[min]
-private access per min=88.27, num private access=4764, num public access=3982
-dt=2019-04-24 01:53:00, close=630387, predict=[1.], pl=31.000000000000004, num_trade=8, win_rate=0.62, posi_side=buy, posi_price=630384.0, order_side=sell, order_price=630884.0
-bot elapsed_time:54.19[min]
-private access per min=88.3, num private access=4854, num public access=4072
-dt=2019-04-24 01:54:00, close=630402, predict=[1.], pl=29.600000000000005, num_trade=8, win_rate=0.62, posi_side=buy, posi_price=630384.0, order_side=sell, order_price=630884.0
-bot elapsed_time:55.19[min]
-private access per min=88.39, num private access=4948, num public access=4166
-dt=2019-04-24 01:55:00, close=630553, predict=[1.], pl=38.2, num_trade=8, win_rate=0.62, posi_side=buy, posi_price=630384.0, order_side=sell, order_price=630884.0
-bot elapsed_time:56.19[min]
-private access per min=88.48, num private access=5041, num public access=4259
-dt=2019-04-24 01:56:00, close=630500, predict=[1.], pl=34.2, num_trade=8, win_rate=0.62, posi_side=buy, posi_price=630384.0, order_side=sell, order_price=630884.0
-bot elapsed_time:57.19[min]
-private access per min=88.6, num private access=5136, num public access=4354
-dt=2019-04-24 01:57:00, close=630461, predict=[1.], pl=33.900000000000006, num_trade=8, win_rate=0.62, posi_side=buy, posi_price=630384.0, order_side=sell, order_price=630884.0
-bot elapsed_time:58.19[min]
-private access per min=88.75, num private access=5234, num public access=4452
-dt=2019-04-24 01:58:00, close=630645, predict=[1.], pl=38.85000000000001, num_trade=8, win_rate=0.62, posi_side=buy, posi_price=630384.0, order_side=sell, order_price=630884.0
-bot elapsed_time:59.19[min]
-private access per min=88.84, num private access=5328, num public access=4546
-dt=2019-04-24 01:59:00, close=630644, predict=[1.], pl=45.10000000000001, num_trade=8, win_rate=0.62, posi_side=buy, posi_price=630384.0, order_side=sell, order_price=630884.0
-pl order has been fully executed
-ok order - JRF20190423-165933-152379
-new entry: side = buy, price = 630644, size = 0.05
-new entry is not boarded
-[]
-new entry boarded: 2019-04-24 01:59:33.887175
-bot elapsed_time:60.18[min]
-private access per min=88.99, num private access=5425, num public access=4592
-dt=2019-04-24 02:00:00, close=630873, predict=[1.], pl=76.65, num_trade=9, win_rate=0.67, posi_side=, posi_price=0, order_side=buy, order_price=630644
-new entry order has been expired: 2019-04-24 02:00:37.165003
-ok order - JRF20190423-170038-421725
-new entry: side = buy, price = 630873, size = 0.05
-new entry is not boarded
-[]
-new entry boarded: 2019-04-24 02:00:38.854631
-current position: side = buy, price = 630800.0, size = 0.05
-new entry order has been fully executed
-ok order - JRF20190423-170039-421736
-pl order: side = sell, price = 631300.0, size = 0.05
-pl order is not boarded
-[]
-pl order boarded: 2019-04-24 02:00:40.133557
-bot elapsed_time:61.19[min]
-private access per min=89.16, num private access=5525, num public access=4628
-dt=2019-04-24 02:01:00, close=630742, predict=[1.], pl=47.35, num_trade=9, win_rate=0.67, posi_side=buy, posi_price=630800.0, order_side=sell, order_price=631300.0
-bot elapsed_time:62.18[min]
-private access per min=89.18, num private access=5615, num public access=4718
-dt=2019-04-24 02:02:00, close=630312, predict=[1.], pl=31.700000000000003, num_trade=9, win_rate=0.67, posi_side=buy, posi_price=630800.0, order_side=sell, order_price=631300.0
-bot elapsed_time:63.19[min]
-private access per min=89.24, num private access=5709, num public access=4812
-dt=2019-04-24 02:03:00, close=630803, predict=[1.], pl=52.85, num_trade=9, win_rate=0.67, posi_side=buy, posi_price=630800.0, order_side=sell, order_price=631300.0
-bot elapsed_time:64.19[min]
-private access per min=89.3, num private access=5801, num public access=4904
-dt=2019-04-24 02:04:00, close=630737, predict=[1.], pl=51.75000000000001, num_trade=9, win_rate=0.67, posi_side=buy, posi_price=630800.0, order_side=sell, order_price=631300.0
-bot elapsed_time:65.18[min]
-private access per min=89.35, num private access=5894, num public access=4997
-dt=2019-04-24 02:05:00, close=630544, predict=[1.], pl=40.95, num_trade=9, win_rate=0.67, posi_side=buy, posi_price=630800.0, order_side=sell, order_price=631300.0
-bot elapsed_time:66.19[min]
-private access per min=89.4, num private access=5987, num public access=5090
-dt=2019-04-24 02:06:00, close=630152, predict=[1.], pl=22.200000000000003, num_trade=9, win_rate=0.67, posi_side=buy, posi_price=630800.0, order_side=sell, order_price=631300.0
-bot elapsed_time:67.19[min]
-private access per min=89.51, num private access=6084, num public access=5187
-dt=2019-04-24 02:07:00, close=630154, predict=[1.], pl=24.050000000000004, num_trade=9, win_rate=0.67, posi_side=buy, posi_price=630800.0, order_side=sell, order_price=631300.0
-bot elapsed_time:68.19[min]
-private access per min=89.59, num private access=6179, num public access=5282
-dt=2019-04-24 02:08:00, close=630401, predict=[1.], pl=33.550000000000004, num_trade=9, win_rate=0.67, posi_side=buy, posi_price=630800.0, order_side=sell, order_price=631300.0
-bot elapsed_time:69.18[min]
-private access per min=89.68, num private access=6275, num public access=5378
-dt=2019-04-24 02:09:00, close=630712, predict=[1.], pl=49.800000000000004, num_trade=9, win_rate=0.67, posi_side=buy, posi_price=630800.0, order_side=sell, order_price=631300.0
-bot elapsed_time:70.18[min]
-private access per min=89.78, num private access=6371, num public access=5474
-dt=2019-04-24 02:10:00, close=630718, predict=[1.], pl=47.95, num_trade=9, win_rate=0.67, posi_side=buy, posi_price=630800.0, order_side=sell, order_price=631300.0
-bot elapsed_time:71.19[min]
-private access per min=89.82, num private access=6464, num public access=5567
-dt=2019-04-24 02:11:00, close=631132, predict=[1.], pl=66.80000000000001, num_trade=9, win_rate=0.67, posi_side=buy, posi_price=630800.0, order_side=sell, order_price=631300.0
-bot elapsed_time:72.19[min]
-private access per min=89.89, num private access=6559, num public access=5662
-dt=2019-04-24 02:12:00, close=631123, predict=[1.], pl=71.60000000000001, num_trade=9, win_rate=0.67, posi_side=buy, posi_price=630800.0, order_side=sell, order_price=631300.0
-pl order has been fully executed
-ok order - JRF20190423-171212-224508
-new entry: side = buy, price = 631123, size = 0.05
-new entry is not boarded
-[]
-new entry boarded: 2019-04-24 02:12:12.692411
-bot elapsed_time:73.19[min]
-private access per min=90.09, num private access=6663, num public access=5675
-dt=2019-04-24 02:13:00, close=631878, predict=[1.], pl=108.55000000000001, num_trade=10, win_rate=0.7, posi_side=, posi_price=0, order_side=buy, order_price=631123
-new entry order has been expired: 2019-04-24 02:13:18.070853
-ok order - JRF20190423-171318-670476
-new entry: side = buy, price = 631878, size = 0.05
-new entry is not boarded
-[]
-new entry boarded: 2019-04-24 02:13:19.309422
-current position: side = buy, price = 631878.0, size = 0.05
-new entry order has been fully executed
-ok order - JRF20190423-171319-365815
-pl order: side = sell, price = 632378.0, size = 0.05
-pl order is not boarded
-[]
-pl order boarded: 2019-04-24 02:13:20.502530
-bot elapsed_time:74.19[min]
-private access per min=90.21, num private access=6763, num public access=5744
-dt=2019-04-24 02:14:00, close=631713, predict=[1.], pl=71.9, num_trade=10, win_rate=0.7, posi_side=buy, posi_price=631878.0, order_side=sell, order_price=632378.0
-bot elapsed_time:75.19[min]
-private access per min=90.29, num private access=6859, num public access=5840
-dt=2019-04-24 02:15:00, close=631647, predict=[1.], pl=69.70000000000002, num_trade=10, win_rate=0.7, posi_side=buy, posi_price=631878.0, order_side=sell, order_price=632378.0
-bot elapsed_time:76.18[min]
-private access per min=90.36, num private access=6954, num public access=5935
-dt=2019-04-24 02:16:00, close=631642, predict=[1.], pl=70.25000000000001, num_trade=10, win_rate=0.7, posi_side=buy, posi_price=631878.0, order_side=sell, order_price=632378.0
-pl order has been fully executed
-ok order - JRF20190423-171642-672354
-new entry: side = buy, price = 631642, size = 0.05
-new entry is not boarded
-[]
-new entry boarded: 2019-04-24 02:16:43.711607
-bot elapsed_time:77.19[min]
-private access per min=90.5, num private access=7056, num public access=6001
-dt=2019-04-24 02:17:00, close=632738, predict=[1.], pl=128.25, num_trade=11, win_rate=0.73, posi_side=, posi_price=0, order_side=buy, order_price=631642
-new entry order has been expired: 2019-04-24 02:17:48.833055
-ok order - JRF20190423-171749-530226
-new entry: side = buy, price = 632738, size = 0.05
-new entry is not boarded
-[]
-new entry is not boarded
-[]
-new entry boarded: 2019-04-24 02:17:50.664672
-current position: side = buy, price = 632468.0, size = 0.05
-new entry order has been fully executed
-ok order - JRF20190423-171751-088274
-pl order: side = sell, price = 632968.0, size = 0.05
-pl order is not boarded
-[]
-pl order boarded: 2019-04-24 02:17:51.877786
-bot elapsed_time:78.18[min]
-private access per min=90.67, num private access=7160, num public access=6018
-dt=2019-04-24 02:18:00, close=632736, predict=[1.], pl=111.15, num_trade=11, win_rate=0.73, posi_side=buy, posi_price=632468.0, order_side=sell, order_price=632968.0
-pl order has been fully executed
-ok order - JRF20190423-171827-530716
-new entry: side = buy, price = 632736, size = 0.05
-new entry is not boarded
-[]
-new entry boarded: 2019-04-24 02:18:28.696231
-current position: side = buy, price = 632736.0, size = 0.05
-new entry order has been fully executed
-ok order - JRF20190423-171837-673994
-pl order: side = sell, price = 633236.0, size = 0.05
-pl order is not boarded
-[]
-pl order boarded: 2019-04-24 02:18:38.495584
-bot elapsed_time:79.19[min]
-private access per min=90.81, num private access=7261, num public access=6097
-dt=2019-04-24 02:19:00, close=632747, predict=[1.], pl=123.75000000000001, num_trade=12, win_rate=0.75, posi_side=buy, posi_price=632736.0, order_side=sell, order_price=633236.0
-bot elapsed_time:80.19[min]
-private access per min=90.91, num private access=7361, num public access=6197
-dt=2019-04-24 02:20:00, close=632803, predict=[1.], pl=134.35000000000002, num_trade=12, win_rate=0.75, posi_side=buy, posi_price=632736.0, order_side=sell, order_price=633236.0
-bot elapsed_time:81.19[min]
-private access per min=91.0, num private access=7459, num public access=6295
-dt=2019-04-24 02:21:00, close=632728, predict=[1.], pl=132.10000000000002, num_trade=12, win_rate=0.75, posi_side=buy, posi_price=632736.0, order_side=sell, order_price=633236.0
-bot elapsed_time:82.19[min]
-private access per min=91.07, num private access=7556, num public access=6392
-dt=2019-04-24 02:22:00, close=632285, predict=[3.], pl=106.50000000000001, num_trade=12, win_rate=0.75, posi_side=buy, posi_price=632736.0, order_side=sell, order_price=633236.0
-bot elapsed_time:83.19[min]
-private access per min=91.16, num private access=7654, num public access=6490
-dt=2019-04-24 02:23:00, close=632624, predict=[3.], pl=126.00000000000001, num_trade=12, win_rate=0.75, posi_side=buy, posi_price=632736.0, order_side=sell, order_price=633236.0
-bot elapsed_time:84.18[min]
-private access per min=91.2, num private access=7749, num public access=6585
-dt=2019-04-24 02:24:00, close=632040, predict=[3.], pl=98.4, num_trade=12, win_rate=0.75, posi_side=buy, posi_price=632736.0, order_side=sell, order_price=633236.0
-bot elapsed_time:85.19[min]
-private access per min=91.22, num private access=7842, num public access=6678
-dt=2019-04-24 02:25:00, close=632447, predict=[1.], pl=121.20000000000002, num_trade=12, win_rate=0.75, posi_side=buy, posi_price=632736.0, order_side=sell, order_price=633236.0
-bot elapsed_time:86.19[min]
-private access per min=91.25, num private access=7936, num public access=6772
-dt=2019-04-24 02:26:00, close=632855, predict=[3.], pl=129.4, num_trade=12, win_rate=0.75, posi_side=buy, posi_price=632736.0, order_side=sell, order_price=633236.0
-bot elapsed_time:87.19[min]
-private access per min=91.29, num private access=8031, num public access=6867
-dt=2019-04-24 02:27:00, close=632800, predict=[3.], pl=133.65, num_trade=12, win_rate=0.75, posi_side=buy, posi_price=632736.0, order_side=sell, order_price=633236.0
-pl order has been fully executed
-bot elapsed_time:88.19[min]
-private access per min=90.47, num private access=8049, num public access=6884
-dt=2019-04-24 02:28:00, close=633198, predict=[3.], pl=178.10000000000002, num_trade=13, win_rate=0.77, posi_side=, posi_price=0, order_side=, order_price=0
-bot elapsed_time:89.19[min]
-private access per min=89.46, num private access=8049, num public access=6884
-dt=2019-04-24 02:29:00, close=634997, predict=[3.], pl=178.10000000000002, num_trade=13, win_rate=0.77, posi_side=, posi_price=0, order_side=, order_price=0
-bot elapsed_time:90.18[min]
-private access per min=88.49, num private access=8049, num public access=6884
-dt=2019-04-24 02:30:00, close=633132, predict=[1.], pl=178.10000000000002, num_trade=13, win_rate=0.77, posi_side=, posi_price=0, order_side=, order_price=0
-ok order - JRF20190423-173003-741447
-new entry: side = buy, price = 633132, size = 0.05
-new entry is not boarded
-[]
-new entry boarded: 2019-04-24 02:30:04.381989
-current position: side = buy, price = 633132.0, size = 0.05
-new entry order has been fully executed
-ok order - JRF20190423-173009-741529
-pl order: side = sell, price = 633632.0, size = 0.05
-pl order is not boarded
-[]
-pl order boarded: 2019-04-24 02:30:10.679335
-bot elapsed_time:91.18[min]
-private access per min=88.59, num private access=8147, num public access=6966
-dt=2019-04-24 02:31:00, close=632902, predict=[1.], pl=141.70000000000002, num_trade=13, win_rate=0.77, posi_side=buy, posi_price=633132.0, order_side=sell, order_price=633632.0
-bot elapsed_time:92.19[min]
-private access per min=88.61, num private access=8238, num public access=7057
-dt=2019-04-24 02:32:00, close=633405, predict=[3.], pl=171.35000000000002, num_trade=13, win_rate=0.77, posi_side=buy, posi_price=633132.0, order_side=sell, order_price=633632.0
-pl order has been fully executed
-bot elapsed_time:93.19[min]
-private access per min=87.73, num private access=8243, num public access=7062
-dt=2019-04-24 02:33:00, close=633475, predict=[1.], pl=205.20000000000002, num_trade=14, win_rate=0.79, posi_side=, posi_price=0, order_side=, order_price=0
-ok order - JRF20190423-173303-441729
-new entry: side = buy, price = 633475, size = 0.05
-new entry is not boarded
-[]
-new entry boarded: 2019-04-24 02:33:04.747309
-current position: side = buy, price = 633475.0, size = 0.05
-new entry order has been fully executed
-ok order - JRF20190423-173321-097989
-pl order: side = sell, price = 633975.0, size = 0.05
-pl order is not boarded
-[]
-pl order boarded: 2019-04-24 02:33:21.873221
-bot elapsed_time:94.19[min]
-private access per min=87.84, num private access=8342, num public access=7126
-dt=2019-04-24 02:34:00, close=633509, predict=[1.], pl=178.70000000000002, num_trade=14, win_rate=0.79, posi_side=buy, posi_price=633475.0, order_side=sell, order_price=633975.0
-bot elapsed_time:95.19[min]
-private access per min=87.9, num private access=8435, num public access=7219
-dt=2019-04-24 02:35:00, close=633818, predict=[1.], pl=192.20000000000002, num_trade=14, win_rate=0.79, posi_side=buy, posi_price=633475.0, order_side=sell, order_price=633975.0
-pl order has been fully executed
-ok order - JRF20190423-173511-098866
-new entry: side = buy, price = 633818, size = 0.06
-new entry is not boarded
-[]
-new entry is not boarded
-[]
-new entry boarded: 2019-04-24 02:35:12.518524
-current position: side = buy, price = 633716.0, size = 0.06
-new entry order has been fully executed
-ok order - JRF20190423-173513-098888
-pl order: side = sell, price = 634216.0, size = 0.06
-pl order is not boarded
-[]
-pl order boarded: 2019-04-24 02:35:13.732869
-pl order has been fully executed
-ok order - JRF20190423-173536-099126
-new entry: side = buy, price = 633818, size = 0.06
-new entry is not boarded
-[]
-new entry boarded: 2019-04-24 02:35:37.463374
-current position: side = buy, price = 633818.0, size = 0.06
-new entry order has been fully executed
-ok order - JRF20190423-173547-099209
-pl order: side = sell, price = 634318.0, size = 0.06
-pl order is not boarded
-[]
-pl order boarded: 2019-04-24 02:35:48.724655
-bot elapsed_time:96.19[min]
-private access per min=88.06, num private access=8539, num public access=7291
-dt=2019-04-24 02:36:00, close=634052, predict=[1.], pl=255.3, num_trade=16, win_rate=0.81, posi_side=buy, posi_price=633818.0, order_side=sell, order_price=634318.0
-pl order has been fully executed
-ok order - JRF20190423-173618-381314
-new entry: side = buy, price = 634052, size = 0.06
-new entry is not boarded
-[]
-new entry boarded: 2019-04-24 02:36:19.074308
-bot elapsed_time:97.19[min]
-private access per min=88.16, num private access=8637, num public access=7312
-dt=2019-04-24 02:37:00, close=634942, predict=[1.], pl=290.88, num_trade=17, win_rate=0.82, posi_side=, posi_price=0, order_side=buy, order_price=634052
-new entry order has been expired: 2019-04-24 02:37:26.139183
-ok order - JRF20190423-173726-382374
-new entry: side = buy, price = 634942, size = 0.06
-new entry is not boarded
-[]
-new entry is not boarded
-[{'id': 'JRF20190423-173726-382374', 'info': {'id': 0, 'child_order_id': 'JFX20190423-173726-084995F', 'product_code': 'FX_BTC_JPY', 'side': 'BUY', 'child_order_type': 'LIMIT', 'price': 634942.0, 'average_price': 0.0, 'size': 0.06, 'child_order_state': 'ACTIVE', 'expire_date': '2019-04-23T17:38:26', 'child_order_date': '2019-04-23T17:37:26', 'child_order_acceptance_id': 'JRF20190423-173726-382374', 'outstanding_size': 0.06, 'cancel_size': 0.0, 'executed_size': 0.0, 'total_commission': 0.0}, 'timestamp': 1556041046000, 'datetime': '2019-04-23T17:37:26.000Z', 'lastTradeTimestamp': None, 'status': 'open', 'symbol': 'BTC/JPY', 'type': 'limit', 'side': 'buy', 'price': 634942.0, 'cost': 0.0, 'amount': 0.06, 'filled': 0.0, 'remaining': 0.06, 'fee': {'cost': 0.0, 'currency': None, 'rate': None}}]
-new entry boarded: 2019-04-24 02:37:28.114960
-current position: side = buy, price = 634942.0, size = 0.06
-new entry order has been fully executed
-ok order - JRF20190423-173732-382463
-pl order: side = sell, price = 635442.0, size = 0.06
-pl order is not boarded
-[]
-pl order boarded: 2019-04-24 02:37:33.003969
-bot elapsed_time:98.18[min]
-private access per min=88.25, num private access=8734, num public access=7357
-dt=2019-04-24 02:38:00, close=634621, predict=[1.], pl=255.84, num_trade=17, win_rate=0.82, posi_side=buy, posi_price=634942.0, order_side=sell, order_price=635442.0
-bot elapsed_time:99.19[min]
-private access per min=88.34, num private access=8831, num public access=7454
-dt=2019-04-24 02:39:00, close=633870, predict=[1.], pl=204.78, num_trade=17, win_rate=0.82, posi_side=buy, posi_price=634942.0, order_side=sell, order_price=635442.0
-bot elapsed_time:100.19[min]
-private access per min=88.44, num private access=8929, num public access=7552
-dt=2019-04-24 02:40:00, close=634445, predict=[1.], pl=230.94, num_trade=17, win_rate=0.82, posi_side=buy, posi_price=634942.0, order_side=sell, order_price=635442.0
-bot elapsed_time:101.18[min]
-private access per min=88.48, num private access=9022, num public access=7645
-dt=2019-04-24 02:41:00, close=634749, predict=[1.], pl=261.96000000000004, num_trade=17, win_rate=0.82, posi_side=buy, posi_price=634942.0, order_side=sell, order_price=635442.0
-bot elapsed_time:102.18[min]
-private access per min=88.56, num private access=9118, num public access=7741
-dt=2019-04-24 02:42:00, close=634450, predict=[1.], pl=235.92000000000002, num_trade=17, win_rate=0.82, posi_side=buy, posi_price=634942.0, order_side=sell, order_price=635442.0
-bot elapsed_time:103.19[min]
-private access per min=88.63, num private access=9214, num public access=7837
-dt=2019-04-24 02:43:00, close=634708, predict=[3.], pl=255.3, num_trade=17, win_rate=0.82, posi_side=buy, posi_price=634942.0, order_side=sell, order_price=635442.0
-pl order has been fully executed
-bot elapsed_time:104.19[min]
-private access per min=87.89, num private access=9226, num public access=7848
-dt=2019-04-24 02:44:00, close=635378, predict=[3.], pl=327.78000000000003, num_trade=18, win_rate=0.83, posi_side=, posi_price=0, order_side=, order_price=0
-bot elapsed_time:105.18[min]
-private access per min=87.07, num private access=9226, num public access=7848
-dt=2019-04-24 02:45:00, close=634941, predict=[3.], pl=327.78000000000003, num_trade=18, win_rate=0.83, posi_side=, posi_price=0, order_side=, order_price=0
-bot elapsed_time:106.19[min]
-private access per min=86.25, num private access=9226, num public access=7848
-dt=2019-04-24 02:46:00, close=635950, predict=[3.], pl=327.78000000000003, num_trade=18, win_rate=0.83, posi_side=, posi_price=0, order_side=, order_price=0
-bot elapsed_time:107.19[min]
-private access per min=85.45, num private access=9226, num public access=7848
-dt=2019-04-24 02:47:00, close=635350, predict=[3.], pl=327.78000000000003, num_trade=18, win_rate=0.83, posi_side=, posi_price=0, order_side=, order_price=0
-bot elapsed_time:108.19[min]
-private access per min=84.68, num private access=9226, num public access=7848
-dt=2019-04-24 02:48:00, close=634137, predict=[1.], pl=327.78000000000003, num_trade=18, win_rate=0.83, posi_side=, posi_price=0, order_side=, order_price=0
-ok order - JRF20190423-174803-452214
-new entry: side = buy, price = 634137, size = 0.06
-new entry is not boarded
-[]
-new entry is not boarded
-[]
-new entry is not boarded
-[]
-new entry boarded: 2019-04-24 02:48:05.736775
-current position: side = buy, price = 633941.0, size = 0.06
-new entry order has been fully executed
-ok order - JRF20190423-174806-452238
-pl order: side = sell, price = 634441.0, size = 0.06
-pl order is not boarded
-[]
-pl order boarded: 2019-04-24 02:48:07.063774
-bot elapsed_time:109.19[min]
-private access per min=84.82, num private access=9327, num public access=7938
-dt=2019-04-24 02:49:00, close=633769, predict=[1.], pl=279.72, num_trade=18, win_rate=0.83, posi_side=buy, posi_price=633941.0, order_side=sell, order_price=634441.0
-bot elapsed_time:110.19[min]
-private access per min=84.93, num private access=9424, num public access=8035
-dt=2019-04-24 02:50:00, close=633478, predict=[1.], pl=267.42, num_trade=18, win_rate=0.83, posi_side=buy, posi_price=633941.0, order_side=sell, order_price=634441.0
-bot elapsed_time:111.19[min]
-private access per min=85.03, num private access=9521, num public access=8132
-dt=2019-04-24 02:51:00, close=633240, predict=[1.], pl=252.78, num_trade=18, win_rate=0.83, posi_side=buy, posi_price=633941.0, order_side=sell, order_price=634441.0
-bot elapsed_time:112.18[min]
-private access per min=85.13, num private access=9616, num public access=8227
-dt=2019-04-24 02:52:00, close=632889, predict=[1.], pl=221.4, num_trade=18, win_rate=0.83, posi_side=buy, posi_price=633941.0, order_side=sell, order_price=634441.0
-bot elapsed_time:113.19[min]
-private access per min=85.23, num private access=9714, num public access=8325
-dt=2019-04-24 02:53:00, close=633196, predict=[2.], pl=242.88, num_trade=18, win_rate=0.83, posi_side=buy, posi_price=633941.0, order_side=sell, order_price=634441.0
-exit order
-waiting cancell order JRF20190423-174806-452238
-order has been successfully cancelled
-started price tracing order
-ok order - JRF20190423-175305-454768
-confirmed the order has been boarded
-waiting cancell order JRF20190423-175305-454768
-order has been successfully cancelled
-ok order - JRF20190423-175307-554814
-confirmed the order has been boarded
-price tracing order - replaced order for sell, @632924.0 x 0.06
-waiting cancell order JRF20190423-175307-554814
-cancel failed order has been partially executed. exe size=0.06
-price tracing order - executed 0.06 @632924.0
-price tracing order has been completed.
-current positions:
-[]
-current orders:
-[]
-ave price=632923.9999999999, exe size = 0.06
-ok order - JRF20190423-175311-392079
-new entry: side = sell, price = 633196, size = 0.06
-new entry is not boarded
-[]
-new entry boarded: 2019-04-24 02:53:12.181094
-current position: side = sell, price = 633196.0, size = 0.06
-new entry order has been fully executed
-ok order - JRF20190423-175326-555019
-pl order: side = buy, price = 632696.0, size = 0.06
-pl order is not boarded
-[]
-pl order boarded: 2019-04-24 02:53:27.154562
-bot elapsed_time:114.19[min]
-private access per min=85.45, num private access=9824, num public access=8387
-dt=2019-04-24 02:54:00, close=632956, predict=[1.], pl=251.28, num_trade=19, win_rate=0.79, posi_side=sell, posi_price=633196.0, order_side=buy, order_price=632696.0
-exit order
-waiting cancell order JRF20190423-175326-555019
-order has been successfully cancelled
-started price tracing order
-ok order - JRF20190423-175405-392470
-confirmed the order has been boarded
-waiting cancell order JRF20190423-175405-392470
-cancel failed order has been partially executed. exe size=0.06
-price tracing order - executed 0.06 @632938.0
-price tracing order has been completed.
-current positions:
-[]
-current orders:
-[]
-ave price=632938.0, exe size = 0.06
-ok order - JRF20190423-175408-392525
-new entry: side = buy, price = 632956, size = 0.06
-new entry is not boarded
-[]
-new entry boarded: 2019-04-24 02:54:08.786399
-current position: side = buy, price = 632956.0, size = 0.06
-new entry order has been fully executed
-ok order - JRF20190423-175418-392647
-pl order: side = sell, price = 633456.0, size = 0.06
-pl order is not boarded
-[]
-pl order boarded: 2019-04-24 02:54:19.442202
-bot elapsed_time:115.19[min]
-private access per min=85.64, num private access=9931, num public access=8459
-dt=2019-04-24 02:55:00, close=632547, predict=[1.], pl=223.62, num_trade=20, win_rate=0.8, posi_side=buy, posi_price=632956.0, order_side=sell, order_price=633456.0
-bot elapsed_time:116.19[min]
-private access per min=85.73, num private access=10028, num public access=8556
-dt=2019-04-24 02:56:00, close=632082, predict=[3.], pl=191.39999999999998, num_trade=20, win_rate=0.8, posi_side=buy, posi_price=632956.0, order_side=sell, order_price=633456.0
-bot elapsed_time:117.18[min]
-private access per min=85.82, num private access=10124, num public access=8652
-dt=2019-04-24 02:57:00, close=632741, predict=[1.], pl=235.85999999999999, num_trade=20, win_rate=0.8, posi_side=buy, posi_price=632956.0, order_side=sell, order_price=633456.0
-bot elapsed_time:118.19[min]
-private access per min=85.91, num private access=10221, num public access=8749
-dt=2019-04-24 02:58:00, close=632371, predict=[3.], pl=221.7, num_trade=20, win_rate=0.8, posi_side=buy, posi_price=632956.0, order_side=sell, order_price=633456.0
-bot elapsed_time:119.18[min]
-private access per min=85.98, num private access=10315, num public access=8843
-dt=2019-04-24 02:59:00, close=632383, predict=[3.], pl=217.5, num_trade=20, win_rate=0.8, posi_side=buy, posi_price=632956.0, order_side=sell, order_price=633456.0
-bot elapsed_time:120.19[min]
-private access per min=86.05, num private access=10409, num public access=8937
-dt=2019-04-24 03:00:00, close=632215, predict=[3.], pl=206.88, num_trade=20, win_rate=0.8, posi_side=buy, posi_price=632956.0, order_side=sell, order_price=633456.0
-bot elapsed_time:121.19[min]
-private access per min=86.1, num private access=10502, num public access=9030
-dt=2019-04-24 03:01:00, close=632594, predict=[3.], pl=238.62, num_trade=20, win_rate=0.8, posi_side=buy, posi_price=632956.0, order_side=sell, order_price=633456.0
-bot elapsed_time:122.19[min]
-private access per min=86.18, num private access=10598, num public access=9126
-dt=2019-04-24 03:02:00, close=633027, predict=[1.], pl=252.54, num_trade=20, win_rate=0.8, posi_side=buy, posi_price=632956.0, order_side=sell, order_price=633456.0
-bot elapsed_time:123.19[min]
-private access per min=86.26, num private access=10694, num public access=9222
-dt=2019-04-24 03:03:00, close=633145, predict=[1.], pl=253.79999999999998, num_trade=20, win_rate=0.8, posi_side=buy, posi_price=632956.0, order_side=sell, order_price=633456.0
-bot elapsed_time:124.19[min]
-private access per min=86.33, num private access=10789, num public access=9317
-dt=2019-04-24 03:04:00, close=633050, predict=[1.], pl=262.68, num_trade=20, win_rate=0.8, posi_side=buy, posi_price=632956.0, order_side=sell, order_price=633456.0
-pl order has been fully executed
-ok order - JRF20190423-180429-561142
-new entry: side = buy, price = 633050, size = 0.06
-new entry is not boarded
-[]
-new entry is not boarded
-[]
-new entry boarded: 2019-04-24 03:04:30.922507
-bot elapsed_time:125.19[min]
-private access per min=86.46, num private access=10891, num public access=9359
-dt=2019-04-24 03:05:00, close=633617, predict=[1.], pl=310.56, num_trade=21, win_rate=0.81, posi_side=, posi_price=0, order_side=buy, order_price=633050
-new entry order has been expired: 2019-04-24 03:05:36.905601
-ok order - JRF20190423-180537-262176
-new entry: side = buy, price = 633617, size = 0.06
-new entry is not boarded
-[]
-new entry boarded: 2019-04-24 03:05:38.576336
-current position: side = buy, price = 633390.0, size = 0.06
-new entry order has been fully executed
-ok order - JRF20190423-180539-262183
-pl order: side = sell, price = 633890.0, size = 0.06
-pl order is not boarded
-[]
-pl order boarded: 2019-04-24 03:05:40.166012
-bot elapsed_time:126.19[min]
-private access per min=86.57, num private access=10992, num public access=9396
-dt=2019-04-24 03:06:00, close=633499, predict=[1.], pl=282.65999999999997, num_trade=21, win_rate=0.81, posi_side=buy, posi_price=633390.0, order_side=sell, order_price=633890.0
-pl order has been fully executed
-ok order - JRF20190423-180618-562417
-new entry: side = buy, price = 633499, size = 0.06
-new entry is not boarded
-[]
-new entry boarded: 2019-04-24 03:06:18.998947
-current position: side = buy, price = 633499.0, size = 0.06
-new entry order has been fully executed
-ok order - JRF20190423-180656-562796
-pl order: side = sell, price = 633999.0, size = 0.06
-pl order is not boarded
-[]
-pl order boarded: 2019-04-24 03:06:56.847652
-bot elapsed_time:127.19[min]
-private access per min=86.69, num private access=11094, num public access=9426
-dt=2019-04-24 03:07:00, close=633351, predict=[1.], pl=301.5, num_trade=22, win_rate=0.82, posi_side=buy, posi_price=633499.0, order_side=sell, order_price=633999.0
-bot elapsed_time:128.19[min]
-private access per min=86.74, num private access=11187, num public access=9519
-dt=2019-04-24 03:08:00, close=633304, predict=[1.], pl=311.34, num_trade=22, win_rate=0.82, posi_side=buy, posi_price=633499.0, order_side=sell, order_price=633999.0
-bot elapsed_time:129.19[min]
-private access per min=86.82, num private access=11283, num public access=9615
-dt=2019-04-24 03:09:00, close=633291, predict=[1.], pl=296.03999999999996, num_trade=22, win_rate=0.82, posi_side=buy, posi_price=633499.0, order_side=sell, order_price=633999.0
-bot elapsed_time:130.19[min]
-private access per min=86.89, num private access=11380, num public access=9712
-dt=2019-04-24 03:10:00, close=633446, predict=[1.], pl=301.26, num_trade=22, win_rate=0.82, posi_side=buy, posi_price=633499.0, order_side=sell, order_price=633999.0
-bot elapsed_time:131.19[min]
-private access per min=86.94, num private access=11474, num public access=9806
-dt=2019-04-24 03:11:00, close=632839, predict=[1.], pl=269.52, num_trade=22, win_rate=0.82, posi_side=buy, posi_price=633499.0, order_side=sell, order_price=633999.0
-bot elapsed_time:132.19[min]
-private access per min=86.99, num private access=11567, num public access=9899
-dt=2019-04-24 03:12:00, close=632654, predict=[1.], pl=262.2, num_trade=22, win_rate=0.82, posi_side=buy, posi_price=633499.0, order_side=sell, order_price=633999.0
-bot elapsed_time:133.19[min]
-private access per min=87.07, num private access=11664, num public access=9996
-dt=2019-04-24 03:13:00, close=633121, predict=[3.], pl=280.2, num_trade=22, win_rate=0.82, posi_side=buy, posi_price=633499.0, order_side=sell, order_price=633999.0
-bot elapsed_time:134.18[min]
-private access per min=87.12, num private access=11758, num public access=10090
-dt=2019-04-24 03:14:00, close=633087, predict=[1.], pl=281.09999999999997, num_trade=22, win_rate=0.82, posi_side=buy, posi_price=633499.0, order_side=sell, order_price=633999.0
-bot elapsed_time:135.18[min]
-private access per min=87.19, num private access=11854, num public access=10186
-dt=2019-04-24 03:15:00, close=633569, predict=[3.], pl=321.48, num_trade=22, win_rate=0.82, posi_side=buy, posi_price=633499.0, order_side=sell, order_price=633999.0
-pl order has been fully executed
-bot elapsed_time:136.19[min]
-private access per min=87.09, num private access=11928, num public access=10260
-dt=2019-04-24 03:16:00, close=634115, predict=[3.], pl=368.82, num_trade=23, win_rate=0.83, posi_side=, posi_price=0, order_side=, order_price=0
-bot elapsed_time:137.19[min]
-private access per min=86.46, num private access=11928, num public access=10260
-dt=2019-04-24 03:17:00, close=634010, predict=[3.], pl=368.82, num_trade=23, win_rate=0.83, posi_side=, posi_price=0, order_side=, order_price=0
-bot elapsed_time:138.19[min]
-private access per min=85.84, num private access=11928, num public access=10260
-dt=2019-04-24 03:18:00, close=633751, predict=[2.], pl=368.82, num_trade=23, win_rate=0.83, posi_side=, posi_price=0, order_side=, order_price=0
-ok order - JRF20190423-181804-467968
-new entry: side = sell, price = 633751, size = 0.06
-new entry is not boarded
-[]
-new entry boarded: 2019-04-24 03:18:04.773617
-current position: side = sell, price = 633751.0, size = 0.06
-new entry order has been fully executed
-ok order - JRF20190423-181808-023444
-pl order: side = buy, price = 633251.0, size = 0.06
-pl order is not boarded
-[]
-pl order boarded: 2019-04-24 03:18:09.395003
-bot elapsed_time:139.19[min]
-private access per min=85.96, num private access=12032, num public access=10351
-dt=2019-04-24 03:19:00, close=633762, predict=[3.], pl=336.24, num_trade=23, win_rate=0.83, posi_side=sell, posi_price=633751.0, order_side=buy, order_price=633251.0
-bot elapsed_time:140.18[min]
-private access per min=86.04, num private access=12129, num public access=10448
-dt=2019-04-24 03:20:00, close=633847, predict=[3.], pl=334.26, num_trade=23, win_rate=0.83, posi_side=sell, posi_price=633751.0, order_side=buy, order_price=633251.0
-bot elapsed_time:141.19[min]
-private access per min=86.12, num private access=12227, num public access=10546
-dt=2019-04-24 03:21:00, close=634014, predict=[3.], pl=324.71999999999997, num_trade=23, win_rate=0.83, posi_side=sell, posi_price=633751.0, order_side=buy, order_price=633251.0
-bot elapsed_time:142.19[min]
-private access per min=86.22, num private access=12326, num public access=10645
-dt=2019-04-24 03:22:00, close=634091, predict=[3.], pl=317.52, num_trade=23, win_rate=0.83, posi_side=sell, posi_price=633751.0, order_side=buy, order_price=633251.0
-bot elapsed_time:143.19[min]
-private access per min=86.27, num private access=12420, num public access=10739
-dt=2019-04-24 03:23:00, close=633847, predict=[1.], pl=322.74, num_trade=23, win_rate=0.83, posi_side=sell, posi_price=633751.0, order_side=buy, order_price=633251.0
-exit order
-waiting cancell order JRF20190423-181808-023444
-order has been successfully cancelled
-started price tracing order
-ok order - JRF20190423-182306-571774
-confirmed the order has been boarded
-waiting cancell order JRF20190423-182306-571774
-cancel failed order has been partially executed. exe size=0.06
-price tracing order - executed 0.06 @634007.0
-price tracing order has been completed.
-current positions:
-[]
-current orders:
-[]
-ave price=634007.0, exe size = 0.06
-ok order - JRF20190423-182309-470595
-new entry: side = buy, price = 633847, size = 0.06
-new entry is not boarded
-[]
-new entry boarded: 2019-04-24 03:23:10.303376
-current position: side = buy, price = 633847.0, size = 0.06
-new entry order has been fully executed
-ok order - JRF20190423-182328-572006
-pl order: side = sell, price = 634347.0, size = 0.06
-pl order is not boarded
-[]
-pl order boarded: 2019-04-24 03:23:28.900916
-bot elapsed_time:144.18[min]
-private access per min=86.4, num private access=12524, num public access=10794
-dt=2019-04-24 03:24:00, close=633433, predict=[1.], pl=302.64, num_trade=24, win_rate=0.79, posi_side=buy, posi_price=633847.0, order_side=sell, order_price=634347.0
-bot elapsed_time:145.19[min]
-private access per min=86.45, num private access=12619, num public access=10889
-dt=2019-04-24 03:25:00, close=633644, predict=[3.], pl=312.12, num_trade=24, win_rate=0.79, posi_side=buy, posi_price=633847.0, order_side=sell, order_price=634347.0
-bot elapsed_time:146.19[min]
-private access per min=86.51, num private access=12714, num public access=10984
-dt=2019-04-24 03:26:00, close=634086, predict=[3.], pl=333.12, num_trade=24, win_rate=0.79, posi_side=buy, posi_price=633847.0, order_side=sell, order_price=634347.0
-pl order has been fully executed
-bot elapsed_time:147.18[min]
-private access per min=86.22, num private access=12757, num public access=11027
-dt=2019-04-24 03:27:00, close=634121, predict=[3.], pl=388.08, num_trade=25, win_rate=0.8, posi_side=, posi_price=0, order_side=, order_price=0
-bot elapsed_time:148.19[min]
-private access per min=85.64, num private access=12757, num public access=11027
-dt=2019-04-24 03:28:00, close=634086, predict=[3.], pl=388.08, num_trade=25, win_rate=0.8, posi_side=, posi_price=0, order_side=, order_price=0
-bot elapsed_time:149.18[min]
-private access per min=85.07, num private access=12757, num public access=11027
-dt=2019-04-24 03:29:00, close=633866, predict=[3.], pl=388.08, num_trade=25, win_rate=0.8, posi_side=, posi_price=0, order_side=, order_price=0
-bot elapsed_time:150.19[min]
-private access per min=84.51, num private access=12757, num public access=11027
-dt=2019-04-24 03:30:00, close=633400, predict=[1.], pl=388.08, num_trade=25, win_rate=0.8, posi_side=, posi_price=0, order_side=, order_price=0
-ok order - JRF20190423-183003-313002
-new entry: side = buy, price = 633400, size = 0.06
-new entry is not boarded
-[]
-new entry boarded: 2019-04-24 03:30:04.608659
-current position: side = buy, price = 633325.0, size = 0.06
-new entry order has been fully executed
-ok order - JRF20190423-183005-313017
-pl order: side = sell, price = 633825.0, size = 0.06
-pl order is not boarded
-[]
-pl order boarded: 2019-04-24 03:30:05.886606
-bot elapsed_time:151.19[min]
-private access per min=84.59, num private access=12855, num public access=11118
-dt=2019-04-24 03:31:00, close=633600, predict=[3.], pl=367.73999999999995, num_trade=25, win_rate=0.8, posi_side=buy, posi_price=633325.0, order_side=sell, order_price=633825.0
-pl order has been fully executed
-bot elapsed_time:152.19[min]
-private access per min=84.59, num private access=12940, num public access=11203
-dt=2019-04-24 03:32:00, close=633773, predict=[1.], pl=413.88, num_trade=26, win_rate=0.81, posi_side=, posi_price=0, order_side=, order_price=0
-ok order - JRF20190423-183203-029865
-new entry: side = buy, price = 633773, size = 0.06
-new entry is not boarded
-[]
-new entry is not boarded
-[]
-new entry boarded: 2019-04-24 03:32:05.220342
-new entry order has been partially executed, exe size=0.05378298, price=633773.0
-current position: side = , price = 0, size = 0.05378298
-somehow new order executed size is not matched with ordered size!, order_size=0.00621702, executed_size=0.06
-bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
-order failed!
-posi_side=, posi_size=0.05378298, order_side=, order_size=0, order_status=
-bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
-order failed!
-posi_side=, posi_size=0.05378298, order_side=, order_size=0, order_status=
-bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
-order failed!
-posi_side=, posi_size=0.05378298, order_side=, order_size=0, order_status=
-bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
-order failed!
-posi_side=, posi_size=0.05378298, order_side=, order_size=0, order_status=
-bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
-order failed!
-posi_side=, posi_size=0.05378298, order_side=, order_size=0, order_status=
-bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
-order failed!
-posi_side=, posi_size=0.05378298, order_side=, order_size=0, order_status=
-bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
-order failed!
-posi_side=, posi_size=0.05378298, order_side=, order_size=0, order_status=
-bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
-order failed!
-posi_side=, posi_size=0.05378298, order_side=, order_size=0, order_status=
-bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
-order failed!
-posi_side=, posi_size=0.05378298, order_side=, order_size=0, order_status=
-bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
-order failed!
-posi_side=, posi_size=0.05378298, order_side=, order_size=0, order_status=
-bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
-order failed!
-posi_side=, posi_size=0.05378298, order_side=, order_size=0, order_status=
-bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
-order failed!
-posi_side=, posi_size=0.05378298, order_side=, order_size=0, order_status=
-bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
-order failed!
-posi_side=, posi_size=0.05378298, order_side=, order_size=0, order_status=
-bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
-order failed!
-posi_side=, posi_size=0.05378298, order_side=, order_size=0, order_status=
-bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
-order failed!
-posi_side=, posi_size=0.05378298, order_side=, order_size=0, order_status=
-bitflyer https://api.bitflyer.jp/v1/me/sendchildorder POST 400 Client Error: Bad Request for url: https://api.bitflyer.jp/v1/me/sendchildorder {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
-continuous order error more than 15times System Finished.
-order failed!
-posi_side=, posi_size=0.05378298, order_side=, order_size=0, order_status=
+pl order boarded: 2019-04-25 00:15:30.863693
+Traceback (most recent call last):
+  File "/Users/alun/Projects/btc-bot2/btc-bot2/lib/python3.6/site-packages/ccxt/base/exchange.py", line 493, in fetch
+    response.raise_for_status()
+  File "/Users/alun/Projects/btc-bot2/btc-bot2/lib/python3.6/site-packages/requests/models.py", line 940, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 429 Client Error:  for url: https://api.bitflyer.jp/v1/me/getpositions?product_code=FX_BTC_JPY
 
-Process finished with exit code 0
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/alun/Projects/btc-bot2/Trade.py", line 283, in get_positions
+    positions = cls.bf.private_get_getpositions(params={"product_code": "FX_BTC_JPY"})
+  File "/Users/alun/Projects/btc-bot2/btc-bot2/lib/python3.6/site-packages/ccxt/base/exchange.py", line 388, in inner
+    return entry(_self, **inner_kwargs)
+  File "/Users/alun/Projects/btc-bot2/btc-bot2/lib/python3.6/site-packages/ccxt/base/exchange.py", line 417, in request
+    return self.fetch2(path, api, method, params, headers, body)
+  File "/Users/alun/Projects/btc-bot2/btc-bot2/lib/python3.6/site-packages/ccxt/base/exchange.py", line 413, in fetch2
+    return self.fetch(request['url'], request['method'], request['headers'], request['body'])
+  File "/Users/alun/Projects/btc-bot2/btc-bot2/lib/python3.6/site-packages/ccxt/base/exchange.py", line 506, in fetch
+    self.handle_rest_errors(e, response.status_code, http_response, url, method)
+  File "/Users/alun/Projects/btc-bot2/btc-bot2/lib/python3.6/site-packages/ccxt/base/exchange.py", line 531, in handle_rest_errors
+    self.raise_error(error, url, method, exception if exception else http_status_code, response)
+  File "/Users/alun/Projects/btc-bot2/btc-bot2/lib/python3.6/site-packages/ccxt/base/exchange.py", line 398, in raise_error
+    raise exception_type(output)
+ccxt.base.errors.DDoSProtection: bitflyer https://api.bitflyer.jp/v1/me/getpositions?product_code=FX_BTC_JPY GET 429 Client Error:  for url: https://api.bitflyer.jp/v1/me/getpositions?product_code=FX_BTC_JPY {"status":-1,"error_message":"Over API limit per minute","data":null}
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/alun/Projects/btc-bot2/Bot.py", line 387, in <module>
+    bot.start_bot(500)
+  File "/Users/alun/Projects/btc-bot2/Bot.py", line 326, in start_bot
+    self.sync_position_order()
+  File "/Users/alun/Projects/btc-bot2/Bot.py", line 65, in sync_position_order
+    position = Trade.get_positions()
+  File "/Users/alun/Projects/btc-bot2/Trade.py", line 285, in get_positions
+    print('error in get_positions ' + e)
+TypeError: must be str, not DDoSProtection
