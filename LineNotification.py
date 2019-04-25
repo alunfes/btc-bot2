@@ -28,16 +28,16 @@ class LineNotification:
     async def __send_performance_data(cls):
         p = LogMaster.get_latest_performance()
         if len(p) > 0:
-            await cls.__send_message('\r\n'+'['+p['log_dt']+']'+
-                             '\r\n'+'pl='+p['pl']+
-                             '\r\n'+'num_trade='+p['num_trade']+
-                             '\r\n'+'win_rate='+p['win_rate'])
+            await cls.__send_message('\r\n'+'['+str(p['log_dt'])+']'+
+                             '\r\n'+'pl='+str(p['pl'])+
+                             '\r\n'+'num_trade='+str(p['num_trade'])+
+                             '\r\n'+'win_rate='+str(p['win_rate']))
 
     @classmethod
     async def __send_position_and_order_data(cls):
         p = LogMaster.get_latest_position()
         if len(p) > 0:
-            await cls.__send_message('\r\n' + 'posi_side=' + p['posi_side'] + ', posi_price=' + p['posi_price'] +', posi_size=' + p['posi_size'])
+            await cls.__send_message('\r\n' + 'posi_side=' + p['posi_side'] + ', posi_price=' + str(p['posi_price']) +', posi_size=' + str(p['posi_size']))
 
     @classmethod
     async def get_latest_api_error(cls):

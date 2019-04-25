@@ -342,7 +342,6 @@ class Bot:
                     df = MarketData2.generate_df_for_bot(MarketData2.ohlc_bot)
                     pred_x = model.generate_bot_pred_data(df)
                     predict = bst.predict(xgb.DMatrix(pred_x))
-                    LineNotification.send_notification()
                     #predict = bst.predict(Pool(pred_x))
                     #print('predicted - ' + str(datetime.now(tz=JST)))
                     LogMaster.add_log({'dt':MarketData2.ohlc_bot.dt[-1],'open':MarketData2.ohlc_bot.open[-1],'high':MarketData2.ohlc_bot.high[-1],
@@ -351,6 +350,7 @@ class Bot:
                                        'order_size':self.order_size,'num_private_access':Trade.num_private_access, 'num_public_access':Trade.num_public_access,
                                        'num_private_per_min':Trade.num_private_access_per_min,'num_trade':self.num_trade,'win_rate':self.win_rate, 'pl':self.pl+self.holding_pl,
                                        'prediction':predict[0]})
+                    LineNotification.send_notification()
                     print('dt={}, close={}, predict={}, pl={}, num_trade={}, win_rate={}, posi_side={}, posi_price={}, posi_size={}, order_side={}, order_price={}, order_size={}'.format(MarketData2.ohlc_bot.dt[-1],
                                                                         MarketData2.ohlc_bot.close[-1],
                                                                                                  predict[0],
