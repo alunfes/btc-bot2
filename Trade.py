@@ -53,6 +53,7 @@ class Trade:
                 cls.adjusting_sleep = 0
             time.sleep(1)
             i += 1
+
     @classmethod
     def check_exception(cls, exc):
         if 'connection reset by peer' in exc:
@@ -61,16 +62,23 @@ class Trade:
             cls.initialize()
             time.sleep(10)
             return 'error'
+        if 'Over API limit per minute' in exc:
+            print('API private access reached limitation!')
+            print('initialize trade class and sleep 60sec.')
+            cls.initialize()
+            time.sleep(60)
+            return 'error'
         return 'ok'
+
 
 
     @classmethod
     def __read_keys(cls):
         file = open('./ignore/ex.txt', 'r')  # 読み込みモードでオープン
         cls.secret_key = file.readline().split(':')[1]
-        cls.secret_key = cls.secret_key[:len(cls.secret_key) - 1]
+        #cls.secret_key = cls.secret_key[:len(cls.secret_key) - 1]
         cls.api_key = file.readline().split(':')[1]
-        cls.api_key = cls.api_key[:len(cls.api_key) - 1]
+        #cls.api_key = cls.api_key[:len(cls.api_key) - 1]
         file.close()
 
     '''
@@ -99,7 +107,7 @@ class Trade:
                     if cls.check_exception(e) == 'ok':
                         if cls.conti_order_error > 15:
                             SystemFlg.set_system_flg(False)
-                            LogMaster.add_log({'dt':datetime.now(),'action_message':'continuous order error more than 15times System Finished.'})
+                            LogMaster.add_log({'dt':datetime.now(),'api_error':'continuous order error more than 15times System Finished.'})
                             print('continuous order error more than 15times System Finished.')
                         return ''
                     else: #connection reset by peer error
@@ -136,7 +144,7 @@ class Trade:
                 if cls.check_exception(e) == 'ok':
                     pass
                 print('error in get_order_status ' + e)
-                LogMaster.add_log({'dt': datetime.now(),'action_message': 'Trade-get order status error! '+str(e)})
+                LogMaster.add_log({'dt': datetime.now(),'api_error': 'Trade-get order status error! '+str(e)})
             finally:
                 return res
         else:
@@ -213,7 +221,7 @@ class Trade:
             orders = cls.bf.fetch_open_orders(symbol='BTC/JPY', params={"product_code": "FX_BTC_JPY"})
         except Exception as e:
             print('error in get_orders ' + e)
-            LogMaster.add_log({'dt': datetime.now(), 'action_message': 'Trade-get get_orders error! ' + str(e)})
+            LogMaster.add_log({'dt': datetime.now(), 'api_error': 'Trade-get get_orders error! ' + str(e)})
             if cls.check_exception(e) == 'ok':
                 pass
         return orders
@@ -258,7 +266,7 @@ class Trade:
             order = cls.bf.fetch_open_orders(symbol='BTC/JPY', params={"product_code": "FX_BTC_JPY", 'child_order_acceptance_id': order_id})
         except Exception as e:
             print('error in get_order ' + e)
-            LogMaster.add_log({'dt': datetime.now(), 'action_message': 'Trade-get get_order error! ' + str(e)})
+            LogMaster.add_log({'dt': datetime.now(), 'api_error': 'Trade-get get_order error! ' + str(e)})
             if cls.check_exception(e) == 'ok':
                 pass
         return order
@@ -283,7 +291,7 @@ class Trade:
             positions = cls.bf.private_get_getpositions(params={"product_code": "FX_BTC_JPY"})
         except Exception as e:
             print('error in get_positions ' + e)
-            LogMaster.add_log({'dt': datetime.now(), 'action_message': 'Trade-get get_positions error! ' + str(e)})
+            LogMaster.add_log({'dt': datetime.now(), 'api_error': 'Trade-get get_positions error! ' + str(e)})
             if cls.check_exception(e) == 'ok':
                 pass
         return positions
@@ -295,7 +303,7 @@ class Trade:
             return cls.bf.cancel_order(id=order_id, symbol='BTC/JPY', params={"product_code": "FX_BTC_JPY"})
         except Exception as e:
             print('error in cancel_order ' + e)
-            LogMaster.add_log({'dt': datetime.now(), 'action_message': 'Trade-get cancel_order error! ' + str(e)})
+            LogMaster.add_log({'dt': datetime.now(), 'api_error': 'Trade-get cancel_order error! ' + str(e)})
             if cls.check_exception(e) == 'ok':
                 pass
 
@@ -320,7 +328,7 @@ class Trade:
             res = cls.bf.fetch2(path='getcollateral', api='private', method='GET')
         except Exception as e:
             print('error i get_collateral ' + e)
-            LogMaster.add_log({'dt': datetime.now(), 'action_message': 'Trade-get get_collateral error! ' + str(e)})
+            LogMaster.add_log({'dt': datetime.now(), 'api_error': 'Trade-get get_collateral error! ' + str(e)})
             if cls.check_exception(e) == 'ok':
                 pass
         finally:
@@ -411,7 +419,7 @@ class Trade:
             ticker = cls.bf.fetch_ticker('BTC/JPY', params={"product_code": "FX_BTC_JPY"})
         except Exception as e:
             print('error i get_last_price ' + e)
-            LogMaster.add_log({'dt': datetime.now(), 'action_message': 'Trade-get get_last_price error! ' + str(e)})
+            LogMaster.add_log({'dt': datetime.now(), 'api_error': 'Trade-get get_last_price error! ' + str(e)})
             if cls.check_exception(e) == 'ok':
                 pass
         return ticker['last']
@@ -516,9 +524,8 @@ class Trade:
 
 if __name__ == '__main__':
     Trade.initialize()
-    print(Trade.get_order_status('JRF20190422-121505-247049'))
-    #col = Trade.get_collateral()
-    #print(col)
+    col = Trade.get_collateral()
+    print(col)
 
     '''
     Trade.initialize()

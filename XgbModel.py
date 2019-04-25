@@ -1,6 +1,7 @@
 import xgboost as xgb
 import numpy as np
 import pandas as pd
+import pickle
 
 
 class XgbModel:
@@ -21,6 +22,10 @@ class XgbModel:
             return df.drop(['dt', 'open', 'high', 'low', 'close', 'size', 'future_side'], axis=1)
         else:
             return df.drop(['dt', 'open', 'high', 'low', 'close', 'size'], axis=1)
+
+    def read_dump_model(self, path):
+        with open(path, mode='rb') as f:
+            return pickle.load(f)
 
     '''
     'n_round': 873, 

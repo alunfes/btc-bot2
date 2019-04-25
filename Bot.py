@@ -7,10 +7,12 @@ import pickle
 from catboost import Pool
 from SystemFlg import SystemFlg
 from CatModel import CatModel
+from XgbModel import  XgbModel
 from datetime import timedelta
 from MarketData2 import MarketData2
 from CryptowatchDataGetter import CryptowatchDataGetter
 from LogMaster import LogMaster
+from LineNotification import LineNotification
 from Trade import Trade
 from datetime import datetime
 import datetime as dt
@@ -33,6 +35,7 @@ daily maintenanceの時にMarketData, Tradeなどinitialize。（理想的には
 ボラを新しい特徴として入れる代わりに、max termのwindowを広げることでoverfitを減らせる？  
 plが近づいた時にpredictが同じ方向だったら利確しない方が合理的？
 ポジ持ってる時に3(both)になったら一旦exitするのが安全？plにはどう影響する？
+pred=3で大きなボラで損が広がる時は損切りするようにした方が良いかもしれない。
 '''
 class Bot:
     def initialize(self,pl_kijun):
@@ -47,8 +50,11 @@ class Bot:
         self.win_rate = 0
         self.margin_rate = 120.0
         self.leverage = 15.0
+        self.initial_asset = Trade.get_collateral()
         self.JST = pytz.timezone('Asia/Tokyo')
         self.sync_position_order()
+        LineNotification.start_notification()
+
 
     def combine_status_data(self, status):
         side = ''
@@ -59,20 +65,18 @@ class Bot:
             size += float(s['size'])
             price += float(s['price']) * float(s['size'])
         price = round(price / size)
-        return side, size, price
+        return side, round(size,2), round(price)
 
     def sync_position_order(self):
         position = Trade.get_positions()
         orders = Trade.get_orders()
         if len(position) > 0:
-            if self.posi_side != position[0]['side'].lower() or self.posi_price!=round(float(position[0]['price'])) or self.posi_size != float(position[0]['size']):
+            posi_side, posi_size, posi_price = self.combine_status_data(position)
+            if self.posi_side != posi_side or self.posi_price!=posi_price or self.posi_size != posi_size:
                 print('position unmatch was detected! Synchronize with account position data.')
                 print('posi_side={},posi_price={},posi_size={}'.format(self.posi_side,self.posi_price,self.posi_size))
                 print(position)
-            self.posi_side, self.posi_size, self.posi_price = self.combine_status_data(position)
-            #self.posi_side = position[0]['side'].lower()
-            #self.posi_price = float(position[0]['price'])
-            #self.posi_size = float(position[0]['size'])
+            self.posi_side, self.posi_size, self.posi_price = posi_side, posi_size, posi_price
             self.posi_status = 'fully executed'
             print('synchronized position data, side='+str(self.posi_side)+', size='+str(self.posi_size)+', price='+str(self.posi_price))
         else:
@@ -294,15 +298,15 @@ class Bot:
         MarketData2.initialize_from_bot_csv(100, 1, 30, 500)
         train_df = MarketData2.generate_df(MarketData2.ohlc_bot)
         #print(train_df)
-        #model = XgbModel()
-        model = CatModel()
+        model = XgbModel()
+        #model = CatModel()
         print('bot - training xgb model..')
         LogMaster.add_log({'action_message': 'bot - training xgb model..'})
         train_x, test_x, train_y, test_y = model.generate_data(train_df, 1)
         #print('x shape '+str(train_x.shape))
         #print('y shape '+str(train_y.shape))
         #bst = model.train(train_x, train_y)
-        bst = model.read_dump_model('./cat_model.dat')
+        bst = model.read_dump_model('./xgb_model.dat')
         print('bot - training completed..')
         print('bot - updating crypto data..')
         LogMaster.add_log({'action_message': 'bot - training completed..'})
@@ -322,7 +326,7 @@ class Bot:
                 self.exit_order()
                 SystemFlg.set_system_flg(False)
                 break
-            if datetime.now(tz=self.JST).second == 1 or datetime.now(tz=self.JST).second == 2:
+            if datetime.now(tz=self.JST).second <= 3:
                 self.sync_position_order()
                 elapsed_time = time.time() - start
                 print("bot elapsed_time:{0}".format(round(elapsed_time/60,2)) + "[min]")
@@ -332,15 +336,11 @@ class Bot:
                 if res == 0:
                     for i in range(len(omd.dt)):
                         MarketData2.ohlc_bot.add_and_pop(omd.unix_time[i],omd.dt[i], omd.open[i], omd.high[i], omd.low[i], omd.close[i], omd.size[i])
-                        #print('add and pop MarketData - ' + str(datetime.now(tz=JST)))
-                    #print('updated -start MarketData - ' + str(datetime.now(tz=JST)))
                     MarketData2.update_ohlc_index_for_bot2()
-                    #print('updated -end MarketData - ' + str(datetime.now(tz=JST)))
                     df = MarketData2.generate_df_for_bot(MarketData2.ohlc_bot)
                     pred_x = model.generate_bot_pred_data(df)
-                    #print('generated df - ' + str(datetime.now(tz=JST)))
-                    # predict = bst.predict(xgb.DMatrix(pred_x))
-                    predict = bst.predict(Pool(pred_x))
+                    predict = bst.predict(xgb.DMatrix(pred_x))
+                    #predict = bst.predict(Pool(pred_x))
                     #print('predicted - ' + str(datetime.now(tz=JST)))
                     LogMaster.add_log({'dt':MarketData2.ohlc_bot.dt[-1],'open':MarketData2.ohlc_bot.open[-1],'high':MarketData2.ohlc_bot.high[-1],
                                       'low':MarketData2.ohlc_bot.low[-1],'close':MarketData2.ohlc_bot.close[-1],'posi_side':self.posi_side,
@@ -358,9 +358,9 @@ class Bot:
                     print('crypto watch data download error!')
             if self.posi_side == '' and self.order_side == '': #no position no order
                 if predict[0] == 1:
-                    self.entry_order('buy', MarketData2.ohlc_bot.close[-1], self.calc_opt_size())
+                    self.entry_order('buy', Trade.get_last_price(), self.calc_opt_size())
                 elif predict[0] == 2:
-                    self.entry_order('sell', MarketData2.ohlc_bot.close[-1], self.calc_opt_size())
+                    self.entry_order('sell', Trade.get_last_price(), self.calc_opt_size())
             elif self.posi_side == '' and self.order_side != '': #no position and ordering
                 if (self.order_side == 'buy' and self.posi_side=='' and (predict[0] == 2)) or (self.order_side == 'sell' and self.posi_side =='' and (predict[0] == 1)):#ノーポジでオーダーが判定を逆の時にキャンセル。
                     self.cancel_order()
@@ -374,7 +374,7 @@ class Bot:
                 self.calc_holding_pl()
             if self.order_side != '':
                 self.check_execution()
-            time.sleep(0.5)
+            time.sleep(1)
 
 
 

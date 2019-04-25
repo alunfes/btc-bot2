@@ -39,6 +39,7 @@ class CryptowatchDataGetter:
         except:
             print('cryptowatch download error!'+str(res))
             print('before={},after={}'.format(query['before'], query['after']))
+            print(res)
             #import traceback
             #traceback.print_exc()
             result = ''
