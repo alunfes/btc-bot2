@@ -17,6 +17,7 @@ class LogMaster:
                         'order_price', 'order_size', 'num_private_access', 'num_public_access', 'num_private_per_min',
                         'pl', 'num_trade', 'win_rate', 'prediction', 'api_error', 'action_message']
         cls.log_list = []
+        print('initialized LogMaster')
 
     @classmethod
     def add_log(cls, dict_log):

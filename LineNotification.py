@@ -2,6 +2,7 @@ import requests
 from LogMaster import LogMaster
 from SystemFlg import SystemFlg
 import asyncio
+import threading
 
 
 class LineNotification:
@@ -9,6 +10,7 @@ class LineNotification:
     def initialize(cls):
         cls.__read_keys()
         cls.last_error = ''
+        print('initialized LineNotification')
 
     @classmethod
     def __read_keys(cls):
@@ -17,19 +19,16 @@ class LineNotification:
         file.close()
 
     @classmethod
-    async def start_notification(cls):
-        cls.initialize()
-        while SystemFlg.get_system_flg():
-            await asyncio.sleep(60)
-            loop = asyncio.get_event_loop()
-            loop.run_until_complete(cls.__send_performance_data())
-            loop.run_until_complete(cls.__send_position_and_order_data())
+    def send_notification(cls):
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(cls.__send_performance_data())
+        loop.run_until_complete(cls.__send_position_and_order_data())
 
     @classmethod
     async def __send_performance_data(cls):
-        p  =LogMaster.get_latest_performance()
+        p = LogMaster.get_latest_performance()
         if len(p) > 0:
-            cls.send_message('\r\n'+'['+p['log_dt']+']'+
+            await cls.__send_message('\r\n'+'['+p['log_dt']+']'+
                              '\r\n'+'pl='+p['pl']+
                              '\r\n'+'num_trade='+p['num_trade']+
                              '\r\n'+'win_rate='+p['win_rate'])
@@ -38,7 +37,7 @@ class LineNotification:
     async def __send_position_and_order_data(cls):
         p = LogMaster.get_latest_position()
         if len(p) > 0:
-            cls.send_message('\r\n' + 'posi_side=' + p['posi_side'] + ', posi_price=' + p['posi_price'] +', posi_size=' + p['posi_size'])
+            await cls.__send_message('\r\n' + 'posi_side=' + p['posi_side'] + ', posi_price=' + p['posi_price'] +', posi_size=' + p['posi_size'])
 
     @classmethod
     async def get_latest_api_error(cls):
@@ -49,7 +48,7 @@ class LineNotification:
                 cls.send_message('\r\n' + 'API Error Occured!' + '\r\n' + p['api_error'])
 
     @classmethod
-    async def send_message(cls, message):
+    async def __send_message(cls, message):
         url2 = "https://notify-api.line.me/api/notify"
         headers = {"Authorization": "Bearer " + cls.token}
         payload = {"message": message}

@@ -76,9 +76,9 @@ class Trade:
     def __read_keys(cls):
         file = open('./ignore/ex.txt', 'r')  # 読み込みモードでオープン
         cls.secret_key = file.readline().split(':')[1]
-        #cls.secret_key = cls.secret_key[:len(cls.secret_key) - 1]
+        cls.secret_key = cls.secret_key[:len(cls.secret_key) - 1]
         cls.api_key = file.readline().split(':')[1]
-        #cls.api_key = cls.api_key[:len(cls.api_key) - 1]
+        cls.api_key = cls.api_key[:len(cls.api_key) - 1]
         file.close()
 
     '''

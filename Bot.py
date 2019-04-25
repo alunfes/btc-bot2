@@ -52,8 +52,10 @@ class Bot:
         self.leverage = 15.0
         self.initial_asset = Trade.get_collateral()
         self.JST = pytz.timezone('Asia/Tokyo')
+        Trade.cancel_all_orders()
+        time.sleep(5)
         self.sync_position_order()
-        LineNotification.start_notification()
+
 
 
     def combine_status_data(self, status):
@@ -340,6 +342,7 @@ class Bot:
                     df = MarketData2.generate_df_for_bot(MarketData2.ohlc_bot)
                     pred_x = model.generate_bot_pred_data(df)
                     predict = bst.predict(xgb.DMatrix(pred_x))
+                    LineNotification.send_notification()
                     #predict = bst.predict(Pool(pred_x))
                     #print('predicted - ' + str(datetime.now(tz=JST)))
                     LogMaster.add_log({'dt':MarketData2.ohlc_bot.dt[-1],'open':MarketData2.ohlc_bot.open[-1],'high':MarketData2.ohlc_bot.high[-1],
@@ -383,6 +386,7 @@ if __name__ == '__main__':
     SystemFlg.initialize()
     Trade.initialize()
     LogMaster.initialize()
+    LineNotification.initialize()
     bot = Bot()
     bot.start_bot(500)
 
