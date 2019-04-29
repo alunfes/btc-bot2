@@ -148,7 +148,6 @@ class MarketData2:
                 ohlc.future_side.append('sell')
             elif buy_max < future_side_kijun and sell_max < future_side_kijun:
                 ohlc.future_side.append('no')
-
         return ohlc
 
 

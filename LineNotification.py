@@ -3,6 +3,7 @@ from LogMaster import LogMaster
 from SystemFlg import SystemFlg
 import asyncio
 import threading
+from datetime import datetime
 
 
 class LineNotification:
@@ -22,14 +23,15 @@ class LineNotification:
     def send_notification(cls):
         loop = asyncio.get_event_loop()
         loop.run_until_complete(cls.__send_performance_data())
-        loop.run_until_complete(cls.__send_position_and_order_data())
+        #loop.run_until_complete(cls.__send_position_and_order_data())
 
     @classmethod
     async def __send_performance_data(cls):
         p = LogMaster.get_latest_performance()
         if len(p) > 0:
-            await cls.__send_message('\r\n'+'['+str(p['log_dt'])+']'+
+            await cls.__send_message('\r\n'+'['+str(p['log_dt'].strftime("%m/%d %H:%M:%S"))+']'+
                              '\r\n'+'pl='+str(p['pl'])+
+                            '\r\n' + 'pl_per_min=' + str(p['pl_per_min']) +
                              '\r\n'+'num_trade='+str(p['num_trade'])+
                              '\r\n'+'win_rate='+str(p['win_rate']))
 
@@ -55,7 +57,7 @@ class LineNotification:
         try:
             res = requests.post(url2, headers=headers, data=payload)
         except Exception as e:
-            print('Line notify error!-'+e)
+            print('Line notify error!={}'.format(e))
 
 
 

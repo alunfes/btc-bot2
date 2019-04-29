@@ -48,6 +48,8 @@ class Bot:
         self.num_trade = 0
         self.num_win = 0
         self.win_rate = 0
+        self.pl_per_min = 0
+        self.elapsed_time = 0
         self.margin_rate = 120.0
         self.leverage = 15.0
         self.initial_asset = Trade.get_collateral()
@@ -122,17 +124,21 @@ class Bot:
 
     def calc_and_log_pl(self, ave_p, size):
         pl = (ave_p - self.posi_price) * self.posi_size if self.posi_side == 'buy' else (self.posi_price - ave_p) * self.posi_size
-        self.pl += round(pl,2)
-        self.pl_log.append(self.pl)
+        self.pl += round(pl)
+        self.pl_log.append(round(self.pl))
         self.num_trade += 1
         if pl > 0:
             self.num_win += 1
         self.win_rate = round(float(self.num_win) / float(self.num_trade),2)
+        if self.elapsed_time >0:
+            self.pl_per_min = round( (self.pl + self.holding_pl) / (self.elapsed_time /60.0),4)
+        else:
+            self.pl_per_min = 0
         #print('pl = {}, num = {}, win_rate = {}'.format(self.pl, self.num_trade, self.win_rate))
 
     def calc_holding_pl(self):
         lastp = Trade.get_last_price()
-        self.holding_pl = round((lastp - self.posi_price) * self.posi_size if self.posi_side == 'buy' else (self.posi_price - lastp) * self.posi_size ,2)
+        self.holding_pl = round((lastp - self.posi_price) * self.posi_size if self.posi_side == 'buy' else (self.posi_price - lastp) * self.posi_size)
 
     def entry_order(self, side, price, size):
         res = Trade.order(side, price, size, 1)
@@ -174,7 +180,7 @@ class Bot:
         print('exit order')
         res = Trade.cancel_and_wait_completion(self.order_id) #cancel pl order
         if len(res) > 0:
-            self.posi_size = self.posi_size - res[0]['executed_size']
+            self.posi_size = self.posi_size - res['executed_size']
         if self.posi_size > 0:
             side = 'buy' if self.posi_side == 'sell' else 'sell'
             ave_p = Trade.price_tracing_order(side, self.posi_size)
@@ -183,7 +189,7 @@ class Bot:
                 LogMaster.add_log({'dt': datetime.now(), 'action_message': 'exit completed ave_price='+str(ave_p)+' x'+str(self.posi_size)})
                 self.posi_initialzie()
                 self.order_initailize()
-            else:
+            else: #
                 LogMaster.add_log({'dt': datetime.now(),'action_message': 'Reached API access limitation!'})
                 print('Reached API access limitation!')
                 print('Sleep for 60s...')
@@ -191,8 +197,8 @@ class Bot:
                 print('Resumed from API limitation sleep.')
         else:
             print('order has been fully executed before cancellation')
-            self.calc_and_log_pl(res[0]['average_price'], res[0]['executed_size'])
-            LogMaster.add_log({'dt': datetime.now(),'action_message': 'exit - order has been fully executed before cancellation' + str(res[0]['average_price']) + ' x' + str(res[0]['executed_size'])})
+            self.calc_and_log_pl(res['average_price'], res['executed_size'])
+            LogMaster.add_log({'dt': datetime.now(),'action_message': 'exit - order has been fully executed before cancellation' + str(res['average_price']) + ' x' + str(res['executed_size'])})
             self.posi_initialzie()
             self.order_initailize()
 
@@ -321,17 +327,14 @@ class Bot:
         JST = pytz.timezone('Asia/Tokyo')
         start = time.time()
         while SystemFlg.get_system_flg():
-            time.sleep(Trade.adjusting_sleep)
-            while datetime.now(tz=self.JST).hour == 3 and datetime.now(tz=self.JST).minute >= 50:
-                time.sleep(10) #wait for daily system maintenace
+            #time.sleep(Trade.adjusting_sleep)
+            if (datetime.now(tz=self.JST).hour == 3 and datetime.now(tz=self.JST).minute >= 48):
                 self.cancel_order()
-                self.exit_order()
-                SystemFlg.set_system_flg(False)
-                break
-            if datetime.now(tz=self.JST).second <= 3:
+                time.sleep(780)  # wait for daily system maintenace
+            elif datetime.now(tz=self.JST).second <= 3:
                 self.sync_position_order()
-                elapsed_time = time.time() - start
-                print("bot elapsed_time:{0}".format(round(elapsed_time/60,2)) + "[min]")
+                self.elapsed_time = time.time() - start
+                print("bot elapsed_time:{0}".format(round(self.elapsed_time/60,2)) + "[min]")
                 print('private access per min={}, num private access={}, num public access={}'.format(Trade.num_private_access_per_min, Trade.num_private_access, Trade.num_public_access))
                 res, omd = CryptowatchDataGetter.get_data_after_specific_ut(MarketData2.ohlc_bot.unix_time[-1])
                 #print('downloaded data - '+str(datetime.now(tz=JST)))
@@ -349,14 +352,11 @@ class Bot:
                                        'posi_price':self.posi_price,'posi_size':self.posi_size,'order_side':self.order_side,'order_price':self.order_price,
                                        'order_size':self.order_size,'num_private_access':Trade.num_private_access, 'num_public_access':Trade.num_public_access,
                                        'num_private_per_min':Trade.num_private_access_per_min,'num_trade':self.num_trade,'win_rate':self.win_rate, 'pl':self.pl+self.holding_pl,
-                                       'prediction':predict[0]})
+                                       'pl_per_min':self.pl_per_min, 'prediction':predict[0]})
                     LineNotification.send_notification()
-                    print('dt={}, close={}, predict={}, pl={}, num_trade={}, win_rate={}, posi_side={}, posi_price={}, posi_size={}, order_side={}, order_price={}, order_size={}'.format(MarketData2.ohlc_bot.dt[-1],
-                                                                        MarketData2.ohlc_bot.close[-1],
-                                                                                                 predict[0],
-                                                                                                 self.pl+self.holding_pl,
-                                                                                                 self.num_trade,
-                                                                                                 self.win_rate, self.posi_side, self.posi_price, self.posi_size, self.order_side, self.order_price, self.order_size))
+                    print('dt={}, close={}, predict={}, pl={}, pl_per_min={}, num_trade={}, win_rate={}, posi_side={}, posi_price={}, posi_size={}, order_side={}, order_price={}, order_size={}'
+                          .format(MarketData2.ohlc_bot.dt[-1],MarketData2.ohlc_bot.close[-1],predict[0],self.pl+self.holding_pl, self.pl_per_min, self.num_trade,
+                                  self.win_rate, self.posi_side, self.posi_price, self.posi_size, self.order_side, self.order_price, self.order_size))
                 else:
                     print('crypto watch data download error!')
             if self.posi_side == '' and self.order_side == '': #no position no order
@@ -377,7 +377,7 @@ class Bot:
                 self.calc_holding_pl()
             if self.order_side != '':
                 self.check_execution()
-            time.sleep(1)
+            time.sleep(0.7)
 
 
 

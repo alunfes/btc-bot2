@@ -1000,3 +1000,158 @@ Traceback (most recent call last):
   File "/Users/alun/Projects/btc-bot2/Trade.py", line 285, in get_positions
     print('error in get_positions ' + e)
 TypeError: must be str, not DDoSProtection
+
+
+
+
+
+dt=2019-04-29 18:45:00, close=583534, predict=3.0, pl=73, pl_per_min=1.3894, num_trade=7, win_rate=0.43, posi_side=, posi_price=0, posi_size=0, order_side=, order_price=0, order_size=0
+bot elapsed_time:61.54[min]
+private access per min=60.94, num private access=3829, num public access=3481
+dt=2019-04-29 18:46:00, close=583496, predict=3.0, pl=73, pl_per_min=1.3894, num_trade=7, win_rate=0.43, posi_side=, posi_price=0, posi_size=0, order_side=, order_price=0, order_size=0
+bot elapsed_time:61.6[min]
+private access per min=60.91, num private access=3831, num public access=3481
+dt=2019-04-29 18:46:00, close=583496, predict=3.0, pl=73, pl_per_min=1.3894, num_trade=7, win_rate=0.43, posi_side=, posi_price=0, posi_size=0, order_side=, order_price=0, order_size=0
+bot elapsed_time:62.55[min]
+private access per min=60.04, num private access=3833, num public access=3481
+dt=2019-04-29 18:47:00, close=583605, predict=3.0, pl=73, pl_per_min=1.3894, num_trade=7, win_rate=0.43, posi_side=, posi_price=0, posi_size=0, order_side=, order_price=0, order_size=0
+bot elapsed_time:63.54[min]
+private access per min=59.14, num private access=3835, num public access=3481
+dt=2019-04-29 18:48:00, close=583897, predict=3.0, pl=73, pl_per_min=1.3894, num_trade=7, win_rate=0.43, posi_side=, posi_price=0, posi_size=0, order_side=, order_price=0, order_size=0
+bot elapsed_time:64.54[min]
+private access per min=58.28, num private access=3837, num public access=3481
+dt=2019-04-29 18:49:00, close=583966, predict=3.0, pl=73, pl_per_min=1.3894, num_trade=7, win_rate=0.43, posi_side=, posi_price=0, posi_size=0, order_side=, order_price=0, order_size=0
+bot elapsed_time:65.54[min]
+private access per min=57.44, num private access=3839, num public access=3481
+dt=2019-04-29 18:50:00, close=584389, predict=3.0, pl=73, pl_per_min=1.3894, num_trade=7, win_rate=0.43, posi_side=, posi_price=0, posi_size=0, order_side=, order_price=0, order_size=0
+bot elapsed_time:65.6[min]
+private access per min=57.42, num private access=3841, num public access=3481
+dt=2019-04-29 18:50:00, close=584389, predict=3.0, pl=73, pl_per_min=1.3894, num_trade=7, win_rate=0.43, posi_side=, posi_price=0, posi_size=0, order_side=, order_price=0, order_size=0
+bot elapsed_time:66.54[min]
+private access per min=56.66, num private access=3843, num public access=3481
+dt=2019-04-29 18:51:00, close=584272, predict=3.0, pl=73, pl_per_min=1.3894, num_trade=7, win_rate=0.43, posi_side=, posi_price=0, posi_size=0, order_side=, order_price=0, order_size=0
+bot elapsed_time:67.55[min]
+private access per min=55.85, num private access=3845, num public access=3481
+dt=2019-04-29 18:52:00, close=584218, predict=2.0, pl=73, pl_per_min=1.3894, num_trade=7, win_rate=0.43, posi_side=, posi_price=0, posi_size=0, order_side=, order_price=0, order_size=0
+ok order - JRF20190429-095203-308242
+new entry: side = sell, price = 584224.0, size = 0.07
+new entry is not boarded
+new entry boarded: 2019-04-29 18:52:04.674145
+new entry order has been completedave_price=584224.0size=0.07
+position unmatch was detected! Synchronize with account position data.
+posi_side=,posi_price=0,posi_size=0
+[{'product_code': 'FX_BTC_JPY', 'side': 'SELL', 'price': 584224.0, 'size': 0.05, 'commission': 0.0, 'swap_point_accumulate': 0.0, 'require_collateral': 1947.4133333333334, 'open_date': '2019-04-29T09:52:04.183', 'leverage': 15.0, 'pnl': -2.1, 'sfd': 0.0}, {'product_code': 'FX_BTC_JPY', 'side': 'SELL', 'price': 584224.0, 'size': 0.02, 'commission': 0.0, 'swap_point_accumulate': 0.0, 'require_collateral': 778.9653333333333, 'open_date': '2019-04-29T09:52:04.183', 'leverage': 15.0, 'pnl': -0.84, 'sfd': 0.0}]
+synchronized position data, side=sell, size=0.07, price=584224
+current position: side=sell,price=584224,size=0.07
+ok order - JRF20190429-095206-237548
+pl order: side = buy, price = 583724, size = 0.07
+pl order is not boarded
+pl order boarded: 2019-04-29 18:52:07.512322
+synchronized position data, side=sell, size=0.07, price=584224
+synchronized order data, side=buy, size=0.07, price=583724
+bot elapsed_time:68.54[min]
+private access per min=56.11, num private access=3919, num public access=3546
+dt=2019-04-29 18:53:00, close=584414, predict=3.0, pl=34, pl_per_min=1.3894, num_trade=7, win_rate=0.43, posi_side=sell, posi_price=584224, posi_size=0.07, order_side=buy, order_price=583724, order_size=0.07
+synchronized position data, side=sell, size=0.07, price=584224
+synchronized order data, side=buy, size=0.07, price=583724
+bot elapsed_time:69.55[min]
+private access per min=56.32, num private access=3988, num public access=3613
+dt=2019-04-29 18:54:00, close=584526, predict=3.0, pl=21, pl_per_min=1.3894, num_trade=7, win_rate=0.43, posi_side=sell, posi_price=584224, posi_size=0.07, order_side=buy, order_price=583724, order_size=0.07
+synchronized position data, side=sell, size=0.07, price=584224
+synchronized order data, side=buy, size=0.07, price=583724
+bot elapsed_time:70.54[min]
+private access per min=56.47, num private access=4057, num public access=3680
+dt=2019-04-29 18:55:00, close=584722, predict=3.0, pl=8, pl_per_min=1.3894, num_trade=7, win_rate=0.43, posi_side=sell, posi_price=584224, posi_size=0.07, order_side=buy, order_price=583724, order_size=0.07
+synchronized position data, side=sell, size=0.07, price=584224
+synchronized order data, side=buy, size=0.07, price=583724
+bot elapsed_time:71.55[min]
+private access per min=56.65, num private access=4127, num public access=3748
+dt=2019-04-29 18:56:00, close=584556, predict=3.0, pl=13, pl_per_min=1.3894, num_trade=7, win_rate=0.43, posi_side=sell, posi_price=584224, posi_size=0.07, order_side=buy, order_price=583724, order_size=0.07
+synchronized position data, side=sell, size=0.07, price=584224
+synchronized order data, side=buy, size=0.07, price=583724
+bot elapsed_time:72.54[min]
+private access per min=56.8, num private access=4194, num public access=3813
+dt=2019-04-29 18:57:00, close=584683, predict=3.0, pl=7, pl_per_min=1.3894, num_trade=7, win_rate=0.43, posi_side=sell, posi_price=584224, posi_size=0.07, order_side=buy, order_price=583724, order_size=0.07
+synchronized position data, side=sell, size=0.07, price=584224
+synchronized order data, side=buy, size=0.07, price=583724
+bot elapsed_time:72.6[min]
+private access per min=56.79, num private access=4197, num public access=3814
+dt=2019-04-29 18:58:00, close=584741, predict=1.0, pl=4, pl_per_min=1.3894, num_trade=7, win_rate=0.43, posi_side=sell, posi_price=584224, posi_size=0.07, order_side=buy, order_price=583724, order_size=0.07
+exit order
+waiting cancell order JRF20190429-095206-237548
+order has been successfully cancelled
+started price tracing order
+ok order - JRF20190429-095710-549774
+confirmed the order has been boarded
+waiting cancell order JRF20190429-095710-549774
+cancel failed order has been partially executed. exe size=0.07
+price tracing order - executed 0.07 @584830.0
+price tracing order has been completed.
+ave price=584830.0, exe size = 0.07
+ok order - JRF20190429-095713-085286
+new entry: side = buy, price = 584785.0, size = 0.07
+new entry is not boarded
+new entry boarded: 2019-04-29 18:57:14.307146
+new entry order has been completedave_price=584785.0size=0.07
+position unmatch was detected! Synchronize with account position data.
+posi_side=,posi_price=0,posi_size=0
+[{'product_code': 'FX_BTC_JPY', 'side': 'BUY', 'price': 584785.0, 'size': 0.07, 'commission': 0.0, 'swap_point_accumulate': 0.0, 'require_collateral': 2728.9966666666664, 'open_date': '2019-04-29T09:57:16.87', 'leverage': 15.0, 'pnl': -0.7, 'sfd': 0.0}]
+synchronized position data, side=buy, size=0.07, price=584785
+current position: side=buy,price=584785,size=0.07
+ok order - JRF20190429-095718-085319
+pl order: side = sell, price = 585285, size = 0.07
+pl order is not boarded
+pl order boarded: 2019-04-29 18:57:19.301848
+synchronized position data, side=buy, size=0.07, price=584785
+synchronized order data, side=sell, size=0.07, price=585285
+bot elapsed_time:73.54[min]
+private access per min=57.09, num private access=4273, num public access=3869
+dt=2019-04-29 18:58:00, close=584741, predict=1.0, pl=-1, pl_per_min=-0.5234, num_trade=8, win_rate=0.38, posi_side=buy, posi_price=584785, posi_size=0.07, order_side=sell, order_price=585285, order_size=0.07
+synchronized position data, side=buy, size=0.07, price=584785
+synchronized order data, side=sell, size=0.07, price=585285
+bot elapsed_time:74.54[min]
+private access per min=57.31, num private access=4346, num public access=3940
+dt=2019-04-29 18:59:00, close=584674, predict=1.0, pl=-11, pl_per_min=-0.5234, num_trade=8, win_rate=0.38, posi_side=buy, posi_price=584785, posi_size=0.07, order_side=sell, order_price=585285, order_size=0.07
+synchronized position data, side=buy, size=0.07, price=584785
+synchronized order data, side=sell, size=0.07, price=585285
+bot elapsed_time:75.55[min]
+private access per min=57.46, num private access=4415, num public access=4007
+dt=2019-04-29 19:00:00, close=584960, predict=3.0, pl=8, pl_per_min=-0.5234, num_trade=8, win_rate=0.38, posi_side=buy, posi_price=584785, posi_size=0.07, order_side=sell, order_price=585285, order_size=0.07
+synchronized position data, side=buy, size=0.07, price=584785
+synchronized order data, side=sell, size=0.07, price=585285
+bot elapsed_time:76.54[min]
+private access per min=57.56, num private access=4480, num public access=4070
+dt=2019-04-29 19:01:00, close=584890, predict=2.0, pl=4, pl_per_min=-0.5234, num_trade=8, win_rate=0.38, posi_side=buy, posi_price=584785, posi_size=0.07, order_side=sell, order_price=585285, order_size=0.07
+exit order
+waiting cancell order JRF20190429-095718-085319
+order has been successfully cancelled
+started price tracing order
+ok order - JRF20190429-100110-551203
+confirmed the order has been boarded
+waiting cancell order JRF20190429-100110-551203
+order has been successfully cancelled
+ok order - JRF20190429-100130-087337
+confirmed the order has been boarded
+price tracing order - replaced order for sell, @584868.0 x 0.07
+Traceback (most recent call last):
+  File "/Users/alun/Projects/btc-bot2/Bot.py", line 391, in <module>
+    bot.start_bot(500)
+  File "/Users/alun/Projects/btc-bot2/Bot.py", line 373, in start_bot
+    self.exit_order()
+  File "/Users/alun/Projects/btc-bot2/Bot.py", line 186, in exit_order
+    ave_p = Trade.price_tracing_order(side, self.posi_size)
+  File "/Users/alun/Projects/btc-bot2/Trade.py", line 366, in price_tracing_order
+    if abs(price - cls.get_opt_price()) <= 10 and remaining_size > 0:  # current order price is far from opt price
+  File "/Users/alun/Projects/btc-bot2/Trade.py", line 436, in get_opt_price
+    book = cls.get_order_book()
+  File "/Users/alun/Projects/btc-bot2/Trade.py", line 420, in get_order_book
+    return cls.bf.fetch_order_book(symbol='BTC/JPY', params={"product_code": "FX_BTC_JPY"})
+  File "/Users/alun/Projects/btc-bot2/btc-bot2/lib/python3.6/site-packages/ccxt/bitflyer.py", line 164, in fetch_order_book
+    return self.parse_order_book(orderbook, None, 'bids', 'asks', 'price', 'size')
+  File "/Users/alun/Projects/btc-bot2/btc-bot2/lib/python3.6/site-packages/ccxt/base/exchange.py", line 1253, in parse_order_book
+    'asks': self.sort_by(self.parse_bids_asks(orderbook[asks_key], price_key, amount_key) if (asks_key in orderbook) and isinstance(orderbook[asks_key], list) else [], 0),
+  File "/Users/alun/Projects/btc-bot2/btc-bot2/lib/python3.6/site-packages/ccxt/base/exchange.py", line 1238, in parse_bids_asks
+    result.append(self.parse_bid_ask(bidask, price_key, amount_key))
+  File "/Users/alun/Projects/btc-bot2/btc-bot2/lib/python3.6/site-packages/ccxt/base/exchange.py", line 1226, in parse_bid_ask
+    return [float(bidask[price_key]), float(bidask[amount_key])]
+KeyboardInterrupt

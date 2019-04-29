@@ -15,7 +15,7 @@ class LogMaster:
         cls.index = 0
         cls.key_list = ['index','log_dt', 'dt', 'open','high','low','close','posi_side', 'posi_price', 'posi_size', 'order_side',
                         'order_price', 'order_size', 'num_private_access', 'num_public_access', 'num_private_per_min',
-                        'pl', 'num_trade', 'win_rate', 'prediction', 'api_error', 'action_message']
+                        'pl', 'pl_per_min', 'num_trade', 'win_rate', 'prediction', 'api_error', 'action_message']
         cls.log_list = []
         print('initialized LogMaster')
 
@@ -71,7 +71,7 @@ class LogMaster:
     @classmethod
     def get_latest_performance(cls):
         if cls.index > 0:
-            return {'log_dt':cls.log_list[-1]['log_dt'],'pl':cls.log_list[-1]['pl'], 'num_trade':cls.log_list[-1]['num_trade'],'win_rate':cls.log_list[-1]['win_rate']}
+            return {'log_dt':cls.log_list[-1]['log_dt'],'pl':cls.log_list[-1]['pl'], 'pl_per_min':cls.log_list[-1]['pl_per_min'], 'num_trade':cls.log_list[-1]['num_trade'],'win_rate':cls.log_list[-1]['win_rate']}
         else:
             return {}
 

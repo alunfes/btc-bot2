@@ -56,13 +56,13 @@ class Trade:
 
     @classmethod
     def check_exception(cls, exc):
-        if 'connection reset by peer' in exc:
+        if 'Connection reset by peer' in str(exc):
             print('detected connection reset by peer error!')
             print('initialize trade class.')
             cls.initialize()
             time.sleep(10)
             return 'error'
-        if 'Over API limit per minute' in exc:
+        if 'Over API limit per minute' in str(exc):
             print('API private access reached limitation!')
             print('initialize trade class and sleep 60sec.')
             cls.initialize()
@@ -101,17 +101,24 @@ class Trade:
                         params={'product_code': 'FX_BTC_JPY', 'minute_to_expire': expire_m}  # 期限切れまでの時間（分）（省略した場合は30日）
                     )
                 except Exception as e:
-                    print(e)
-                    LogMaster.add_log({'dt': datetime.now(), 'action_message': 'Trade-order error! ' + str(e)})
-                    cls.conti_order_error += 1
-                    if cls.check_exception(e) == 'ok':
-                        if cls.conti_order_error > 15:
-                            SystemFlg.set_system_flg(False)
-                            LogMaster.add_log({'dt':datetime.now(),'api_error':'continuous order error more than 15times System Finished.'})
-                            print('continuous order error more than 15times System Finished.')
-                        return ''
-                    else: #connection reset by peer error
-                        return ''
+                    if 'Margin amount is insufficient' in str(e):
+                        print('margin amount is insufficient! - decrease order size to '+str(size))
+                        size -= round(0.01,2)
+                        cls.order(side,price,size, expire_m)
+                    elif 'Market state is closed.' in str(e):
+                        time.sleep(10)
+                    else:
+                        print(e)
+                        LogMaster.add_log({'dt': datetime.now(), 'action_message': 'Trade-order error! ' + str(e)})
+                        cls.conti_order_error += 1
+                        if cls.check_exception(e) == 'ok':
+                            if cls.conti_order_error > 15:
+                                SystemFlg.set_system_flg(False)
+                                LogMaster.add_log({'dt':datetime.now(),'api_error':'continuous order error more than 15times System Finished.'})
+                                print('continuous order error more than 15times System Finished.')
+                            return ''
+                        else: #connection reset by peer error
+                            return ''
 
                 order_id = order_id['info']['child_order_acceptance_id']
                 cls.conti_order_error = 0
@@ -143,7 +150,7 @@ class Trade:
             except Exception as e:
                 if cls.check_exception(e) == 'ok':
                     pass
-                print('error in get_order_status ' + e)
+                print('error in get_order_status ' + str(e))
                 LogMaster.add_log({'dt': datetime.now(),'api_error': 'Trade-get order status error! '+str(e)})
             finally:
                 return res
@@ -220,7 +227,7 @@ class Trade:
         try:
             orders = cls.bf.fetch_open_orders(symbol='BTC/JPY', params={"product_code": "FX_BTC_JPY"})
         except Exception as e:
-            print('error in get_orders ' + e)
+            print('error in get_orders ' + str(e))
             LogMaster.add_log({'dt': datetime.now(), 'api_error': 'Trade-get get_orders error! ' + str(e)})
             if cls.check_exception(e) == 'ok':
                 pass
@@ -265,7 +272,7 @@ class Trade:
         try:
             order = cls.bf.fetch_open_orders(symbol='BTC/JPY', params={"product_code": "FX_BTC_JPY", 'child_order_acceptance_id': order_id})
         except Exception as e:
-            print('error in get_order ' + e)
+            print('error in get_order ' + str(e))
             LogMaster.add_log({'dt': datetime.now(), 'api_error': 'Trade-get get_order error! ' + str(e)})
             if cls.check_exception(e) == 'ok':
                 pass
@@ -290,7 +297,7 @@ class Trade:
         try:
             positions = cls.bf.private_get_getpositions(params={"product_code": "FX_BTC_JPY"})
         except Exception as e:
-            print('error in get_positions ' + e)
+            print('error in get_positions ' + str(e))
             LogMaster.add_log({'dt': datetime.now(), 'api_error': 'Trade-get get_positions error! ' + str(e)})
             if cls.check_exception(e) == 'ok':
                 pass
@@ -302,7 +309,7 @@ class Trade:
         try:
             return cls.bf.cancel_order(id=order_id, symbol='BTC/JPY', params={"product_code": "FX_BTC_JPY"})
         except Exception as e:
-            print('error in cancel_order ' + e)
+            print('error in cancel_order ' + str(e))
             LogMaster.add_log({'dt': datetime.now(), 'api_error': 'Trade-get cancel_order error! ' + str(e)})
             if cls.check_exception(e) == 'ok':
                 pass
@@ -356,7 +363,7 @@ class Trade:
             order_id = cls.order_wait_till_boarding(side, price, remaining_size, 100)['child_order_acceptance_id']
             while remaining_size > 0:
                 status = cls.get_order_status(order_id)
-                if abs(price - cls.get_opt_price()) <= 300 and remaining_size > 0:  # current order price is far from opt price
+                if abs(price - cls.get_opt_price()) <= 10 and remaining_size > 0:  # current order price is far from opt price
                     res = cls.cancel_and_wait_completion(order_id)
                     if len(res) > 0:  # cancell failed order partially executed
                         remaining_size = res['outstanding_size']
@@ -393,10 +400,10 @@ class Trade:
                 time.sleep(0.2)
             Trade.cancel_all_orders()
             print('price tracing order has been completed.')
-            print('current positions:')
-            print(cls.get_positions())
-            print('current orders:')
-            print(cls.get_orders())
+            #print('current positions:')
+            #print(cls.get_positions())
+            #print('current orders:')
+            #print(cls.get_orders())
             print('ave price={}, exe size = {}'.format(sum_price_x_size / sum_size, sum_size))
             return sum_price_x_size / sum_size
         else:
