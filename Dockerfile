@@ -15,6 +15,7 @@ COPY requirements.txt ./
 COPY one_min_date.csv ./
 COPY ignore ./ignore
 COPY Model ./Model
+COPY Data ./Data
 COPY *.py ./
 
 RUN pip install --upgrade pip

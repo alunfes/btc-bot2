@@ -18,7 +18,7 @@ class MarketData2:
         cls.future_side_kijun = future_side_kijun
         cls.ohlc_bot = OneMinutesData()
         cls.ohlc_bot.initialize()
-        cls.ohlc_bot = cls.read_from_csv('one_min_data.csv')
+        cls.ohlc_bot = cls.read_from_csv('./Data/one_min_data.csv')
         cls.ohlc_bot = cls.calc_ma2(cls.ohlc_bot)
         cls.ohlc_bot = cls.calc_ma_kairi2(cls.ohlc_bot)
         cls.ohlc_bot = cls.calc_momentum2(cls.ohlc_bot)

@@ -13,12 +13,12 @@ class CryptowatchDataGetter:
     def initialize_for_bot(cls):
         cls.num_update = 0
         cls.get_and_add_to_csv()
-        shutil.copy('./one_min_data.csv', './bot_ohlc_data.csv')
+        shutil.copy('./Data/one_min_data.csv', './Data/bot_ohlc_data.csv')
 
 
     @classmethod
     def check_csv_data(cls):
-        df = pd.read_csv('one_min_data.csv')
+        df = pd.read_csv('./Data/one_min_data.csv')
         dt = df['dt']
         ut = df['unix_time']
         return dt[len(dt)-1], ut[len(ut)-1]
@@ -125,7 +125,7 @@ class CryptowatchDataGetter:
         df = df.assign(low=one_min_data.low)
         df = df.assign(close=one_min_data.close)
         df = df.assign(size=one_min_data.size)
-        df.to_csv('one_min_data.csv', index=False)
+        df.to_csv('./Data/one_min_data.csv', index=False)
 
     @classmethod
     def read_csv_data(cls, file_name):
@@ -136,9 +136,9 @@ class CryptowatchDataGetter:
 
     @classmethod
     def get_and_add_to_csv(cls):  #about 1 sec
-        if os.path.exists('one_min_data.csv'):
+        if os.path.exists('./Data/one_min_data.csv'):
             dt, unix_dt = cls.check_csv_data()
-            df_ori = cls.read_csv_data('one_min_data.csv')
+            df_ori = cls.read_csv_data('./Data/one_min_data.csv')
             json_data = cls.get_data_from_crptowatch(after=unix_dt)
             omd = cls.convert_json_to_ohlc(json_data)
             from_ind = 0
@@ -156,7 +156,7 @@ class CryptowatchDataGetter:
                 df = df.assign(close=omd.close[from_ind:])
                 df = df.assign(size=omd.size[from_ind:])
                 df_ori = pd.concat([df_ori, df], ignore_index=True, axis=0)
-                df_ori.to_csv('one_min_data.csv', index=False)
+                df_ori.to_csv('./Data/one_min_data.csv', index=False)
                 return df, omd
             else:
                 print('no new ohlc data to the csv!')
