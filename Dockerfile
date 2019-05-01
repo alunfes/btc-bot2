@@ -12,9 +12,11 @@ ENV TERM xterm
 
 WORKDIR /usr/src/app
 COPY requirements.txt ./
+COPY one_min_date.csv ./
 COPY ignore ./ignore
+COPY Model ./Model
 COPY *.py ./
 
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
-CMD [ "python", "./bot.py" ]
+CMD [ "python", "./Bot.py" ]

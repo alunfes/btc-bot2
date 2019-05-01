@@ -295,7 +295,7 @@ class Bot:
                     pass
 
 
-    def start_bot(self,pl_kijun):
+    def start_bot(self,pl_kijun, future_period, num_term, window_term):
         self.initialize(pl_kijun)
         Trade.cancel_all_orders()
         print('bot - updating crypto data..')
@@ -303,7 +303,7 @@ class Bot:
         CryptowatchDataGetter.get_and_add_to_csv()
         print('bot - initializing MarketData2..')
         LogMaster.add_log({'action_message': 'bot - initializing MarketData2..'})
-        MarketData2.initialize_from_bot_csv(100, 1, 30, 500)
+        MarketData2.initialize_from_bot_csv(num_term, window_term, future_period, pl_kijun)
         train_df = MarketData2.generate_df(MarketData2.ohlc_bot)
         #print(train_df)
         model = XgbModel()
@@ -390,7 +390,7 @@ if __name__ == '__main__':
     LogMaster.initialize()
     LineNotification.initialize()
     bot = Bot()
-    bot.start_bot(500)
+    bot.start_bot(500, 30, 100, 1)
 
 
 
