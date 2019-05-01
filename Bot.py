@@ -208,9 +208,9 @@ class Bot:
         status = Trade.cancel_and_wait_completion(self.order_id)
         if len(status) > 0:
             print('cancel failed, partially executed')
-            ave_p = Trade.price_tracing_order(status[0]['side'].lower(), status[0]['executed_size'])
-            self.calc_and_log_pl(ave_p, status[0]['executed_size'])
-            LogMaster.add_log({'dt': datetime.now(),'action_message': 'cancel order - cancel failed and partially executed. closed position.' + str(ave_p) + ' x' + str(status[0]['executed_size'])})
+            ave_p = Trade.price_tracing_order(status['side'].lower(), status['executed_size'])
+            self.calc_and_log_pl(ave_p, status['executed_size'])
+            LogMaster.add_log({'dt': datetime.now(),'action_message': 'cancel order - cancel failed and partially executed. closed position.' + str(ave_p) + ' x' + str(status['executed_size'])})
             self.posi_initialzie()
             self.order_initailize()
         else:
@@ -313,8 +313,8 @@ class Bot:
         train_x, test_x, train_y, test_y = model.generate_data(train_df, 1)
         #print('x shape '+str(train_x.shape))
         #print('y shape '+str(train_y.shape))
-        #bst = model.train(train_x, train_y)
-        bst = model.read_dump_model('./xgb_model.dat')
+        bst = model.read_dump_model('./Model/xgb_model.dat')
+        #cbm = model.read_dump_model('./Model/cat_model.dat')
         print('bot - training completed..')
         print('bot - updating crypto data..')
         LogMaster.add_log({'action_message': 'bot - training completed..'})
@@ -329,8 +329,10 @@ class Bot:
         while SystemFlg.get_system_flg():
             #time.sleep(Trade.adjusting_sleep)
             if (datetime.now(tz=self.JST).hour == 3 and datetime.now(tz=self.JST).minute >= 48):
-                self.cancel_order()
+                if self.posi_side == '':
+                    self.cancel_order()
                 time.sleep(780)  # wait for daily system maintenace
+                print('resumed from maintenance time sleep')
             elif datetime.now(tz=self.JST).second <= 3:
                 self.sync_position_order()
                 self.elapsed_time = time.time() - start
@@ -345,7 +347,7 @@ class Bot:
                     df = MarketData2.generate_df_for_bot(MarketData2.ohlc_bot)
                     pred_x = model.generate_bot_pred_data(df)
                     predict = bst.predict(xgb.DMatrix(pred_x))
-                    #predict = bst.predict(Pool(pred_x))
+                    #predict = cbm.predict(Pool(pred_x))
                     #print('predicted - ' + str(datetime.now(tz=JST)))
                     LogMaster.add_log({'dt':MarketData2.ohlc_bot.dt[-1],'open':MarketData2.ohlc_bot.open[-1],'high':MarketData2.ohlc_bot.high[-1],
                                       'low':MarketData2.ohlc_bot.low[-1],'close':MarketData2.ohlc_bot.close[-1],'posi_side':self.posi_side,

@@ -106,7 +106,9 @@ class Trade:
                         size -= round(0.01,2)
                         cls.order(side,price,size, expire_m)
                     elif 'Market state is closed.' in str(e):
+                        print(str(datetime.now())+': market state is closed.')
                         time.sleep(10)
+                        cls.order(side, price, size, expire_m)
                     else:
                         print(e)
                         LogMaster.add_log({'dt': datetime.now(), 'action_message': 'Trade-order error! ' + str(e)})
@@ -119,7 +121,6 @@ class Trade:
                             return ''
                         else: #connection reset by peer error
                             return ''
-
                 order_id = order_id['info']['child_order_acceptance_id']
                 cls.conti_order_error = 0
                 print('ok order - ' + str(order_id))
@@ -361,9 +362,10 @@ class Trade:
             pre_exe_size = 0
             price = cls.get_opt_price()
             order_id = cls.order_wait_till_boarding(side, price, remaining_size, 100)['child_order_acceptance_id']
+            num_loop = 0
             while remaining_size > 0:
                 status = cls.get_order_status(order_id)
-                if abs(price - cls.get_opt_price()) <= 10 and remaining_size > 0:  # current order price is far from opt price
+                if abs(price - cls.get_opt_price()) >= 30 and remaining_size > 0:  # current order price is far from opt price
                     res = cls.cancel_and_wait_completion(order_id)
                     if len(res) > 0:  # cancell failed order partially executed
                         remaining_size = res['outstanding_size']
@@ -398,6 +400,19 @@ class Trade:
                             print('price tracing order - executed ' + str(status[0]['executed_size'] - pre_exe_size) + ' @' + str(price))
                             pre_exe_size = status[0]['executed_size']
                 time.sleep(0.2)
+                num_loop += 1
+                if num_loop > 100:
+                    print('price tracing order loop too many!')
+                    print(status)
+                    print(remaining_size)
+                    print(order_id)
+                    print(pre_exe_size)
+                    if sum_size > 0:
+                        print('ave price={}, exe size = {}'.format(sum_price_x_size / sum_size, sum_size))
+                        return sum_price_x_size / sum_size
+                    else:
+                        print('ave price={}, exe size = {}'.format(0, 0))
+                        return ''
             Trade.cancel_all_orders()
             print('price tracing order has been completed.')
             #print('current positions:')

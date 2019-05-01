@@ -83,3 +83,20 @@ class XgbModel:
             if y[i] == target_future_id and predict[i] == target_future_id:
                 matched += 1
         return float(matched) / float(num)
+
+
+if __name__ == '__main__':
+    from CryptowatchDataGetter import  CryptowatchDataGetter
+    from MarketData2 import  MarketData2
+
+    print('downloading data.')
+    CryptowatchDataGetter.get_and_add_to_csv()
+    print('generating data.')
+    MarketData2.initialize_from_bot_csv(100, 1, 30, 500)
+    train_df = MarketData2.generate_df(MarketData2.ohlc_bot)
+    model = XgbModel()
+    print('transforming data.')
+    train_x, test_x, train_y, test_y = model.generate_data(train_df, 0.0)
+    data = pd.concat([train_y, train_x], axis=1)
+    data.to_csv('./Model/train_data.csv',header=False,index=False)
+    print('generated xgb training data.')
