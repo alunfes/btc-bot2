@@ -127,11 +127,12 @@ class Trade:
                 print('ok order - ' + str(order_id))
                 return order_id
             else:
-                print('order is temporary exhibited due to API access limitation!')
-                return ''
+                print('order size ' + str(size) + ' is too small. minimum order size is 0.01!')
+                return cls.order(side,price,size+0.01, expire_m)
         else:
-            print('order size '+str(size)+' is too small. minimum order size is 0.01!')
-            return''
+            print('order is temporary exhibited due to API access limitation!')
+            return ''
+
 
     '''
         {'id': 0, 'child_order_id': 'JFX20190218-133228-026751F', 'product_code': 'FX_BTC_JPY', 'side': 'BUY', 'child_order_type': 'LIMIT', 'price': 300000.0, 'average_price': 0.0, 'size': 0.01, 'child_order_state': 'ACTIVE', 'expire_date': '2019-03-20T13:32:16', 'child_order_date': '2019-02-18T13:32:16', 'child_order_acceptance_id': 'JRF20190218-133216-339861', 'outstanding_size': 0.01, 'cancel_size': 0.0, 'executed_size': 0.0, 'total_commission': 0.0}

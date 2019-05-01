@@ -17,6 +17,6 @@ COPY Model ./Model
 COPY Data ./Data
 COPY *.py ./
 
-RUN pip install --upgrade pip
-RUN pip install --no-cache-dir -r requirements.txt
-CMD [ "python", "./Bot.py" ]
+RUN pip3 install --upgrade pip
+RUN pip3 install --no-cache-dir -r requirements.txt
+CMD [ "python3", "./Bot.py" ]
