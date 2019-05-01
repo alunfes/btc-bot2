@@ -102,13 +102,14 @@ class Trade:
                     )
                 except Exception as e:
                     if 'Margin amount is insufficient' in str(e):
+                        size -= 0.01
+                        size = round(size,2)
                         print('margin amount is insufficient! - decrease order size to '+str(size))
-                        size -= round(0.01,2)
-                        cls.order(side,price,size, expire_m)
+                        return cls.order(side,price,size, expire_m)
                     elif 'Market state is closed.' in str(e):
                         print(str(datetime.now())+': market state is closed.')
                         time.sleep(10)
-                        cls.order(side, price, size, expire_m)
+                        return cls.order(side, price, size, expire_m)
                     else:
                         print(e)
                         LogMaster.add_log({'dt': datetime.now(), 'action_message': 'Trade-order error! ' + str(e)})

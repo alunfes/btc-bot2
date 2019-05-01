@@ -69,7 +69,7 @@ class Bot:
             size += float(s['size'])
             price += float(s['price']) * float(s['size'])
         price = round(price / size)
-        return side, round(size,2), round(price)
+        return side, round(size,5), round(price)
 
     def sync_position_order(self):
         position = Trade.get_positions()
