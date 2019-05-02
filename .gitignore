@@ -1,4 +1,6 @@
 /ignore/
+/Model/
+/Data/
 /btc-bot2/
 *.csv
 *.dat
