@@ -128,7 +128,11 @@ class Trade:
                 return order_id
             else:
                 print('order size ' + str(size) + ' is too small. minimum order size is 0.01!')
-                return cls.order(side,price,size+0.01, expire_m)
+                l = len(str(size)) - 2
+                print('first order size='+str(round(size+0.01,l)))
+                cls.price_tracing_order(side, round(size+0.01,l))
+                print('second order')
+                cls.price_tracing_order('buy' if side =='sell' else 'sell',0.01)
         else:
             print('order is temporary exhibited due to API access limitation!')
             return ''
