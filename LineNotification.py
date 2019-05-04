@@ -26,6 +26,13 @@ class LineNotification:
         #loop.run_until_complete(cls.__send_position_and_order_data())
 
     @classmethod
+    def send_message(cls, message):
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(cls.__send_message(message))
+
+
+
+    @classmethod
     async def __send_performance_data(cls):
         p = LogMaster.get_latest_performance()
         if len(p) > 0:

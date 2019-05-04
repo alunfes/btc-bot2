@@ -1,0 +1,18 @@
+ssh and adduser
+yum python3 git docker
+sudo yum install -y yum-utils device-mapper-persistent-data lvm2
+sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+sudo yum install docker-ce -y
+sudo systemctl enable docker
+sudo systemctl start docker
+
+
+create dockerfile for centos and python for bot
+send pw / token data via filezilla to VPS
+sudo docker build -t flyerbot . --no-cache
+sudo docker run flyerbot
+sudo docker run -i -t flyerbot bash
+
+sudo docker stop [container id]
+sudo docker rm [container id]
+sudo docker rmi bot

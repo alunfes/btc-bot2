@@ -68,6 +68,12 @@ class Trade:
             cls.initialize()
             time.sleep(60)
             return 'error'
+        if 'Connection aborted.' in str(exc):
+            print('Connection aborted error occurred!')
+            print('initialize trade class and sleep 60sec.')
+            cls.initialize()
+            time.sleep(60)
+            return 'error'
         return 'ok'
 
 
@@ -238,6 +244,8 @@ class Trade:
             LogMaster.add_log({'dt': datetime.now(), 'api_error': 'Trade-get get_orders error! ' + str(e)})
             if cls.check_exception(e) == 'ok':
                 pass
+            else:
+                return cls.get_orders()
         return orders
 
     '''
@@ -283,6 +291,8 @@ class Trade:
             LogMaster.add_log({'dt': datetime.now(), 'api_error': 'Trade-get get_order error! ' + str(e)})
             if cls.check_exception(e) == 'ok':
                 pass
+            else:
+                return cls.get_order(order_id)
         return order
 
     '''
@@ -308,6 +318,8 @@ class Trade:
             LogMaster.add_log({'dt': datetime.now(), 'api_error': 'Trade-get get_positions error! ' + str(e)})
             if cls.check_exception(e) == 'ok':
                 pass
+            else:
+                return cls.get_positions()
         return positions
 
     @classmethod
@@ -319,7 +331,9 @@ class Trade:
             print('error in cancel_order ' + str(e))
             LogMaster.add_log({'dt': datetime.now(), 'api_error': 'Trade-get cancel_order error! ' + str(e)})
             if cls.check_exception(e) == 'ok':
-                pass
+                return cls.bf.cancel_order(id=order_id, symbol='BTC/JPY', params={"product_code": "FX_BTC_JPY"})
+            else:
+                return cls.bf.cancel_order(id=order_id, symbol='BTC/JPY', params={"product_code": "FX_BTC_JPY"})
 
     @classmethod
     def get_current_asset(cls):
@@ -371,7 +385,7 @@ class Trade:
             num_loop = 0
             while remaining_size > 0:
                 status = cls.get_order_status(order_id)
-                if abs(price - cls.get_opt_price()) >= 30 and remaining_size > 0:  # current order price is far from opt price
+                if abs(price - cls.get_opt_price()) >= 100 and remaining_size > 0:  # current order price is far from opt price
                     res = cls.cancel_and_wait_completion(order_id)
                     if len(res) > 0:  # cancell failed order partially executed
                         remaining_size = res['outstanding_size']
@@ -405,7 +419,7 @@ class Trade:
                             remaining_size = status[0]['outstanding_size']
                             print('price tracing order - executed ' + str(status[0]['executed_size'] - pre_exe_size) + ' @' + str(price))
                             pre_exe_size = status[0]['executed_size']
-                time.sleep(0.2)
+                time.sleep(0.5)
                 num_loop += 1
                 if num_loop > 100:
                     print('price tracing order loop too many!')
@@ -421,10 +435,6 @@ class Trade:
                         return ''
             Trade.cancel_all_orders()
             print('price tracing order has been completed.')
-            #print('current positions:')
-            #print(cls.get_positions())
-            #print('current orders:')
-            #print(cls.get_orders())
             print('ave price={}, exe size = {}'.format(sum_price_x_size / sum_size, sum_size))
             return sum_price_x_size / sum_size
         else:
@@ -446,10 +456,10 @@ class Trade:
         try:
             ticker = cls.bf.fetch_ticker('BTC/JPY', params={"product_code": "FX_BTC_JPY"})
         except Exception as e:
-            print('error i get_last_price ' + e)
+            print('error i get_last_price ' + str(e))
             LogMaster.add_log({'dt': datetime.now(), 'api_error': 'Trade-get get_last_price error! ' + str(e)})
-            if cls.check_exception(e) == 'ok':
-                pass
+            cls.check_exception(e)
+            return cls.get_last_price()
         return ticker['last']
 
     @classmethod

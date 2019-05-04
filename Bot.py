@@ -374,7 +374,7 @@ class Bot:
                     self.cancel_order()
             elif self.posi_side != '' and self.order_side == '': #holding position and no order
                 self.pl_order()
-            elif self.posi_side == 'buy' and (predict[0] == 2) or self.posi_side == 'sell' and (predict[0] == 1): # ポジションが判定と逆の時にexit,　もしplがあればキャンセル。。
+            elif self.posi_side == 'buy' and (predict[0] == 2 or predict[0] == 3) or self.posi_side == 'sell' and (predict[0] == 1   or predict[0] == 3): # ポジションが判定と逆の時にexit,　もしplがあればキャンセル。。
                 self.exit_order()
                 if self.order_status == 'pl ordering':
                     self.cancel_order()
@@ -382,7 +382,7 @@ class Bot:
                 self.calc_holding_pl()
             if self.order_side != '':
                 self.check_execution()
-            time.sleep(0.7)
+            time.sleep(0.9)
 
 
 
