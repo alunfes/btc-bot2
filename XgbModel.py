@@ -2,9 +2,10 @@ import xgboost as xgb
 import numpy as np
 import pandas as pd
 import pickle
-
+from numba import jit
 
 class XgbModel:
+    @jit
     def generate_data(self, df:pd.DataFrame, test_size=0.2):
         df['future_side'] = df['future_side'].map({'no':0, 'buy':1, 'sell':2, 'both':3}).astype(int)
         df = df.drop(['dt','open','high','low','close','size'],axis = 1)
@@ -17,12 +18,14 @@ class XgbModel:
         test_y = df['future_side'].iloc[size:]
         return train_x, test_x, train_y, test_y
 
+    @jit
     def generate_bot_pred_data(self, df:pd.DataFrame):
         if 'future_side' in df.columns:
             return df.drop(['dt', 'open', 'high', 'low', 'close', 'size', 'future_side'], axis=1)
         else:
             return df.drop(['dt', 'open', 'high', 'low', 'close', 'size'], axis=1)
 
+    @jit
     def read_dump_model(self, path):
         with open(path, mode='rb') as f:
             return pickle.load(f)
@@ -42,6 +45,7 @@ class XgbModel:
     'alpha': 0.025096283242450567, 
     'lambda': 1.2353050553508833e-06}.
     '''
+    @jit
     def train(self, train_x, train_y):
         print('train_x', train_x.shape)
         print('train_y', train_y.shape)
@@ -66,6 +70,7 @@ class XgbModel:
         bst = xgb.train(param, train, num_round)
         return bst
 
+    @jit
     def calc_accuracy(self, predict, test_y):
         num = len(predict)
         matched = 0
@@ -75,6 +80,7 @@ class XgbModel:
                 matched += 1
         return float(matched) / float(num)
 
+    @jit
     def calc_specific_accuracy(self, predict, test_y, target_future_id):
         num = pd.Series(test_y).value_counts()[target_future_id]
         matched = 0
@@ -92,7 +98,7 @@ if __name__ == '__main__':
     print('downloading data.')
     CryptowatchDataGetter.get_and_add_to_csv()
     print('generating data.')
-    MarketData2.initialize_from_bot_csv(100, 1, 30, 500)
+    MarketData2.initialize_from_bot_csv(100, 1, 215, 1600)
     train_df = MarketData2.generate_df(MarketData2.ohlc_bot)
     model = XgbModel()
     print('transforming data.')

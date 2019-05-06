@@ -4,6 +4,7 @@ import threading
 from SystemFlg import SystemFlg
 from LogMaster import LogMaster
 from datetime import datetime
+from LineNotification import LineNotification
 
 '''
 Private API は 1 分間に約 200 回を上限とします。
@@ -59,18 +60,21 @@ class Trade:
         if 'Connection reset by peer' in str(exc):
             print('detected connection reset by peer error!')
             print('initialize trade class.')
+            LineNotification.send_message('detected connection reset by peer error!')
             cls.initialize()
             time.sleep(10)
             return 'error'
         if 'Over API limit per minute' in str(exc):
             print('API private access reached limitation!')
             print('initialize trade class and sleep 60sec.')
+            LineNotification.send_message('API private access reached limitation!')
             cls.initialize()
             time.sleep(60)
             return 'error'
         if 'Connection aborted.' in str(exc):
             print('Connection aborted error occurred!')
             print('initialize trade class and sleep 60sec.')
+            LineNotification.send_message('Connection aborted.')
             cls.initialize()
             time.sleep(60)
             return 'error'
@@ -325,15 +329,18 @@ class Trade:
     @classmethod
     def cancel_order(cls, order_id):
         cls.num_private_access += 1
+        cancel =''
         try:
-            return cls.bf.cancel_order(id=order_id, symbol='BTC/JPY', params={"product_code": "FX_BTC_JPY"})
+            cancel = cls.bf.cancel_order(id=order_id, symbol='BTC/JPY', params={"product_code": "FX_BTC_JPY"})
         except Exception as e:
             print('error in cancel_order ' + str(e))
             LogMaster.add_log({'dt': datetime.now(), 'api_error': 'Trade-get cancel_order error! ' + str(e)})
-            if cls.check_exception(e) == 'ok':
-                return cls.bf.cancel_order(id=order_id, symbol='BTC/JPY', params={"product_code": "FX_BTC_JPY"})
-            else:
-                return cls.bf.cancel_order(id=order_id, symbol='BTC/JPY', params={"product_code": "FX_BTC_JPY"})
+            cls.check_exception(e)
+            if 'Order not found' in str(e):
+                print('cancel order not found!')
+                LogMaster.add_log({'dt': datetime.now(), 'api_error': 'cancel order not found! '})
+                cancel = ''
+        return cancel
 
     @classmethod
     def get_current_asset(cls):
@@ -385,7 +392,7 @@ class Trade:
             num_loop = 0
             while remaining_size > 0:
                 status = cls.get_order_status(order_id)
-                if abs(price - cls.get_opt_price()) >= 100 and remaining_size > 0:  # current order price is far from opt price
+                if abs(price - cls.get_opt_price()) >= 30 and remaining_size > 0:  # current order price is far from opt price
                     res = cls.cancel_and_wait_completion(order_id)
                     if len(res) > 0:  # cancell failed order partially executed
                         remaining_size = res['outstanding_size']
@@ -419,7 +426,7 @@ class Trade:
                             remaining_size = status[0]['outstanding_size']
                             print('price tracing order - executed ' + str(status[0]['executed_size'] - pre_exe_size) + ' @' + str(price))
                             pre_exe_size = status[0]['executed_size']
-                time.sleep(0.5)
+                time.sleep(0.1)
                 num_loop += 1
                 if num_loop > 100:
                     print('price tracing order loop too many!')
@@ -531,7 +538,7 @@ class Trade:
                     print('cancel_and_wait_completion -  order status is not available!')
                     return []
         cls.cancel_order(oid)
-        print('waiting cancell order ' + oid)
+        print('waiting cancel order ' + oid)
         time.sleep(1)
         while True:  # loop for check cancel completion or execution
             status = cls.get_order_status(oid)
@@ -561,9 +568,10 @@ class Trade:
 
 
 if __name__ == '__main__':
+    SystemFlg.initialize()
     Trade.initialize()
-    col = Trade.get_collateral()
-    print(col)
+    #test = Trade.cancel_and_wait_completion('test')
+    print(Trade.get_order_status('test'))
 
     '''
     Trade.initialize()

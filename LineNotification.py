@@ -28,8 +28,13 @@ class LineNotification:
     @classmethod
     def send_message(cls, message):
         loop = asyncio.get_event_loop()
-        loop.run_until_complete(cls.__send_message(message))
+        loop.run_until_complete(cls.__send_message2(message))
 
+    @classmethod
+    async def __send_message2(cls, message):
+        p = LogMaster.get_latest_performance()
+        if len(p) > 0:
+            await cls.__send_message('\r\n'  + str(message))
 
 
     @classmethod
@@ -62,7 +67,7 @@ class LineNotification:
         headers = {"Authorization": "Bearer " + cls.token}
         payload = {"message": message}
         try:
-            res = requests.post(url2, headers=headers, data=payload)
+            res = requests.post(url2, headers=headers, data=payload, timeout=(6.0))
         except Exception as e:
             print('Line notify error!={}'.format(e))
 

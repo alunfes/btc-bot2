@@ -6,6 +6,7 @@ from datetime import datetime
 from OneMinutesData import OneMinutesData
 from CryptowatchDataGetter import CryptowatchDataGetter
 from SystemFlg import SystemFlg
+from numba import jit
 
 
 class MarketData2:

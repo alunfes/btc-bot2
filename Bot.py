@@ -18,6 +18,7 @@ from datetime import datetime
 import datetime as dt
 #import datetime
 import pytz
+from numba import jit
 
 
 '''
@@ -38,6 +39,7 @@ plが近づいた時にpredictが同じ方向だったら利確しない方が�
 pred=3で大きなボラで損が広がる時は損切りするようにした方が良いかもしれない。
 '''
 class Bot:
+    @jit
     def initialize(self,pl_kijun):
         self.pl_kijun = pl_kijun
         self.posi_initialzie()
@@ -58,8 +60,7 @@ class Bot:
         time.sleep(5)
         self.sync_position_order()
 
-
-
+    @jit
     def combine_status_data(self, status):
         side = ''
         size = 0
@@ -71,6 +72,7 @@ class Bot:
         price = round(price / size)
         return side, round(size,8), round(price)
 
+    @jit
     def sync_position_order(self):
         position = Trade.get_positions()
         orders = Trade.get_orders()
@@ -96,7 +98,7 @@ class Bot:
         else:
             self.order_initailize()
 
-
+    @jit
     def posi_initialzie(self):
         self.posi_side = ''
         self.posi_id = ''
@@ -105,6 +107,8 @@ class Bot:
         self.posi_status = ''
         self.original_posi_size = 0
 
+
+    @jit
     def order_initailize(self):
         self.order_side = ''
         self.order_id = ''
@@ -113,7 +117,7 @@ class Bot:
         self.order_status = ''
         self.order_dt = ''
 
-
+    @jit
     def calc_opt_size(self):
         collateral = Trade.get_collateral()['collateral']
         #price * size * 1/0.15 = margin
@@ -122,6 +126,7 @@ class Bot:
         return size
         #return round((self.leverage * (current_asset / Trade.get_last_price()) * 100.0) / self.margin_rate,2)
 
+    @jit
     def calc_and_log_pl(self, ave_p, size):
         pl = (ave_p - self.posi_price) * self.posi_size if self.posi_side == 'buy' else (self.posi_price - ave_p) * self.posi_size
         self.pl += round(pl)
@@ -136,10 +141,14 @@ class Bot:
             self.pl_per_min = 0
         #print('pl = {}, num = {}, win_rate = {}'.format(self.pl, self.num_trade, self.win_rate))
 
+
+    @jit
     def calc_holding_pl(self):
         lastp = Trade.get_last_price()
         self.holding_pl = round((lastp - self.posi_price) * self.posi_size if self.posi_side == 'buy' else (self.posi_price - lastp) * self.posi_size)
 
+
+    @jit
     def entry_order(self, side, price, size):
         res = Trade.order(side, price, size, 1)
         if len(res) > 10:
@@ -157,6 +166,8 @@ class Bot:
             print('order failed!')
             print('posi_side={}, posi_size={}, order_side={}, order_size={}, order_status={}'.format(self.posi_side,self.posi_size,self.order_side,self.order_size,self.order_status))
 
+
+    @jit
     def pl_order(self):
         side = 'buy' if self.posi_side == 'sell' else 'sell'
         price = self.posi_price + self.pl_kijun if self.posi_side == 'buy' else self.posi_price - self.pl_kijun
@@ -176,6 +187,7 @@ class Bot:
             print('failed pl order!')
 
 
+    @jit
     def exit_order(self):
         print('exit order')
         res = Trade.cancel_and_wait_completion(self.order_id) #cancel pl order
@@ -203,6 +215,7 @@ class Bot:
             self.order_initailize()
 
 
+    @jit
     def cancel_order(self):
         print('cancel order')
         status = Trade.cancel_and_wait_completion(self.order_id)
@@ -218,6 +231,7 @@ class Bot:
             self.order_initailize()
 
 
+    @jit
     def check_execution(self):
         status = Trade.get_order_status(self.order_id)
         if len(status) == 0: #no order info
@@ -295,6 +309,7 @@ class Bot:
                     pass
 
 
+    @jit
     def start_bot(self,pl_kijun, future_period, num_term, window_term):
         self.initialize(pl_kijun)
         Trade.cancel_all_orders()
@@ -393,7 +408,7 @@ if __name__ == '__main__':
     LogMaster.initialize()
     LineNotification.initialize()
     bot = Bot()
-    bot.start_bot(500, 30, 100, 1)
+    bot.start_bot(1600, 215, 100, 1)
 
 
 

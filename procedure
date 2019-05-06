@@ -15,4 +15,4 @@ sudo docker run -i -t flyerbot bash
 
 sudo docker stop [container id]
 sudo docker rm [container id]
-sudo docker rmi bot
+sudo docker rmi bota
