@@ -9,7 +9,7 @@ sudo systemctl start docker
 
 create dockerfile for centos and python for bot
 send pw / token data via filezilla to VPS
-sudo docker build -t flyerbot . --no-cache
+sudo docker build -t flyerbot . --no-cache  #!need to remove xgboost from requirements.txt
 sudo docker run flyerbot
 sudo docker run -i -t flyerbot bash
 
