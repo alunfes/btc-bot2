@@ -4,10 +4,12 @@ import threading
 from SystemFlg import SystemFlg
 from LogMaster import LogMaster
 from datetime import datetime
+from WebsocketMaster import WebsocketMaster
 from LineNotification import LineNotification
 
 '''
-Private API は 1 分間に約 200 回を上限とします。
+Private API の呼出は 5 分間で 500 回を上限とします。上限に達すると呼出を一定時間ブロックします。また、ブロックの解除後も呼出の上限を一定時間引き下げます。
+同一 IP アドレスからの API の呼出は 5 分間で 500 回を上限とします。上限に達すると呼出を一定時間ブロックします。また、ブロックの解除後も呼出の上限を一定時間引き下げます。
 '''
 
 
@@ -21,39 +23,45 @@ class Trade:
             'apiKey': cls.api_key,
             'secret': cls.secret_key,
         })
-        # print(cls.bf.fetch_trades(symbol='BTC/JPY', limit=2))
-        # print(cls.bf.fetch_balance())
-        # print(cls.bf.has)
+        cls.bf_pub = ccxt.bitflyer()
+        '''
+        cls.bf_pub.proxies = {
+            'http': 'http://10.10.10.10:3128',
+            'https': 'http://10.10.10.10:3128',
+        }
+        cls.bf.session.verify = False  # Do not reject on SSL certificate checks
+        cls.bf.session.trust_env = False  # Ignore any Environment HTTP/S Proxy and No_Proxy variables
+        cls.bf.load_markets()
+        '''
+
         cls.order_id = {}
         cls.num_private_access = 0
         cls.num_public_access = 0
-        cls.num_private_access_per_min = 0
         cls.flg_api_limit = False
         cls.conti_order_error = 0
         cls.adjusting_sleep = 0
+        #cls.ws_ticker = WebsocketMaster('lightning_ticker_', 'FX_BTC_JPY')
         th = threading.Thread(target=cls.monitor_api)
         th.start()
+        time.sleep(5)
 
     @classmethod
     def monitor_api(cls):
-        pre_access = 0
-        i = 0
-        start = time.time()
+        i = 1
+        pre_private_access = 0
+        pre_public_access = 0
+        cls.access_log = []
+        cls.total_access_per_300s = 0
         time.sleep(1)
         while SystemFlg.get_system_flg():
-            elapsed_time = time.time() - start
-            cls.num_private_access_per_min = round(cls.num_private_access / float(elapsed_time/60),2)
-            if cls.num_private_access_per_min > 95 and elapsed_time > 60:
-                print('API private access reached limitation')
-                cls.cancel_all_orders()
-                #maybe need to add all posi close code
-                cls.flg_api_limit = True
-                cls.adjusting_sleep = 0.3
-            elif cls.num_private_access_per_min <= 95:
-                cls.flg_api_limit = False
-                cls.adjusting_sleep = 0
+            cls.access_log.append(cls.num_private_access + cls.num_public_access - pre_private_access - pre_public_access)
+            pre_private_access =cls.num_private_access
+            pre_public_access = cls.num_public_access
+            if i>= 300:
+                cls.total_access_per_300s = sum(cls.access_log[-300:])
+                cls.access_log.pop(0)
             time.sleep(1)
-            i += 1
+            i+=1
 
     @classmethod
     def check_exception(cls, exc):
@@ -246,10 +254,9 @@ class Trade:
         except Exception as e:
             print('error in get_orders ' + str(e))
             LogMaster.add_log({'dt': datetime.now(), 'api_error': 'Trade-get get_orders error! ' + str(e)})
-            if cls.check_exception(e) == 'ok':
-                pass
-            else:
-                return cls.get_orders()
+            cls.check_exception(e)
+            time.sleep(3)
+            return cls.get_orders()
         return orders
 
     '''
@@ -388,11 +395,13 @@ class Trade:
             sum_size = 0
             pre_exe_size = 0
             price = cls.get_opt_price()
+            #price = cls.get_opt_buy_price() if side == 'buy' else cls.get_opt_sell_price()
             order_id = cls.order_wait_till_boarding(side, price, remaining_size, 100)['child_order_acceptance_id']
             num_loop = 0
             while remaining_size > 0:
                 status = cls.get_order_status(order_id)
-                if abs(price - cls.get_opt_price()) >= 30 and remaining_size > 0:  # current order price is far from opt price
+                if abs(price - cls.get_opt_price()) >= 100 and remaining_size > 0:  # current order price is far from opt price
+                #if abs(price - cls.get_opt_buy_price() if side == 'buy' else cls.get_opt_sell_price()) >= 30 and remaining_size > 0:  # current order price is far from opt price
                     res = cls.cancel_and_wait_completion(order_id)
                     if len(res) > 0:  # cancell failed order partially executed
                         remaining_size = res['outstanding_size']
@@ -409,6 +418,7 @@ class Trade:
                             #print('price tracing order - executed ' + str(res['executed_size'] - pre_exe_size) + ' @' + str(res['average_price']))
                     else:
                         price = cls.get_opt_price()
+                        #price = cls.get_opt_buy_price() if side == 'buy' else cls.get_opt_sell_price()
                         order_id = cls.order_wait_till_boarding(side, price, remaining_size, 100)['child_order_acceptance_id']
                         print('price tracing order - replaced order for ' + side + ', @' + str(price) + ' x ' + str(remaining_size))
                         pre_exe_size = 0
@@ -426,7 +436,7 @@ class Trade:
                             remaining_size = status[0]['outstanding_size']
                             print('price tracing order - executed ' + str(status[0]['executed_size'] - pre_exe_size) + ' @' + str(price))
                             pre_exe_size = status[0]['executed_size']
-                time.sleep(0.1)
+                time.sleep(0.5)
                 num_loop += 1
                 if num_loop > 100:
                     print('price tracing order loop too many!')
@@ -455,19 +465,23 @@ class Trade:
     @classmethod
     def get_order_book(cls):
         cls.num_public_access += 1
-        return cls.bf.fetch_order_book(symbol='BTC/JPY', params={"product_code": "FX_BTC_JPY"})
+        return cls.bf_pub.fetch_order_book(symbol='BTC/JPY', params={"product_code": "FX_BTC_JPY"})
 
     @classmethod
     def get_last_price(cls):
         cls.num_public_access += 1
         try:
-            ticker = cls.bf.fetch_ticker('BTC/JPY', params={"product_code": "FX_BTC_JPY"})
+            ticker = cls.bf_pub.fetch_ticker('BTC/JPY', params={"product_code": "FX_BTC_JPY"})
         except Exception as e:
             print('error i get_last_price ' + str(e))
             LogMaster.add_log({'dt': datetime.now(), 'api_error': 'Trade-get get_last_price error! ' + str(e)})
             cls.check_exception(e)
             return cls.get_last_price()
         return ticker['last']
+
+    @classmethod
+    def get_current_price(cls):
+        return cls.ws_ticker.get_current_price()
 
     @classmethod
     def get_opt_price(cls):
@@ -477,6 +491,14 @@ class Trade:
         bid = bids[0][0]
         ask = asks[0][0]
         return round(ask + float(ask - bid) / 2.0, 0)
+
+    @classmethod
+    def get_opt_buy_price(cls):
+        return cls.ws_ticker.get_opt_buy_price
+
+    @classmethod
+    def get_opt_sell_price(cls):
+        return cls.ws_ticker.get_opt_sell_price
 
     @classmethod
     def get_bid_price(cls):
@@ -570,8 +592,9 @@ class Trade:
 if __name__ == '__main__':
     SystemFlg.initialize()
     Trade.initialize()
+    print(Trade.get_opt_price())
     #test = Trade.cancel_and_wait_completion('test')
-    print(Trade.get_order_status('test'))
+    #print(Trade.get_order_status('test'))
 
     '''
     Trade.initialize()

@@ -1,4 +1,5 @@
 import pandas as pd
+from numba import jit
 
 class OneMinutesData:
     def initialize(self):
@@ -17,6 +18,7 @@ class OneMinutesData:
         self.momentum = {}
         self.future_side = []
 
+    @jit
     def cut_data(self, num_data):
         self.unix_time = self.unix_time[-num_data:]
         self.dt = self.dt[-num_data:]
@@ -35,6 +37,7 @@ class OneMinutesData:
             self.rsi[k] = self.rsi[k][-num_data:]
         self.future_side = self.future_side[-num_data:]
 
+    @jit
     def add_and_pop(self, unix_time, dt, open, high, low, close, size):
         self.unix_time.append(unix_time)
         self.unix_time.pop(0)

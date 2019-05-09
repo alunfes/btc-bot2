@@ -32,9 +32,8 @@ class LineNotification:
 
     @classmethod
     async def __send_message2(cls, message):
-        p = LogMaster.get_latest_performance()
-        if len(p) > 0:
-            await cls.__send_message('\r\n'  + str(message))
+        if len(message) > 0:
+            await cls.__send_message('\r\n'+str(message))
 
 
     @classmethod

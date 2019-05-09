@@ -120,11 +120,9 @@ class Bot:
     @jit
     def calc_opt_size(self):
         collateral = Trade.get_collateral()['collateral']
-        #price * size * 1/0.15 = margin
-        #110 = price * size * 1/0.15 / current_asset
         size = round((1.5 * collateral * self.margin_rate) / Trade.get_last_price() * 1.0/self.leverage,2)
+        #size = round((1.5 * collateral * self.margin_rate) / Trade.get_current_asset() * 1.0 / self.leverage, 2)
         return size
-        #return round((self.leverage * (current_asset / Trade.get_last_price()) * 100.0) / self.margin_rate,2)
 
     @jit
     def calc_and_log_pl(self, ave_p, size):
@@ -139,12 +137,12 @@ class Bot:
             self.pl_per_min = round( (self.pl + self.holding_pl) / (self.elapsed_time /60.0),4)
         else:
             self.pl_per_min = 0
-        #print('pl = {}, num = {}, win_rate = {}'.format(self.pl, self.num_trade, self.win_rate))
 
 
     @jit
     def calc_holding_pl(self):
         lastp = Trade.get_last_price()
+        #lastp = Trade.get_current_price()
         self.holding_pl = round((lastp - self.posi_price) * self.posi_size if self.posi_side == 'buy' else (self.posi_price - lastp) * self.posi_size)
 
 
@@ -165,6 +163,21 @@ class Bot:
             LogMaster.add_log({'dt': self.order_dt, 'action_message': 'failed new entry for ' + side + ' @' + str(price) + ' x' + str(size)})
             print('order failed!')
             print('posi_side={}, posi_size={}, order_side={}, order_size={}, order_status={}'.format(self.posi_side,self.posi_size,self.order_side,self.order_size,self.order_status))
+
+    @jit
+    def entry_price_tracing_order(self, side, size):
+        ave_p = Trade.price_tracing_order(side, size)
+        if ave_p != '':  # completed price tracing order
+            self.calc_and_log_pl(ave_p, self.posi_size)
+            LogMaster.add_log({'dt': datetime.now(),
+                               'action_message': 'entry order ave_price=' + str(ave_p) + ' x' + str(self.posi_size)})
+        else:  #
+            LogMaster.add_log({'dt': datetime.now(), 'action_message': 'Reached API access limitation!'})
+            print('Reached API access limitation!')
+            print('Sleep for 60s...')
+            time.sleep(60)
+            print('Resumed from API limitation sleep.')
+
 
 
     @jit
@@ -355,7 +368,7 @@ class Bot:
                 self.sync_position_order()
                 self.elapsed_time = time.time() - start
                 print("bot elapsed_time:{0}".format(round(self.elapsed_time/60,2)) + "[min]")
-                print('private access per min={}, num private access={}, num public access={}'.format(Trade.num_private_access_per_min, Trade.num_private_access, Trade.num_public_access))
+                print('num total access per 300s={}, num private access={}, num public access={}'.format(Trade.total_access_per_300s, Trade.num_private_access, Trade.num_public_access))
                 res, omd = CryptowatchDataGetter.get_data_after_specific_ut(MarketData2.ohlc_bot.unix_time[-1])
                 #print('downloaded data - '+str(datetime.now(tz=JST)))
                 if res == 0:
@@ -371,7 +384,7 @@ class Bot:
                                       'low':MarketData2.ohlc_bot.low[-1],'close':MarketData2.ohlc_bot.close[-1],'posi_side':self.posi_side,
                                        'posi_price':self.posi_price,'posi_size':self.posi_size,'order_side':self.order_side,'order_price':self.order_price,
                                        'order_size':self.order_size,'num_private_access':Trade.num_private_access, 'num_public_access':Trade.num_public_access,
-                                       'num_private_per_min':Trade.num_private_access_per_min,'num_trade':self.num_trade,'win_rate':self.win_rate, 'pl':self.pl+self.holding_pl,
+                                       'num_total_access_per_300s':Trade.total_access_per_300s,'num_trade':self.num_trade,'win_rate':self.win_rate, 'pl':self.pl+self.holding_pl,
                                        'pl_per_min':self.pl_per_min, 'prediction':predict[0]})
                     LineNotification.send_notification()
                     print('dt={}, close={}, predict={}, pl={}, pl_per_min={}, num_trade={}, win_rate={}, posi_side={}, posi_price={}, posi_size={}, order_side={}, order_price={}, order_size={}'
@@ -381,9 +394,9 @@ class Bot:
                     print('crypto watch data download error!')
             if self.posi_side == '' and self.order_side == '': #no position no order
                 if predict[0] == 1:
-                    self.entry_order('buy', Trade.get_last_price(), self.calc_opt_size())
+                    self.entry_order('buy', Trade.get_bid_price()+1, self.calc_opt_size())
                 elif predict[0] == 2:
-                    self.entry_order('sell', Trade.get_last_price(), self.calc_opt_size())
+                    self.entry_order('sell', Trade.get_ask_price()-1, self.calc_opt_size())
             elif self.posi_side == '' and self.order_side != '': #no position and ordering
                 if (self.order_side == 'buy' and self.posi_side=='' and (predict[0] == 2)) or (self.order_side == 'sell' and self.posi_side =='' and (predict[0] == 1)):#ノーポジでオーダーが判定を逆の時にキャンセル。
                     self.cancel_order()
@@ -397,7 +410,7 @@ class Bot:
                 self.calc_holding_pl()
             if self.order_side != '':
                 self.check_execution()
-            time.sleep(0.9)
+            time.sleep(1)
 
 
 
