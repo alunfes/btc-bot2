@@ -35,4 +35,4 @@ RUN apt-get -y install cmake
 RUN pip install --upgrade pip
 RUN pip install --upgrade setuptools
 RUN pip install -r requirements.txt
-CMD ['python','Bot.py']
+CMD ["python","./Bot.py"]

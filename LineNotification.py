@@ -26,12 +26,12 @@ class LineNotification:
         #loop.run_until_complete(cls.__send_position_and_order_data())
 
     @classmethod
-    def send_message(cls, message):
+    def send_error(cls, message):
         loop = asyncio.get_event_loop()
         loop.run_until_complete(cls.__send_message2(message))
 
     @classmethod
-    async def __send_message2(cls, message):
+    async def __send_error(cls, message):
         if len(message) > 0:
             await cls.__send_message('\r\n'+str(message))
 

@@ -44,6 +44,8 @@ class Bot:
         self.pl_kijun = pl_kijun
         self.posi_initialzie()
         self.order_initailize()
+        self.initial_collateral = Trade.get_collateral()['collateral']
+        self.collateral_change = 0
         self.pl = 0
         self.holding_pl = 0
         self.pl_log = []
@@ -138,6 +140,12 @@ class Bot:
         else:
             self.pl_per_min = 0
 
+    @jit
+    def calc_collateral_change(self):
+        col = Trade.get_collateral()
+        self.collateral_change = round(float(col['collateral']) + float(col['open_position_pnl']) - self.initial_collateral)
+
+
 
     @jit
     def calc_holding_pl(self):
@@ -167,10 +175,9 @@ class Bot:
     @jit
     def entry_price_tracing_order(self, side, size):
         ave_p = Trade.price_tracing_order(side, size)
-        if ave_p != '':  # completed price tracing order
-            self.calc_and_log_pl(ave_p, self.posi_size)
+        if ave_p != '':
             LogMaster.add_log({'dt': datetime.now(),
-                               'action_message': 'entry order ave_price=' + str(ave_p) + ' x' + str(self.posi_size)})
+                               'action_message': 'new entry for ' + side + ' @'+str(ave_p) + ' x' + str(self.posi_size)})
         else:  #
             LogMaster.add_log({'dt': datetime.now(), 'action_message': 'Reached API access limitation!'})
             print('Reached API access limitation!')
@@ -387,8 +394,9 @@ class Bot:
                                        'num_total_access_per_300s':Trade.total_access_per_300s,'num_trade':self.num_trade,'win_rate':self.win_rate, 'pl':self.pl+self.holding_pl,
                                        'pl_per_min':self.pl_per_min, 'prediction':predict[0]})
                     LineNotification.send_notification()
-                    print('dt={}, close={}, predict={}, pl={}, pl_per_min={}, num_trade={}, win_rate={}, posi_side={}, posi_price={}, posi_size={}, order_side={}, order_price={}, order_size={}'
-                          .format(MarketData2.ohlc_bot.dt[-1],MarketData2.ohlc_bot.close[-1],predict[0],self.pl+self.holding_pl, self.pl_per_min, self.num_trade,
+                    self.calc_collateral_change()
+                    print('dt={}, close={}, predict={}, pl={}, collateral_change={}, pl_per_min={}, num_trade={}, win_rate={}, posi_side={}, posi_price={}, posi_size={}, order_side={}, order_price={}, order_size={}'
+                          .format(MarketData2.ohlc_bot.dt[-1],MarketData2.ohlc_bot.close[-1],predict[0],self.pl+self.holding_pl, self.collateral_change, self.pl_per_min, self.num_trade,
                                   self.win_rate, self.posi_side, self.posi_price, self.posi_size, self.order_side, self.order_price, self.order_size))
                 else:
                     print('crypto watch data download error!')
@@ -402,7 +410,8 @@ class Bot:
                     self.cancel_order()
             elif self.posi_side != '' and self.order_side == '': #holding position and no order
                 self.pl_order()
-            elif self.posi_side == 'buy' and (predict[0] == 2 or predict[0] == 3) or self.posi_side == 'sell' and (predict[0] == 1   or predict[0] == 3): # ポジションが判定と逆の時にexit,　もしplがあればキャンセル。。
+            #elif self.posi_side == 'buy' and (predict[0] == 2 or predict[0] == 3) or self.posi_side == 'sell' and (predict[0] == 1   or predict[0] == 3): # ポジションが判定と逆の時にexit,　もしplがあればキャンセル。。
+            elif (self.posi_side == 'buy' and predict[0] == 2) or (self.posi_side == 'sell' and predict[0] == 1):  # ポジションが判定と逆の時にexit,　もしplがあればキャンセル。。
                 self.exit_order()
                 if self.order_status == 'pl ordering':
                     self.cancel_order()
@@ -421,7 +430,7 @@ if __name__ == '__main__':
     LogMaster.initialize()
     LineNotification.initialize()
     bot = Bot()
-    bot.start_bot(1600, 215, 100, 1)
+    bot.start_bot(1600, 215, 150, 1)
 
 
 

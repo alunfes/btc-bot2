@@ -1,6 +1,7 @@
 from MarketData2 import  MarketData2
 
 
+
 class Account:
     def __init__(self):
         self.realized_pl = 0
@@ -25,6 +26,7 @@ class Account:
 
         self.margin_rate = 120.0
         self.leverage = 15.0
+        self.slip_page = 500
 
         self.realized_pl_log = {}
         self.total_pl_log = {}
@@ -47,6 +49,7 @@ class Account:
         self.unexe_dt = {}
         self.unexe_cancel = {}
         self.unexe_info = {}
+        self.index_num = 0
 
 
     def __initialize_cancel_all_orders(self):
@@ -85,6 +88,7 @@ class Account:
         self.i_log.append(i)
         self.ind_log.append(ind)
         self.prediction_log[i] = prediction
+        self.__add_action_log('Moved to next:'+'posi='+self.holding_side+' @'+str(self.ave_holding_price)+', pl='+str(self.total_pl)+', num orders='+str(len(self.unexe_i))+', predict='+str(prediction),i)
 
     def last_day_operation(self, ind, i):
         self.__check_execution(0, ind, i)
@@ -110,6 +114,7 @@ class Account:
         self.action_log[str(i)+'-'+str(self.action_log_num)] = log
         self.action_log_num += 1
         self.i_log.append(i)
+        print('i='+str(i)+':'+log)
 
     def __calc_unrealized_pl(self, ind):
         lastp = MarketData2.ohlc_bot.close[ind]
@@ -117,36 +122,32 @@ class Account:
 
     def entry_order(self, side, price, size, info, ind, i):
         if self.cancel_all_orders_flg == False:
-            n = len(self.unexe_side)
-            self.unexe_side[n] = side
-            self.unexe_price[n] = price
-            self.unexe_size[n] = size
-            self.unexe_dt[n] = MarketData2.ohlc_bot.close[ind]
-            self.unexe_i[n] = i
-            self.unexe_cancel[n] = False
-            self.unexe_info[n] = info
+            self.unexe_side[self.index_num] = side
+            self.unexe_price[self.index_num] = price
+            self.unexe_size[self.index_num] = size
+            self.unexe_dt[self.index_num] = MarketData2.ohlc_bot.close[ind]
+            self.unexe_i[self.index_num] = i
+            self.unexe_cancel[self.index_num] = False
+            self.unexe_info[self.index_num] = info
+            self.index_num += 1
             self.__add_action_log("Entry Order for " + side + " @" + str(price) + " x " + str(size),i)
 
-    def __force_entry(self, prediction, unexe_key, ind, i):
-        price = self.unexe_price[unexe_key]
-        if prediction == 1 or prediction == 2:
-            n = len(self.unexe_side)
-            self.unexe_side[n] = 'buy' if prediction == 1 else 'sell'
-            self.unexe_price[n] = price
-            self.unexe_size[n] = self.calc_opt_size(ind)
-            self.unexe_dt[n] = MarketData2.ohlc_bot.close[ind]
-            self.unexe_i[n] = i
-            self.unexe_cancel[n] = False
-            self.unexe_info[n] = 'entry after pl execution'
-            self.__add_action_log('Force entry after pl execution',i)
-            self.__execute(n, prediction, ind, i)
 
     def exit_all_positions(self, ind, i):
-        if 'exit all' not in list(self.unexe_info.values()):
-            side = 'buy' if self.holding_side == 'sell' else 'sell'
-            price = round((MarketData2.ohlc_bot.low[ind+1] + MarketData2.ohlc_bot.high[ind+1]) * 0.5)
-            self.entry_order(side, price, self.ave_holding_size,'exit all',ind,i)
-            self.__add_action_log("Exit all",i)
+        if self.ave_holding_size > 0:
+            self.__force_exit(ind, i)
+            self.__add_action_log("exit_all_positions" ,i)
+
+    def __force_exit(self, ind, i):
+        side = 'buy' if self.holding_side == 'sell' else 'sell'
+        price = round((MarketData2.ohlc_bot.low[ind + 1] + MarketData2.ohlc_bot.high[ind + 1]) * 0.5)
+        pl = (self.ave_holding_price - price) * self.ave_holding_size
+        self.num_trade += 1
+        if pl > 0:
+            self.num_win += 1
+        self.realized_pl += pl
+        self.__add_action_log("Force exited position. " + self.holding_side + " @" + str(price) + " x " + str(self.ave_holding_size), i)
+        self.__initialize_holding_data()
 
     def pl_order(self, pl_kijun, ind, i):
         side = 'buy' if self.holding_side == 'sell' else 'sell'
@@ -160,16 +161,10 @@ class Account:
             self.cancel_all_order_i = i
             self.__add_action_log("Cancelling All Orders",i)
 
-    def cancel_order(self, unexe_key, ind, i):
-        if self.unexe_cancel[unexe_key] == False:
-            self.unexe_cancel[unexe_key] = True
-            self.unexe_i[unexe_key] = i
-            self.__add_action_log("Cancelling order #" + str(unexe_key),i)
-
     def __check_cancel(self, ind, i):
         if self.cancel_all_orders_flg:
             if self.cancel_all_order_i < i:
-                self.__execute_cancel_all_orders()
+                self.__execute_cancel_all_orders(i)
         else:
             cancelled_index = ''
             for j in list(self.unexe_cancel.keys())[:]:
@@ -183,7 +178,7 @@ class Account:
         self.__remove_unexe_key(unexe_key)
         self.__add_action_log("Cancelled order #" + str(unexe_key), i)
 
-    def __execute_cancel_all_orders(self):
+    def __execute_cancel_all_orders(self, i):
         self.__initialize_unexe_data()
         self.__initialize_cancel_all_orders()
         self.__add_action_log("Cancelled all orders",i)
@@ -243,11 +238,8 @@ class Account:
                 elif self.unexe_size[unexe_key] == self.ave_holding_size:
                     self.__update_cum_pl(ind, i, unexe_key, self.unexe_price[unexe_key], self.unexe_size[unexe_key])
                     self.__initialize_holding_data()
-        if self.unexe_info[unexe_key] == 'pl order':
-            self.__force_entry(prediction, unexe_key, ind, i)
-        else:
-            self.__add_action_log("Executed " + self.unexe_side[unexe_key] + " @" + str(self.unexe_price[unexe_key]) + " x " + str(self.unexe_size[unexe_key]),i)
-            self.__remove_unexe_key(unexe_key)
+        self.__add_action_log("Executed " + self.unexe_side[unexe_key] + " @" + str(self.unexe_price[unexe_key]) + " x " + str(self.unexe_size[unexe_key]),i)
+        self.__remove_unexe_key(unexe_key)
 
     def __update_cum_pl(self, ind, i, unexe_key, price, size):
         pl = 0

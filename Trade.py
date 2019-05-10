@@ -68,21 +68,21 @@ class Trade:
         if 'Connection reset by peer' in str(exc):
             print('detected connection reset by peer error!')
             print('initialize trade class.')
-            LineNotification.send_message('detected connection reset by peer error!')
+            LineNotification.send_error('detected connection reset by peer error!')
             cls.initialize()
             time.sleep(10)
             return 'error'
         if 'Over API limit per minute' in str(exc):
             print('API private access reached limitation!')
             print('initialize trade class and sleep 60sec.')
-            LineNotification.send_message('API private access reached limitation!')
+            LineNotification.send_error('API private access reached limitation!')
             cls.initialize()
             time.sleep(60)
             return 'error'
         if 'Connection aborted.' in str(exc):
             print('Connection aborted error occurred!')
             print('initialize trade class and sleep 60sec.')
-            LineNotification.send_message('Connection aborted.')
+            LineNotification.send_error('Connection aborted.')
             cls.initialize()
             time.sleep(60)
             return 'error'
@@ -362,6 +362,8 @@ class Trade:
         finally:
             return res['total']['BTC'] * cls.get_opt_price() + res['total']['JPY']
 
+
+    #{'collateral': 5094.0, 'open_position_pnl': 0.0, 'require_collateral': 0.0, 'keep_rate': 0.0}
     @classmethod
     def get_collateral(cls):
         cls.num_private_access += 1
@@ -592,7 +594,7 @@ class Trade:
 if __name__ == '__main__':
     SystemFlg.initialize()
     Trade.initialize()
-    print(Trade.get_opt_price())
+    print(Trade.get_collateral())
     #test = Trade.cancel_and_wait_completion('test')
     #print(Trade.get_order_status('test'))
 
