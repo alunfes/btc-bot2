@@ -1,7 +1,5 @@
 '''
-{'future_period': 101, 'future_kijun': 939,
-'num_boost_round': 6465, 'depth': 4, 'learning_rate': 0.004776415787513362,
-'random_strength': 97, 'bagging_temperature': 0.020558935311309465}.
+
 '''
 
 import catboost as cb

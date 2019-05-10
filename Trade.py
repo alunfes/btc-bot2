@@ -103,7 +103,7 @@ class Trade:
     when margin is not sufficient - {"status":-205,"error_message":"Margin amount is insufficient for this order.","data":null}
     '''
     @classmethod
-    def order(cls, side, price, size, expire_m) -> str:  # min size is 0.01
+    def order(cls, side, price, size, type, expire_m) -> str:  # min size is 0.01
         if cls.flg_api_limit == False:
             cls.num_private_access += 1
             order_id = ''
@@ -111,7 +111,7 @@ class Trade:
                 try:
                     order_id = cls.bf.create_order(
                         symbol='BTC/JPY',
-                        type='limit',
+                        type=type,
                         side=side,
                         price=price,
                         amount=size,
@@ -123,11 +123,11 @@ class Trade:
                         size -= 0.01
                         size = round(size,2)
                         print('margin amount is insufficient! - decrease order size to '+str(size))
-                        return cls.order(side,price,size, expire_m)
+                        return cls.order(side,price,size, type, expire_m)
                     elif 'Market state is closed.' in str(e):
                         print(str(datetime.now())+': market state is closed.')
                         time.sleep(10)
-                        return cls.order(side, price, size, expire_m)
+                        return cls.order(side, price, size, type, expire_m)
                     else:
                         print(e)
                         LogMaster.add_log({'dt': datetime.now(), 'action_message': 'Trade-order error! ' + str(e)})
@@ -525,7 +525,7 @@ class Trade:
 
     @classmethod
     def order_wait_till_execution(cls, side, price, size, expire_m) -> dict:
-        id = cls.order(side, price, size, expire_m)
+        id = cls.order(side, price, size, 'limit', expire_m)
         i = 0
         print('waiting order execution...')
         flg_activated = False
@@ -580,7 +580,7 @@ class Trade:
 
     @classmethod
     def order_wait_till_boarding(cls, side, price, size, expire_m) -> dict:
-        oid = cls.order(side, price, size, expire_m)
+        oid = cls.order(side, price, size, 'limit', expire_m)
         while True:
             status = cls.get_order_status(oid)
             if len(status) > 0:

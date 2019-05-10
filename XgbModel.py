@@ -2,7 +2,9 @@ import xgboost as xgb
 import numpy as np
 import pandas as pd
 import pickle
-from numba import jit
+import numpy as np
+from numba import jit, f8, i8, b1, void
+
 
 class XgbModel:
     @jit

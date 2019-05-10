@@ -83,6 +83,15 @@ class LogMaster:
             return {}
 
     @classmethod
+    def get_latest_performance2(cls):
+        if cls.index > 0:
+            return {'log_dt': cls.log_list[-1]['log_dt'], 'pl': cls.log_list[-1]['pl'],
+                    'pl_per_min': cls.log_list[-1]['pl_per_min'], 'num_trade': cls.log_list[-1]['num_trade'],
+                    'win_rate': cls.log_list[-1]['win_rate'],'posi_side':cls.log_list[-1]['posi_side'],'prediction':cls.log_list[-1]['prediction']}
+        else:
+            return {}
+
+    @classmethod
     def get_latest_order(cls):
         if cls.index > 0:
             return {'log_dt': cls.log_list[-1]['log_dt'], 'order_side': cls.log_list[-1]['order_side'],'order_price': cls.log_list[-1]['order_price'], 'order_size': cls.log_list[-1]['order_size']}

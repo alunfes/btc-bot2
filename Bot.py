@@ -156,7 +156,7 @@ class Bot:
 
     @jit
     def entry_order(self, side, price, size):
-        res = Trade.order(side, price, size, 1)
+        res = Trade.order(side, price, size, 'limit', 1)
         if len(res) > 10:
             self.order_id = res
             self.order_side = side
@@ -171,6 +171,28 @@ class Bot:
             LogMaster.add_log({'dt': self.order_dt, 'action_message': 'failed new entry for ' + side + ' @' + str(price) + ' x' + str(size)})
             print('order failed!')
             print('posi_side={}, posi_size={}, order_side={}, order_size={}, order_status={}'.format(self.posi_side,self.posi_size,self.order_side,self.order_size,self.order_status))
+
+    @jit
+    def entry_market_order(self, side, price, size):
+        res = Trade.order(side, price, size, 'market', 1)
+        if len(res) > 10:
+            self.order_id = res
+            self.order_side = side
+            self.order_price = price
+            self.order_size = size
+            self.original_posi_size = size
+            self.order_status = 'new boarding'
+            self.order_dt = datetime.now()
+            LogMaster.add_log({'dt': self.order_dt, 'action_message': 'new market order entry for ' + side + ' @' + str(price) + ' x' + str(size)})
+            print('new market order entry: side = {}, price = {}, size = {}'.format(side, price, size))
+        else:
+            LogMaster.add_log({'dt': self.order_dt,'action_message': 'failed new market order entry for ' + side + ' @' + str(price) + ' x' + str(size)})
+            print('order failed!')
+            print('posi_side={}, posi_size={}, order_side={}, order_size={}, order_status={}'.format(self.posi_side,
+                                                                                                     self.posi_size,
+                                                                                                     self.order_side,
+                                                                                                     self.order_size,
+                                                                                                     self.order_status))
 
     @jit
     def entry_price_tracing_order(self, side, size):
@@ -191,7 +213,7 @@ class Bot:
     def pl_order(self):
         side = 'buy' if self.posi_side == 'sell' else 'sell'
         price = self.posi_price + self.pl_kijun if self.posi_side == 'buy' else self.posi_price - self.pl_kijun
-        res = Trade.order(side, price, self.posi_size, 1440)
+        res = Trade.order(side, price, self.posi_size, 'limit', 1440)
         if len(res) > 10:
             self.order_id = res
             self.order_side = side
@@ -341,23 +363,18 @@ class Bot:
         MarketData2.initialize_from_bot_csv(num_term, window_term, future_period, pl_kijun)
         train_df = MarketData2.generate_df(MarketData2.ohlc_bot)
         #print(train_df)
-        model = XgbModel()
-        #model = CatModel()
+        #model = XgbModel()
+        model = CatModel()
         print('bot - generating training data')
         LogMaster.add_log({'action_message': 'bot - training xgb model..'})
         train_x, test_x, train_y, test_y = model.generate_data(train_df, 1)
-        print('bot - training xgb model..')
-        #print('x shape '+str(train_x.shape))
-        #print('y shape '+str(train_y.shape))
-        #bst = model.read_dump_model('./Model/xgb_model.dat')
-        bst = xgb.Booster()  # init model
-        bst.load_model('./Model/bst_model.dat')
-        #cbm = model.read_dump_model('./Model/cat_model.dat')
+        print('bot - training model..')
+        #bst = xgb.Booster()  # init model
+        #bst.load_model('./Model/bst_model.dat')
+        cbm = model.read_dump_model('./Model/cat_model.dat')
         print('bot - training completed..')
         print('bot - updating crypto data..')
         LogMaster.add_log({'action_message': 'bot - training completed..'})
-        #CryptowatchDataGetter.get_and_add_to_csv()
-        #MarketData2.initialize_from_bot_csv(110, 100, 900)
         MarketData2.ohlc_bot.cut_data(1000)
         print('bot - started bot loop.')
         LogMaster.add_log({'action_message': 'bot - started bot loop.'})
@@ -377,15 +394,19 @@ class Bot:
                 print("bot elapsed_time:{0}".format(round(self.elapsed_time/60,2)) + "[min]")
                 print('num total access per 300s={}, num private access={}, num public access={}'.format(Trade.total_access_per_300s, Trade.num_private_access, Trade.num_public_access))
                 res, omd = CryptowatchDataGetter.get_data_after_specific_ut(MarketData2.ohlc_bot.unix_time[-1])
+                print('cryptowatch completed ='+datetime.now(tz=self.JST).strftime("%H:%M:%S"))
                 #print('downloaded data - '+str(datetime.now(tz=JST)))
                 if res == 0:
                     for i in range(len(omd.dt)):
                         MarketData2.ohlc_bot.add_and_pop(omd.unix_time[i],omd.dt[i], omd.open[i], omd.high[i], omd.low[i], omd.close[i], omd.size[i])
                     MarketData2.update_ohlc_index_for_bot2()
                     df = MarketData2.generate_df_for_bot(MarketData2.ohlc_bot)
+                    print('MD df completed =' +datetime.now(tz=self.JST).strftime("%H:%M:%S"))
                     pred_x = model.generate_bot_pred_data(df)
-                    predict = bst.predict(xgb.DMatrix(pred_x))
-                    #predict = cbm.predict(Pool(pred_x))
+                    print('Model df completed =' +datetime.now(tz=self.JST).strftime("%H:%M:%S"))
+                    #predict = bst.predict(xgb.DMatrix(pred_x))
+                    predict = cbm.predict(Pool(pred_x))
+                    print('Prediction completed =' +datetime.now(tz=self.JST).strftime("%H:%M:%S"))
                     #print('predicted - ' + str(datetime.now(tz=JST)))
                     LogMaster.add_log({'dt':MarketData2.ohlc_bot.dt[-1],'open':MarketData2.ohlc_bot.open[-1],'high':MarketData2.ohlc_bot.high[-1],
                                       'low':MarketData2.ohlc_bot.low[-1],'close':MarketData2.ohlc_bot.close[-1],'posi_side':self.posi_side,
@@ -403,8 +424,10 @@ class Bot:
             if self.posi_side == '' and self.order_side == '': #no position no order
                 if predict[0] == 1:
                     self.entry_order('buy', Trade.get_bid_price()+1, self.calc_opt_size())
+                    #self.entry_market_order('buy', Trade.get_bid_price()+1, self.calc_opt_size())
                 elif predict[0] == 2:
                     self.entry_order('sell', Trade.get_ask_price()-1, self.calc_opt_size())
+                    #self.entry_market_order('sell', Trade.get_bid_price() + 1, self.calc_opt_size())
             elif self.posi_side == '' and self.order_side != '': #no position and ordering
                 if (self.order_side == 'buy' and self.posi_side=='' and (predict[0] == 2)) or (self.order_side == 'sell' and self.posi_side =='' and (predict[0] == 1)):#ノーポジでオーダーが判定を逆の時にキャンセル。
                     self.cancel_order()
@@ -430,7 +453,7 @@ if __name__ == '__main__':
     LogMaster.initialize()
     LineNotification.initialize()
     bot = Bot()
-    bot.start_bot(1600, 215, 150, 1)
+    bot.start_bot(500, 30, 100, 1)
 
 
 

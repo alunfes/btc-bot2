@@ -22,13 +22,13 @@ class LineNotification:
     @classmethod
     def send_notification(cls):
         loop = asyncio.get_event_loop()
-        loop.run_until_complete(cls.__send_performance_data())
+        loop.run_until_complete(cls.__send_performance_data2())
         #loop.run_until_complete(cls.__send_position_and_order_data())
 
     @classmethod
     def send_error(cls, message):
         loop = asyncio.get_event_loop()
-        loop.run_until_complete(cls.__send_message2(message))
+        loop.run_until_complete(cls.__send_error(message))
 
     @classmethod
     async def __send_error(cls, message):
@@ -47,18 +47,12 @@ class LineNotification:
                              '\r\n'+'win_rate='+str(p['win_rate']))
 
     @classmethod
-    async def __send_position_and_order_data(cls):
-        p = LogMaster.get_latest_position()
+    async def __send_performance_data2(cls):
+        p = LogMaster.get_latest_performance2()
         if len(p) > 0:
-            await cls.__send_message('\r\n' + 'posi_side=' + p['posi_side'] + ', posi_price=' + str(p['posi_price']) +', posi_size=' + str(p['posi_size']))
-
-    @classmethod
-    async def get_latest_api_error(cls):
-        p = LogMaster.get_latest_api_error()
-        if len(p) > 0:
-            if p['api_error'] != cls.last_error:
-                cls.last_error = p['api_error']
-                cls.send_message('\r\n' + 'API Error Occured!' + '\r\n' + p['api_error'])
+            await cls.__send_message('\r\n' + '[' + str(p['log_dt'].strftime("%m/%d %H:%M:%S")) + ']' +
+                                     '\r\n' + 'p:'+str(p['pl']) +', p-min:'+ str(round(p['pl_per_min'],2)) + ', num:'+str(p['num_trade']) +', rate:'+str(p['win_rate'])+
+                                     '\r\n' + str(p['posi_side']) + ' : ' + str(p['prediction']))
 
     @classmethod
     async def __send_message(cls, message):

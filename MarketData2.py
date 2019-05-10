@@ -6,7 +6,9 @@ from datetime import datetime
 from OneMinutesData import OneMinutesData
 from CryptowatchDataGetter import CryptowatchDataGetter
 from SystemFlg import SystemFlg
-from numba import jit
+import numpy as np
+from numba import jit, f8, i8, b1, void
+
 
 
 class MarketData2:
@@ -160,6 +162,7 @@ class MarketData2:
                 ohlc.ma[term] = list(pd.Series(ohlc.close).rolling(window=term).mean())
         return ohlc
 
+
     @classmethod
     def update_ma2(cls):
         for i in range(cls.num_term):
@@ -187,6 +190,7 @@ class MarketData2:
                 cls.ohlc_bot.ma_kairi[term].extend(list([x / y for (x, y) in zip(close_con, ma_con)]))
 
     @classmethod
+    @jit
     def calc_momentum2(cls, ohlc):
         for i in range(cls.num_term):
             term = (i+1) * cls.window_term
