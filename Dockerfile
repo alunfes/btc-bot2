@@ -17,16 +17,16 @@ COPY Model ./Model
 COPY Data ./Data
 COPY *.py ./
 
-RUN wget https://github.com/Kitware/CMake/releases/download/v3.14.3/cmake-3.14.3.tar.gz && \
-  tar xvf cmake-3.14.3.tar.gz && \
-  cd cmake-3.14.3 && \
-  ./bootstrap && make && make install && make -j4
-RUN apt-get install -y vim less && \
-  git clone --recursive https://github.com/dmlc/xgboost.git && \
-  cd xgboost && \
-  make -j4
-RUN cd xgboost/python-package; python3 setup.py install && cd ../..
-RUN apt-get -y install cmake
+#RUN wget https://github.com/Kitware/CMake/releases/download/v3.14.3/cmake-3.14.3.tar.gz && \
+#  tar xvf cmake-3.14.3.tar.gz && \
+#  cd cmake-3.14.3 && \
+#  ./bootstrap && make && make install && make -j4
+#RUN apt-get install -y vim less && \
+#  git clone --recursive https://github.com/dmlc/xgboost.git && \
+#  cd xgboost && \
+#  make -j4
+#RUN cd xgboost/python-package; python3 setup.py install && cd ../..
+#RUN apt-get -y install cmake
   #mkdir build && \
   #cd build && \
   #cmake .. && \

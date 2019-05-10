@@ -60,6 +60,9 @@ class Trade:
             if i>= 300:
                 cls.total_access_per_300s = sum(cls.access_log[-300:])
                 cls.access_log.pop(0)
+                if cls.total_access_per_300s >= 500:
+                    LineNotification.send_error('detec')
+                    print('')
             time.sleep(1)
             i+=1
 
@@ -109,15 +112,30 @@ class Trade:
             order_id = ''
             if size >= 0.01:
                 try:
-                    order_id = cls.bf.create_order(
-                        symbol='BTC/JPY',
-                        type=type,
-                        side=side,
-                        price=price,
-                        amount=size,
-                        # params={'product_code': 'FX_BTC_JPY'}
-                        params={'product_code': 'FX_BTC_JPY', 'minute_to_expire': expire_m}  # 期限切れまでの時間（分）（省略した場合は30日）
-                    )
+                    if type == 'limit':
+                        order_id = cls.bf.create_order(
+                            symbol='BTC/JPY',
+                            type='limit',
+                            side=side,
+                            price=price,
+                            amount=size,
+                            # params={'product_code': 'FX_BTC_JPY'}
+                            params={'product_code': 'FX_BTC_JPY', 'minute_to_expire': expire_m}  # 期限切れまでの時間（分）（省略した場合は30日）
+                        )
+                    elif type == 'market':
+                        order_id = cls.bf.create_order(
+                            symbol='BTC/JPY',
+                            type='market',
+                            side=side,
+                            amount=size,
+                            # params={'product_code': 'FX_BTC_JPY'}
+                            params={'product_code': 'FX_BTC_JPY'}
+                        )
+                    else:
+                        print('Trade - order: invalid order type!')
+                        LogMaster.add_log({'dt': datetime.now(),'api_error': 'Trade - order: invalid order type!'})
+                        LineNotification.send_error('Trade - order: invalid order type!')
+                        return ''
                 except Exception as e:
                     if 'Margin amount is insufficient' in str(e):
                         size -= 0.01
@@ -593,8 +611,8 @@ class Trade:
 
 if __name__ == '__main__':
     SystemFlg.initialize()
-    Trade.initialize()
-    print(Trade.get_collateral())
+    #Trade.initialize()
+    #print(Trade.get_collateral())
     #test = Trade.cancel_and_wait_completion('test')
     #print(Trade.get_order_status('test'))
 
