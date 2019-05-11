@@ -46,6 +46,7 @@ class Bot:
         self.order_initailize()
         self.initial_collateral = Trade.get_collateral()['collateral']
         self.collateral_change = 0
+        self.collateral_change_per_min = 0
         self.pl = 0
         self.holding_pl = 0
         self.pl_log = []
@@ -144,8 +145,7 @@ class Bot:
     def calc_collateral_change(self):
         col = Trade.get_collateral()
         self.collateral_change = round(float(col['collateral']) + float(col['open_position_pnl']) - self.initial_collateral)
-
-
+        self.collateral_change_per_min = round(self.collateral_change / self.elapsed_time/60.0, 4)
 
     @jit
     def calc_holding_pl(self):
@@ -394,26 +394,26 @@ class Bot:
                 print("bot elapsed_time:{0}".format(round(self.elapsed_time/60,2)) + "[min]")
                 print('num total access per 300s={}, num private access={}, num public access={}'.format(Trade.total_access_per_300s, Trade.num_private_access, Trade.num_public_access))
                 res, omd = CryptowatchDataGetter.get_data_after_specific_ut(MarketData2.ohlc_bot.unix_time[-1])
-                print('cryptowatch completed ='+datetime.now(tz=self.JST).strftime("%H:%M:%S"))
+                #print('cryptowatch completed ='+datetime.now(tz=self.JST).strftime("%H:%M:%S"))
                 #print('downloaded data - '+str(datetime.now(tz=JST)))
                 if res == 0:
                     for i in range(len(omd.dt)):
                         MarketData2.ohlc_bot.add_and_pop(omd.unix_time[i],omd.dt[i], omd.open[i], omd.high[i], omd.low[i], omd.close[i], omd.size[i])
                     MarketData2.update_ohlc_index_for_bot2()
                     df = MarketData2.generate_df_for_bot(MarketData2.ohlc_bot)
-                    print('MD df completed =' +datetime.now(tz=self.JST).strftime("%H:%M:%S"))
+                    #print('MD df completed =' +datetime.now(tz=self.JST).strftime("%H:%M:%S"))
                     pred_x = model.generate_bot_pred_data(df)
-                    print('Model df completed =' +datetime.now(tz=self.JST).strftime("%H:%M:%S"))
+                    #print('Model df completed =' +datetime.now(tz=self.JST).strftime("%H:%M:%S"))
                     #predict = bst.predict(xgb.DMatrix(pred_x))
                     predict = cbm.predict(Pool(pred_x))
-                    print('Prediction completed =' +datetime.now(tz=self.JST).strftime("%H:%M:%S"))
+                    #print('Prediction completed =' +datetime.now(tz=self.JST).strftime("%H:%M:%S"))
                     #print('predicted - ' + str(datetime.now(tz=JST)))
                     LogMaster.add_log({'dt':MarketData2.ohlc_bot.dt[-1],'open':MarketData2.ohlc_bot.open[-1],'high':MarketData2.ohlc_bot.high[-1],
                                       'low':MarketData2.ohlc_bot.low[-1],'close':MarketData2.ohlc_bot.close[-1],'posi_side':self.posi_side,
                                        'posi_price':self.posi_price,'posi_size':self.posi_size,'order_side':self.order_side,'order_price':self.order_price,
                                        'order_size':self.order_size,'num_private_access':Trade.num_private_access, 'num_public_access':Trade.num_public_access,
                                        'num_total_access_per_300s':Trade.total_access_per_300s,'num_trade':self.num_trade,'win_rate':self.win_rate, 'pl':self.pl+self.holding_pl,
-                                       'pl_per_min':self.pl_per_min, 'prediction':predict[0]})
+                                       'pl_per_min':self.pl_per_min, 'prediction':predict[0], 'collateral_change':self.collateral_change, 'collateral_change_per_min':self.collateral_change_per_min})
                     LineNotification.send_notification()
                     self.calc_collateral_change()
                     print('dt={}, close={}, predict={}, pl={}, collateral_change={}, pl_per_min={}, num_trade={}, win_rate={}, posi_side={}, posi_price={}, posi_size={}, order_side={}, order_price={}, order_size={}'
@@ -442,7 +442,11 @@ class Bot:
                 self.calc_holding_pl()
             if self.order_side != '':
                 self.check_execution()
-            time.sleep(1)
+            if Trade.flg_api_limit:
+                time.sleep(60)
+            else:
+                time.sleep(1)
+
 
 
 

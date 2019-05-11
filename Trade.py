@@ -61,8 +61,16 @@ class Trade:
                 cls.total_access_per_300s = sum(cls.access_log[-300:])
                 cls.access_log.pop(0)
                 if cls.total_access_per_300s >= 500:
-                    LineNotification.send_error('detec')
-                    print('')
+                    LineNotification.send_error('Total API access reached 500/sec! sleep for 60sec')
+                    print('Total API access reached 500/sec! sleep for 60sec')
+                    LogMaster.add_log({'dt': datetime.now(), 'api_error': 'Total API access reached 500/sec! sleep for 60sec'})
+                    l = [0] * 60
+                    cls.access_log.extend(l)
+                    i += 60
+                    time.sleep(60)
+                    cls.flg_api_limit = True
+                else:
+                    cls.flg_api_limit = False
             time.sleep(1)
             i+=1
 
@@ -72,6 +80,7 @@ class Trade:
             print('detected connection reset by peer error!')
             print('initialize trade class.')
             LineNotification.send_error('detected connection reset by peer error!')
+            LogMaster.add_log({'dt': datetime.now(), 'api_error': 'detected connection reset by peer error!'})
             cls.initialize()
             time.sleep(10)
             return 'error'
@@ -79,6 +88,7 @@ class Trade:
             print('API private access reached limitation!')
             print('initialize trade class and sleep 60sec.')
             LineNotification.send_error('API private access reached limitation!')
+            LogMaster.add_log({'dt': datetime.now(), 'api_error': 'API private access reached limitation!'})
             cls.initialize()
             time.sleep(60)
             return 'error'
@@ -86,6 +96,7 @@ class Trade:
             print('Connection aborted error occurred!')
             print('initialize trade class and sleep 60sec.')
             LineNotification.send_error('Connection aborted.')
+            LogMaster.add_log({'dt': datetime.now(), 'api_error': 'Connection aborted error occurred!'})
             cls.initialize()
             time.sleep(60)
             return 'error'

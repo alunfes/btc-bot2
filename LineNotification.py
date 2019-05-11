@@ -27,7 +27,8 @@ class LineNotification:
 
     @classmethod
     def send_error(cls, message):
-        loop = asyncio.get_event_loop()
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
         loop.run_until_complete(cls.__send_error(message))
 
     @classmethod
@@ -69,5 +70,6 @@ class LineNotification:
 
 if __name__ == '__main__':
     LineNotification.initialize()
-    LineNotification.send_message('\r\n'+'pl=-59'+'\r\n'+'num_trade=100')
+    LineNotification.send_error('Total API access reached 500/sec! sleep for 60sec')
+    #LineNotification.send_message('\r\n'+'pl=-59'+'\r\n'+'num_trade=100')
 
