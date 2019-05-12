@@ -24,9 +24,10 @@ class Account:
         self.price_tracing_order_i = 0
         self.price_tracing_order_flg = False
 
-        self.margin_rate = 120.0
+        self.base_margin_rate = 120.0
         self.leverage = 15.0
         self.slip_page = 500
+        self.force_loss_cut_rate = 50
 
         self.realized_pl_log = {}
         self.total_pl_log = {}
@@ -75,6 +76,7 @@ class Account:
     def move_to_next(self, prediction, ind, i):
         self.__check_execution(prediction, ind, i)
         self.__check_cancel(ind, i)
+        self.__check_and_do_force_loss_cut(ind,i)
         self.__calc_unrealized_pl(ind)
         self.realized_pl_log[i] = self.realized_pl
         self.total_pl = self.realized_pl + self.unrealized_pl
@@ -108,7 +110,14 @@ class Account:
         self.prediction_log[i] = 0
 
     def calc_opt_size(self, ind):
-        return round((self.asset * self.margin_rate) / MarketData2.ohlc_bot.close[ind] * 1.0/self.leverage, 2)
+        return round((self.asset * self.base_margin_rate) / MarketData2.ohlc_bot.close[ind] * 1.0/self.leverage, 2)
+
+    def __check_and_do_force_loss_cut(self, ind, i):
+        margin_rate = self.ave_holding_size * (MarketData2.ohlc_bot.close[ind] * 1.0 / self.leverage) / float(self.asset)
+        if margin_rate <= self.force_loss_cut_rate:
+            self.__force_exit(ind, i)
+        else:
+            pass
 
     def __add_action_log(self, log, i):
         self.action_log[str(i)+'-'+str(self.action_log_num)] = log

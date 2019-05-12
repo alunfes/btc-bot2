@@ -75,13 +75,12 @@ class Bot:
         price = round(price / size)
         return side, round(size,8), round(price)
 
-    @jit
     def sync_position_order(self):
         position = Trade.get_positions()
         orders = Trade.get_orders()
         if len(position) > 0:
             posi_side, posi_size, posi_price = self.combine_status_data(position)
-            if self.posi_side != posi_side or self.posi_price!=posi_price or self.posi_size != posi_size:
+            if self.posi_side != posi_side or abs(self.posi_price - posi_price) >= 1 or abs(self.posi_size - posi_size) >= 0.01:
                 print('position unmatch was detected! Synchronize with account position data.')
                 print('posi_side={},posi_price={},posi_size={}'.format(self.posi_side,self.posi_price,self.posi_size))
                 print(position)
@@ -93,11 +92,15 @@ class Bot:
         if len(orders) > 0:#need to update order status
             if len(orders) > 1:
                 print('multiple orders are found! Only the first one will be synchronized!')
-            self.order_id = orders[0]['info']['child_order_acceptance_id']
-            self.order_side = orders[0]['info']['side'].lower()
-            self.order_size = float(orders[0]['info']['size'])
-            self.order_price = round(float(orders[0]['info']['price']))
-            print('synchronized order data, side='+str(self.order_side)+', size='+str(self.order_size)+', price='+str(self.order_price))
+            try:
+                self.order_id = orders[0]['info']['child_order_acceptance_id']
+                self.order_side = orders[0]['info']['side'].lower()
+                self.order_size = float(orders[0]['info']['size'])
+                self.order_price = round(float(orders[0]['info']['price']))
+                print('synchronized order data, side='+str(self.order_side)+', size='+str(self.order_size)+', price='+str(self.order_price))
+            except Exception as e:
+                print('Bot-sync_position_order:sync order key error!')
+                LogMaster.add_log({'dt': datetime.now(),'api_error': 'Bot-sync_position_order:sync order key error!'})
         else:
             self.order_initailize()
 
@@ -139,13 +142,16 @@ class Bot:
         if self.elapsed_time >0:
             self.pl_per_min = round( (self.pl + self.holding_pl) / (self.elapsed_time /60.0),4)
         else:
-            self.pl_per_min = 0
+            pass
 
     @jit
     def calc_collateral_change(self):
         col = Trade.get_collateral()
         self.collateral_change = round(float(col['collateral']) + float(col['open_position_pnl']) - self.initial_collateral)
-        self.collateral_change_per_min = round(self.collateral_change / self.elapsed_time/60.0, 4)
+        if self.elapsed_time > 0:
+            self.collateral_change_per_min = round(self.collateral_change / (self.elapsed_time/60.0), 4)
+        else:
+            pass
 
     @jit
     def calc_holding_pl(self):
@@ -273,82 +279,109 @@ class Bot:
             self.order_initailize()
 
 
-    @jit
     def check_execution(self):
         status = Trade.get_order_status(self.order_id)
-        if len(status) == 0: #no order info
-            if self.order_status == 'pl ordering':#pl order not boarded
-                print('pl order is not boarded')
-                #print(Trade.get_orders())
-            elif self.order_status == 'new boarding':
-                print('new entry is not boarded')#new entry not boarded¥
-                #print(Trade.get_orders())
-            elif self.order_status == 'pl boarded':
-                if self.order_dt.astimezone(tz=self.JST) + dt.timedelta(seconds=60) < datetime.now(tz=self.JST):
-                    flg_check_expiration = True
-                    for i in range(3):
-                        time.sleep(1)
-                        status = Trade.get_order_status(self.order_id)
-                        if len(status) > 0:
-                            flg_check_expiration = False
-                            break
-                    if flg_check_expiration:
-                        print('pl order has been expired: ' +str(datetime.now()))
-                        self.order_initailize()
-                        LogMaster.add_log({'dt': datetime.now(),'action_message': 'pl order has been expired'})
-            elif self.order_status == 'new boarded':
-                if self.order_dt.astimezone(tz=self.JST)     + dt.timedelta(seconds=60) < datetime.now(tz=self.JST):
-                    flg_check_expiration = True
-                    for i in range(3):
-                        time.sleep(1)
-                        status = Trade.get_order_status(self.order_id)
-                        if len(status) > 0:
-                            flg_check_expiration = False
-                            break
-                    if flg_check_expiration:
-                        print('new entry order has been expired: ' +str(datetime.now()))
-                        self.order_initailize()
-                        LogMaster.add_log({'dt': datetime.now(),'action_message': 'new entry order has been expired'})
-            else:
-                print('unknown status!')
-        else: #order boarded or executed
-            if 'pl' in self.order_status: #in case pl order
-                if self.order_status == 'pl ordering':
-                    self.order_status = 'pl boarded'
-                    print('pl order boarded: ' +str(datetime.now()))
-                if status[0]['child_order_state'] == 'COMPLETED': #pl order fully executed
-                    print('pl order has been completed.'+'ave_price='+str(status[0]['average_price'])+' size='+str(status[0]['executed_size']))
-                    self.calc_and_log_pl(status[0]['average_price'], status[0]['executed_size'])
-                    self.sync_position_order()
-                    LogMaster.add_log({'dt': datetime.now(), 'action_message':'pl order has been completed.'+'ave_price='+str(status[0]['average_price'])+' size='+str(status[0]['executed_size'])})
+        if status is not None:
+            if len(status) == 0: #no order info
+                if self.order_status == 'pl ordering':#pl order not boarded
+                    print('pl order is not boarded')
+                    #print(Trade.get_orders())
+                elif self.order_status == 'new boarding':
+                    print('new entry is not boarded')#new entry not boarded¥
+                    #print(Trade.get_orders())
+                elif self.order_status == 'pl boarded':
+                    if self.order_dt.astimezone(tz=self.JST) + dt.timedelta(seconds=60) < datetime.now(tz=self.JST):
+                        orders = Trade.get_orders()
+                        if len(orders) > 0:
+                            try:
+                                self.order_id = orders[0]['child_order_acceptance_id']
+                                print('pl order id has been updates due to unknown error!')
+                                LogMaster.add_log(
+                                    {'dt': datetime.now(),
+                                     'api_error': 'pl order id has been updates due to unknown error!'})
+                            except Exception as e:
+                                print('Bot - check_execution:key error was detected!')
+                                print(orders)
+                                LogMaster.add_log(
+                                    {'dt': datetime.now(),
+                                     'api_error': 'Bot - check_execution:key error was detected!'})
+
+                        else:
+                            print('pl order can not be found!')
+                            LogMaster.add_log(
+                                {'dt': datetime.now(),
+                                 'api_error': 'pl order can not be found!'})
+
+                    '''
+                    if self.order_dt.astimezone(tz=self.JST) + dt.timedelta(seconds=60) < datetime.now(tz=self.JST):
+                        flg_check_expiration = True
+                        for i in range(3):
+                            time.sleep(1)
+                            status = Trade.get_order_status(self.order_id)
+                            if len(status) > 0:
+                                flg_check_expiration = False
+                                break
+                        if flg_check_expiration:
+                            print('pl order has been expired: ' +str(datetime.now()))
+                            self.order_initailize()
+                            LogMaster.add_log({'dt': datetime.now(),'action_message': 'pl order has been expired'})
+                    '''
+                elif self.order_status == 'new boarded':
+                    if self.order_dt.astimezone(tz=self.JST)     + dt.timedelta(seconds=60) < datetime.now(tz=self.JST):
+                        flg_check_expiration = True
+                        for i in range(3):
+                            time.sleep(1)
+                            status = Trade.get_order_status(self.order_id)
+                            if len(status) > 0:
+                                flg_check_expiration = False
+                                break
+                        if flg_check_expiration:
+                            print('new entry order has been expired: ' +str(datetime.now()))
+                            self.order_initailize()
+                            LogMaster.add_log({'dt': datetime.now(),'action_message': 'new entry order has been expired'})
                 else:
-                    if status[0]['outstanding_size'] < self.order_size: #pl order partially executed
+                    print('unknown status!')
+            else: #order boarded or executed
+                if 'pl' in self.order_status: #in case pl order
+                    if self.order_status == 'pl ordering':
+                        self.order_status = 'pl boarded'
+                        print('pl order boarded: ' +str(datetime.now()))
+                    if status[0]['child_order_state'] == 'COMPLETED': #pl order fully executed
+                        print('pl order has been completed.'+'ave_price='+str(status[0]['average_price'])+' size='+str(status[0]['executed_size']))
                         self.calc_and_log_pl(status[0]['average_price'], status[0]['executed_size'])
-                        self.order_size = status[0]['outstanding_size']
-                        self.order_status = 'pl order partially executed'
-                        self.posi_status = 'pl order partially executed'
-                        self.posi_size = self.original_posi_size - status[0]['executed_size']
-                        print('pl order has been partially executed. ave_price={}, size={}'.format(status[0]['average_price'], status[0]['executed_size']))
-                        LogMaster.add_log({'dt': datetime.now(),'action_message': 'pl order has been partially executed.' + 'ave_price=' + str(status[0]['average_price']) + ' size=' + str(status[0]['executed_size'])})
-                        print('current position side={}, price={}, size={}'.format(self.posi_side, self.posi_price, self.posi_size))
+                        self.sync_position_order()
+                        LogMaster.add_log({'dt': datetime.now(), 'action_message':'pl order has been completed.'+'ave_price='+str(status[0]['average_price'])+' size='+str(status[0]['executed_size'])})
                     else:
+                        if status[0]['outstanding_size'] < self.order_size: #pl order partially executed
+                            self.calc_and_log_pl(status[0]['average_price'], status[0]['executed_size'])
+                            self.order_size = status[0]['outstanding_size']
+                            self.order_status = 'pl order partially executed'
+                            self.posi_status = 'pl order partially executed'
+                            self.posi_size = self.original_posi_size - status[0]['executed_size']
+                            print('pl order has been partially executed. ave_price={}, size={}'.format(status[0]['average_price'], status[0]['executed_size']))
+                            LogMaster.add_log({'dt': datetime.now(),'action_message': 'pl order has been partially executed.' + 'ave_price=' + str(status[0]['average_price']) + ' size=' + str(status[0]['executed_size'])})
+                            print('current position side={}, price={}, size={}'.format(self.posi_side, self.posi_price, self.posi_size))
+                        else:
+                            pass
+                else: #in case new entry
+                    if self.order_status == 'new boarding':
+                        self.order_status = 'new boarded'
+                        print('new entry boarded: '+ str(datetime.now())) #new entry not boarded
+                    if status[0]['child_order_state'] == 'COMPLETED':
+                        print('new entry order has been completed' + 'ave_price='+str(status[0]['average_price'])+'size='+str(status[0]['executed_size']))
+                        self.sync_position_order()
+                        LogMaster.add_log({'dt': datetime.now(),
+                                           'action_message': 'new entry order has been partially executed.' + 'ave_price=' + str(
+                                               status[0]['average_price']) + ' size=' + str(status[0]['executed_size'])})
+                        print('current position: side={},price={},size={}'.format(self.posi_side, self.posi_price, self.posi_size))
+                    elif status[0]['child_order_state'] == 'CANCELED':
+                        print('order has been canceled outside of cancel and wait completion function!')
+                        print(status[0])
+                    else: #no change in new entry order
                         pass
-            else: #in case new entry
-                if self.order_status == 'new boarding':
-                    self.order_status = 'new boarded'
-                    print('new entry boarded: '+ str(datetime.now())) #new entry not boarded
-                if status[0]['child_order_state'] == 'COMPLETED':
-                    print('new entry order has been completed' + 'ave_price='+str(status[0]['average_price'])+'size='+str(status[0]['executed_size']))
-                    self.sync_position_order()
-                    LogMaster.add_log({'dt': datetime.now(),
-                                       'action_message': 'new entry order has been partially executed.' + 'ave_price=' + str(
-                                           status[0]['average_price']) + ' size=' + str(status[0]['executed_size'])})
-                    print('current position: side={},price={},size={}'.format(self.posi_side, self.posi_price, self.posi_size))
-                elif status[0]['child_order_state'] == 'CANCELED':
-                    print('order has been canceled outside of cancel and wait completion function!')
-                    print(status[0])
-                else: #no change in new entry order
-                    pass
+        else:
+            print('order status is not available due to API access limitation')
+            pass
 
 
     @jit
@@ -408,17 +441,17 @@ class Bot:
                     predict = cbm.predict(Pool(pred_x))
                     #print('Prediction completed =' +datetime.now(tz=self.JST).strftime("%H:%M:%S"))
                     #print('predicted - ' + str(datetime.now(tz=JST)))
+                    self.calc_collateral_change()
                     LogMaster.add_log({'dt':MarketData2.ohlc_bot.dt[-1],'open':MarketData2.ohlc_bot.open[-1],'high':MarketData2.ohlc_bot.high[-1],
                                       'low':MarketData2.ohlc_bot.low[-1],'close':MarketData2.ohlc_bot.close[-1],'posi_side':self.posi_side,
                                        'posi_price':self.posi_price,'posi_size':self.posi_size,'order_side':self.order_side,'order_price':self.order_price,
                                        'order_size':self.order_size,'num_private_access':Trade.num_private_access, 'num_public_access':Trade.num_public_access,
                                        'num_total_access_per_300s':Trade.total_access_per_300s,'num_trade':self.num_trade,'win_rate':self.win_rate, 'pl':self.pl+self.holding_pl,
-                                       'pl_per_min':self.pl_per_min, 'prediction':predict[0], 'collateral_change':self.collateral_change, 'collateral_change_per_min':self.collateral_change_per_min})
+                                       'pl_per_min':self.pl_per_min, 'prediction':predict[0], 'collateral_change':self.collateral_change,'collateral_change_per_min':self.collateral_change_per_min})
                     LineNotification.send_notification()
-                    self.calc_collateral_change()
-                    print('dt={}, close={}, predict={}, pl={}, collateral_change={}, pl_per_min={}, num_trade={}, win_rate={}, posi_side={}, posi_price={}, posi_size={}, order_side={}, order_price={}, order_size={}'
-                          .format(MarketData2.ohlc_bot.dt[-1],MarketData2.ohlc_bot.close[-1],predict[0],self.pl+self.holding_pl, self.collateral_change, self.pl_per_min, self.num_trade,
-                                  self.win_rate, self.posi_side, self.posi_price, self.posi_size, self.order_side, self.order_price, self.order_size))
+                    print('dt={}, close={}, predict={}, pl={}, collateral_change={}, pl_per_min={}, collateral_change_per_min={}, num_trade={}, win_rate={}, posi_side={}, posi_price={}, posi_size={}, order_side={}, order_price={}, order_size={}'
+                          .format(MarketData2.ohlc_bot.dt[-1],MarketData2.ohlc_bot.close[-1],predict[0],self.pl+self.holding_pl, self.collateral_change, self.pl_per_min, self.collateral_change_per_min,
+                                  self.num_trade, self.win_rate, self.posi_side, self.posi_price, self.posi_size, self.order_side, self.order_price, self.order_size))
                 else:
                     print('crypto watch data download error!')
             if self.posi_side == '' and self.order_side == '': #no position no order
@@ -444,11 +477,9 @@ class Bot:
                 self.check_execution()
             if Trade.flg_api_limit:
                 time.sleep(60)
+                print('Bot sleeping for 60sec due to API access limitation')
             else:
                 time.sleep(1)
-
-
-
 
 
 if __name__ == '__main__':
