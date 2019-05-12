@@ -6,6 +6,7 @@ import asyncio
 from SystemFlg import SystemFlg
 from numba import jit
 
+
 class WebsocketMaster:
     def __init__(self, channel, symbol=''):
         self.symbol = symbol
@@ -90,10 +91,12 @@ class WebsocketMaster:
         if self.channel == 'lightning_executions_':
             if self.message is not None:
                 self.exection = self.message
+                TickData.add_exec_data((self.exection))
                 pass
         elif self.channel == 'lightning_ticker_':
             if self.message is not None:
                 self.ticker = self.message
+                TickData.add_ticker_data(self.ticker)
                 pass
         if SystemFlg.get_system_flg() == False:
             self.disconnect()
@@ -122,17 +125,55 @@ class WebsocketMaster:
             await asyncio.sleep(1)
 
 
+
+class TickData:
+    @classmethod
+    def initialize(cls):
+        cls.lock = threading.Lock()
+        cls.ltp = 0
+        cls.ws_execution = WebsocketMaster('lightning_executions_', 'FX_BTC_JPY')
+        cls.ws_ticker = WebsocketMaster('lightning_ticker_', 'FX_BTC_JPY')
+        cls.exec_data = []
+        cls.ticker_data = []
+        th = threading.Thread(target=cls.start_thread)
+        th.start()
+
+    @classmethod
+    def start_thread(cls):
+        while SystemFlg.get_system_flg():
+            if len(cls.exec_data) > 0:
+                print(cls.exec_data[-1])
+                print(cls.ticker_data[-1])
+            time.sleep(1)
+
+    @classmethod
+    def add_exec_data(cls, exec):
+        with cls.lock:
+            if len(exec) > 0:
+                cls.exec_data.extend(exec)
+
+    @classmethod
+    def add_ticker_data(cls, ticker):
+        with cls.lock:
+            if len(ticker) > 0:
+                cls.ticker_data.extend(ticker)
+
+
+
 if __name__ == '__main__':
     SystemFlg.initialize()
-    #ws_execution = WebsocketMaster('lightning_executions_', 'FX_BTC_JPY')
-    ws_ticker = WebsocketMaster('lightning_ticker_', 'FX_BTC_JPY')
-    time.sleep(5)
+    TickData.initialize()
     while True:
+        time.sleep(1)
+    #ws_execution = WebsocketMaster('lightning_executions_', 'FX_BTC_JPY')
+    #ws_ticker = WebsocketMaster('lightning_ticker_', 'FX_BTC_JPY')
+    #time.sleep(5)
+    #while True:
         #print('current price='+str(ws_execution.get_current_price()))
         #print('bid='+str(ws_ticker.get_best_bid()))
-        if ws_ticker.ticker is not None:
-            print(ws_ticker.get_ltp())
-        time.sleep(0.5)
+    #    if ws_ticker.ticker is not None:
+    #        print(ws_ticker.get_ltp())
+    #    time.sleep(0.5)
     #num_failed = 0
     #loop = asyncio.get_event_loop()
     #asyncio.ensure_future(md.loop())
