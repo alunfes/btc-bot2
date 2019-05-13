@@ -37,6 +37,8 @@ class LogMaster:
                         d[key] = dict_log[key]
             with cls.lock:
                 cls.log_list.append(d)
+                if len(cls.log_list) > 1000:
+                    cls.log_list.pop(0)
         if cls.ind_updates == 0:
             await cls.__all_log_to_csv()
         else:

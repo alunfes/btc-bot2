@@ -37,6 +37,26 @@ class OneMinutesData:
             self.rsi[k] = self.rsi[k][-num_data:]
         self.future_side = self.future_side[-num_data:]
 
+
+    @jit
+    def del_data(self, num_remain_data):
+        del self.unix_time[:-num_remain_data]
+        del self.dt[:-num_remain_data]
+        del self.open[:-num_remain_data]
+        del self.high[:-num_remain_data]
+        del self.low[:-num_remain_data]
+        del self.close[:-num_remain_data]
+        del self.size[:-num_remain_data]
+        for k in self.ma:
+            del self.ma[k][:-num_remain_data]
+        for k in self.ma_kairi:
+            del self.ma_kairi[k][:-num_remain_data]
+        for k in self.momentum:
+            del self.momentum[k][:-num_remain_data]
+        for k in self.rsi:
+            del self.rsi[k][:-num_remain_data]
+        del self.future_side[:-num_remain_data]
+
     @jit
     def add_and_pop(self, unix_time, dt, open, high, low, close, size):
         self.unix_time.append(unix_time)

@@ -408,7 +408,7 @@ class Bot:
         print('bot - training completed..')
         print('bot - updating crypto data..')
         LogMaster.add_log({'action_message': 'bot - training completed..'})
-        MarketData2.ohlc_bot.cut_data(1000)
+        MarketData2.ohlc_bot.del_data(5000)
         print('bot - started bot loop.')
         LogMaster.add_log({'action_message': 'bot - started bot loop.'})
         predict = [0]
@@ -434,6 +434,7 @@ class Bot:
                         MarketData2.ohlc_bot.add_and_pop(omd.unix_time[i],omd.dt[i], omd.open[i], omd.high[i], omd.low[i], omd.close[i], omd.size[i])
                     MarketData2.update_ohlc_index_for_bot2()
                     df = MarketData2.generate_df_for_bot(MarketData2.ohlc_bot)
+                    MarketData2.ohlc_bot.del_data(5000)
                     #print('MD df completed =' +datetime.now(tz=self.JST).strftime("%H:%M:%S"))
                     pred_x = model.generate_bot_pred_data(df)
                     #print('Model df completed =' +datetime.now(tz=self.JST).strftime("%H:%M:%S"))
