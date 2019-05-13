@@ -73,8 +73,8 @@ class Account:
         self.unexe_cancel.pop(unexe_key)
         self.unexe_info.pop(unexe_key)
 
-    def move_to_next(self, prediction, ind, i):
-        self.__check_execution(prediction, ind, i)
+    def move_to_next(self, prediction, pl_kijun, ind, i):
+        self.__check_execution(prediction, pl_kijun, ind, i)
         self.__check_cancel(ind, i)
         self.__check_and_do_force_loss_cut(ind,i)
         self.__calc_unrealized_pl(ind)
@@ -192,21 +192,48 @@ class Account:
         self.__initialize_cancel_all_orders()
         self.__add_action_log("Cancelled all orders",i)
 
-    def __check_execution(self, prediction, ind, i):
+    def __check_execution(self, prediction,pl_kijun, ind, i):
         for j in list(self.unexe_side.keys())[:]:
             if self.unexe_i[j] < i:
                 if self.unexe_side[j] == 'buy' and MarketData2.ohlc_bot.low[ind] <= self.unexe_price[j]:
-                    self.__execute(j, prediction, ind, i)
+                    self.__execute(j, prediction, pl_kijun,  ind, i)
                 elif self.unexe_side[j] == 'sell' and MarketData2.ohlc_bot.high[ind] >= self.unexe_price[j]:
-                    self.__execute(j, prediction, ind, i)
+                    self.__execute(j, prediction, pl_kijun, ind, i)
 
-    def __execute(self, unexe_key, prediction, ind, i):
+    def __execute(self, unexe_key, prediction, pl_kijun, ind, i):
         if self.holding_side =='':
             self.holding_side = self.unexe_side[unexe_key]
             self.ave_holding_size = self.unexe_size[unexe_key]
             self.ave_holding_price = self.unexe_price[unexe_key]
             self.last_entry_i = i
             self.last_entry_time = MarketData2.ohlc_bot.dt[ind]
+            #iimediate pl order and profit taking
+            if self.holding_side == 'buy':
+                if MarketData2.ohlc_bot.high[ind] >= self.ave_holding_price + pl_kijun:
+                    self.num_trade += round(0.5 * ((MarketData2.ohlc_bot.high[ind] - self.ave_holding_price) /pl_kijun))
+                    self.realized_pl += round(0.5 * (MarketData2.ohlc_bot.high[ind] - self.ave_holding_price))
+                    self.num_win += round(0.5 * ((MarketData2.ohlc_bot.high[ind] - self.ave_holding_price) /pl_kijun))
+                    self.__initialize_unexe_data()
+                    self.__initialize_holding_data()
+                else:
+                    side = 'buy' if self.holding_side == 'sell' else 'sell'
+                    price = self.ave_holding_price + pl_kijun if self.holding_side == 'buy' else self.ave_holding_price - pl_kijun
+                    self.entry_order(side, price, self.ave_holding_size, 'pl order', ind, i-1)
+                    self.__add_action_log("Entry PL Order" + side + " @" + str(price) + " x " + str(self.ave_holding_size), i)
+            elif self.holding_side == 'sell':
+                if MarketData2.ohlc_bot.low[ind] <= self.ave_holding_price - pl_kijun:
+                    self.num_trade += round(0.5 * ((self.ave_holding_price - MarketData2.ohlc_bot.low[ind]) /pl_kijun))
+                    self.realized_pl += round(0.5 * (self.ave_holding_price - MarketData2.ohlc_bot.low[ind]))
+                    self.num_win += round(0.5 * ((MarketData2.ohlc_bot.high[ind] - self.ave_holding_price) /pl_kijun))
+                    self.__initialize_unexe_data()
+                    self.__initialize_holding_data()
+                else:
+                    side = 'buy' if self.holding_side == 'sell' else 'sell'
+                    price = self.ave_holding_price + pl_kijun if self.holding_side == 'buy' else self.ave_holding_price - pl_kijun
+                    self.entry_order(side, price, self.ave_holding_size, 'pl order', ind, i-1)
+                    self.__add_action_log("Entry PL Order" + side + " @" + str(price) + " x " + str(self.ave_holding_size), i)
+
+
         elif self.holding_side == 'buy':
             if self.unexe_side[unexe_key] == 'buy':
                 self.ave_holding_size += self.unexe_size[unexe_key]
@@ -262,3 +289,5 @@ class Account:
         if pl > 0:
             self.num_win += 1
         self.realized_pl += pl
+
+

@@ -51,9 +51,9 @@ class Sim:
             if abs(1.00 - ohlc.ma_kairi[list(ohlc.ma_kairi.keys())[-1]][ind]) >= kairi_suspension_kijun: #kairiが一定以上の時
                 if len(cls.ac.unexe_side) > 0:
                     cls.ac.cancel_all_orders(ind,i)
-            if cls.ac.holding_side != '' and len(cls.ac.unexe_side) == 0 and cls.ac.cancel_all_orders_flg == False:
-                cls.ac.pl_order(pl_kijun,ind,i)
-            cls.ac.move_to_next(prediction[i],ind,i)
+            #if cls.ac.holding_side != '' and len(cls.ac.unexe_side) == 0 and cls.ac.cancel_all_orders_flg == False:
+            #    cls.ac.pl_order(pl_kijun,ind,i)
+            cls.ac.move_to_next(prediction[i],pl_kijun,ind,i)
         cls.ac.last_day_operation(len(prediction)+start_ind-1,len(prediction) - 1)
         return (cls.ac.total_pl, cls.ac.num_trade, cls.ac.win_rate, cls.ac.total_pl_log)
 
