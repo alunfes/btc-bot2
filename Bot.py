@@ -513,7 +513,7 @@ class Bot:
                     LineNotification.send_notification()
                     print('dt={}, close={}, predict={}, pl={}, collateral_change={}, pl_per_min={}, collateral_change_per_min={}, num_trade={}, std_1m={}, win_rate={}, posi_side={}, posi_price={}, posi_size={}, order_side={}, order_price={}, order_size={}'
                           .format(MarketData2.ohlc_bot.dt[-1],MarketData2.ohlc_bot.close[-1],predict[0],self.pl+self.holding_pl, self.collateral_change, self.pl_per_min, self.collateral_change_per_min,
-                                  self.num_trade, TickData.get_1m_std(), self.win_rate, self.posi_side, self.posi_price, self.posi_size,     self.order_side, self.order_price, self.order_size))
+                                  self.num_trade, TickData.get_1m_std(), self.win_rate, self.posi_side, self.posi_price, self.posi_size, self.order_side, self.order_price, self.order_size))
                 else:
                     print('crypto watch data download error!')
             if self.posi_side == '' and self.order_side == '': #no position no order
