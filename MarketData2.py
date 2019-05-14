@@ -13,7 +13,7 @@ from numba import jit, f8, i8, b1, void
 
 class MarketData2:
     @classmethod
-    def initialize_from_bot_csv(cls, num_term, window_term, future_side_period, future_side_kijun):
+    def initialize_from_bot_csv(cls, num_term, window_term, future_side_period, future_side_kijun, initial_data_vol):
         cls.num_term = num_term
         cls.window_term = window_term
         cls.max_term = num_term * window_term
@@ -22,6 +22,7 @@ class MarketData2:
         cls.ohlc_bot = OneMinutesData()
         cls.ohlc_bot.initialize()
         cls.ohlc_bot = cls.read_from_csv('./Data/one_min_data.csv')
+        cls.ohlc_bot.del_data(initial_data_vol)
         cls.ohlc_bot = cls.calc_ma2(cls.ohlc_bot)
         cls.ohlc_bot = cls.calc_ma_kairi2(cls.ohlc_bot)
         cls.ohlc_bot = cls.calc_momentum2(cls.ohlc_bot)
