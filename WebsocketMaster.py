@@ -223,7 +223,9 @@ if __name__ == '__main__':
     TickData.initialize()
     while True:
         print(str(TickData.get_ltp()))
-        #print('std 1m='+str(TickData.get_1m_std()))
+        print(str(TickData.get_bid_price()))
+        print(str(TickData.get_ask_price()))
+        print('std 1m='+str(TickData.get_1m_std()))
         #print('std 3m=' + str(TickData.get_3m_std()))
         time.sleep(1)
     #ws_execution = WebsocketMaster('lightning_executions_', 'FX_BTC_JPY')

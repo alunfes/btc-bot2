@@ -1,31 +1,18 @@
-posi_side=,posi_price=0,posi_size=0
-[{'product_code': 'FX_BTC_JPY', 'side': 'BUY', 'price': 840958.0, 'size': 0.00513294, 'commission': 0.0, 'swap_point_accumulate': 0.0, 'require_collateral': 287.772463768, 'open_date': '2019-05-13T13:47:48.073', 'leverage': 15.0, 'pnl': 15.61440348, 'sfd': 0.0}]
-synchronized position data, side=buy, size=0.00513294, price=840958
-synchronized order data, side=buy, size=0.12, price=840958
-bot elapsed_time:394.39[min]
-num total access per 300s=0, num private access=19271, num public access=14110
-dt=2019-05-13 22:48:00, close=843129, predict=[1.], pl=3107, collateral_change=3470, pl_per_min=7.8981, collateral_change_per_min=8.7984, num_trade=179, win_rate=0.84, posi_side=buy, posi_price=840958, posi_size=0.00513294, order_side=buy, order_price=840958, order_size=0.12
-synchronized position data, side=buy, size=0.00513294, price=840958
-bot elapsed_time:395.4[min]
-num total access per 300s=0, num private access=19325, num public access=14161
-dt=2019-05-13 22:49:00, close=841310, predict=[1.], pl=3045, collateral_change=3456, pl_per_min=7.8981, collateral_change_per_min=8.7405, num_trade=179, win_rate=0.84, posi_side=buy, posi_price=840958, posi_size=0.00513294, order_side=, order_price=0, order_size=0
-order size 0.00513294 is too small. minimum order size is 0.01!
-first order size=0.01513294
-started price tracing order
-ok order - JRF20190513-134903-599277
-confirmed the order has been boarded
-price tracing order has been completed.
-ave price=841361.0, exe size = 0.01513294
-second order
-started price tracing order
-ok order - JRF20190513-134905-654428
-confirmed the order has been boarded
-waiting cancel order JRF20190513-134905-654428
-cancel failed order has been partially executed. exe size=0.01
-price tracing order - executed 0.01 @841370.0
-price tracing order has been completed.
-ave price=841370.0, exe size = 0.01
+bot - started bot loop.
+ok order - JRF20190514-131723-687710
+pl order: side = sell, price = 939263, size = 0.03
+pl order is not boarded
 Traceback (most recent call last):
-  File "./Bot.py", line 492, in <module>
+  File "Bot.py", line 557, in <module>
     bot.start_bot(500, 30, 100, 1)
-TypeError: object of type 'NoneType' has no len()
+TypeError: unsupported operand type(s) for -: 'NoneType' and 'int'
+^CException ignored in: <module 'threading' from '/usr/local/lib/python3.7/threading.py'>
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.7/threading.py", line 1281, in _shutdown
+    t.join()
+  File "/usr/local/lib/python3.7/threading.py", line 1032, in join
+    self._wait_for_tstate_lock()
+  File "/usr/local/lib/python3.7/threading.py", line 1048, in _wait_for_tstate_lock
+    elif lock.acquire(block, timeout):
+KeyboardInterrupt
+Error in sys.excepthook:

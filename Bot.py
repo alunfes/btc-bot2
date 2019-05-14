@@ -555,7 +555,7 @@ if __name__ == '__main__':
     LineNotification.initialize()
     bot = Bot()
     bot.start_bot(500, 30, 100, 1)
-    
+
 
 
 
