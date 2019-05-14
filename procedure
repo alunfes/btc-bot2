@@ -23,6 +23,7 @@ chown alun:alun /home/username/.ssh/authorized_keys
 send pw / token data via filezilla to VPS
 sudo docker build -t flyerbot . --no-cache  #!need to remove xgboost from requirements.txt
 sudo docker run -d flyerbot --mount type=volume, src=bot_log.csv, dst=/usr/src/app/bot_log.csv
+sudo docker run -d flyerbot:latest
 
 #sudo docker run -i -t flyerbot bash
 

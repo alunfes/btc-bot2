@@ -475,13 +475,14 @@ class Bot:
         while SystemFlg.get_system_flg():
             #time.sleep(Trade.adjusting_sleep)
             if (datetime.now(tz=self.JST).hour == 3 and datetime.now(tz=self.JST).minute >= 48):
+                print('sleep waiting for system maintenance')
                 if self.posi_side == '':
                     self.cancel_order()
                 time.sleep(780)  # wait for daily system maintenace
                 print('resumed from maintenance time sleep')
-            elif (time.time() - self.last_train_model_dt  >= 3600 * 3): #train model every 3h with most latest data
-                th = threading.Thread(target=self.check_and_train_model(num_term,window_term,future_period,pl_kijun))
-                th.start()
+            #elif (time.time() - self.last_train_model_dt  >= 3600 * 3): #train model every 3h with most latest data
+            #    th = threading.Thread(target=self.check_and_train_model(num_term,window_term,future_period,pl_kijun))
+            #    th.start()
             elif datetime.now(tz=self.JST).second <= 3:
                 self.sync_position_order()
                 self.elapsed_time = time.time() - start

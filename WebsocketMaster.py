@@ -41,32 +41,6 @@ class WebsocketMaster:
         self.ws.keep_running = False
         self.ws.close()
 
-    def get(self):
-        return self.ticker
-
-    def get_ltp(self):
-        if self.ticker is not None:
-            return self.ticker['ltp']
-        else:
-            return None
-
-    def get_best_bid(self): #for buy
-        if self.ticker is not None:
-            return self.ticker['best_bid']
-        else:
-            return None
-
-    def get_best_ask(self): #for sell
-        if self.ticker is not None:
-            return self.ticker['best_ask']
-        else:
-            return None
-
-    def get_buy_child_order_acceptance_id(self):
-        if self.exection is not None:
-            return self.exection[-1]['buy_child_order_acceptance_id']
-        else:
-            return None
 
     '''
     lightning_executions_
@@ -104,7 +78,12 @@ class WebsocketMaster:
         print('websocket error!')
         LogMaster.add_log({'dt': datetime.now(), 'api_error': 'websocket!'})
         LineNotification.send_error('websocket error!')
-        self.disconnect()
+        try:
+            if self.is_connected():
+                self.disconnect()
+        except Exception as e:
+            print('websocket - '+str(e))
+            LineNotification.send_error(str(e))
         time.sleep(3)
         self.connect()
 
