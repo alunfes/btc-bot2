@@ -554,7 +554,8 @@ if __name__ == '__main__':
     LogMaster.initialize()
     LineNotification.initialize()
     bot = Bot()
-    bot.start_bot(500, 15, 200, 1)
+    bot.start_bot(500, 30, 100, 1)
+    
 
 
 
