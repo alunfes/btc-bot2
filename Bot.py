@@ -198,7 +198,7 @@ class Bot:
 
     @jit
     def entry_order(self, side, price, size):
-        res = Trade.order(side, price, size, 'limit', 1)
+        res = Trade.order(side, price, size, 'limit', 15)
         if len(res) > 10:
             self.order_id = res
             self.order_side = side
@@ -447,6 +447,9 @@ class Bot:
         print('bot - initializing MarketData2..')
         LogMaster.add_log({'action_message': 'bot - initializing MarketData2..'})
         MarketData2.initialize_from_bot_csv(num_term, window_term, future_period, pl_kijun, 5000)
+        print('bot - starting websocket...')
+        TickData.initialize()
+        time.sleep(5)
         #train_df = MarketData2.generate_df(MarketData2.ohlc_bot)
         #print(train_df)
         #model = XgbModel()
@@ -464,9 +467,7 @@ class Bot:
         print('bot - updating crypto data..')
         LogMaster.add_log({'action_message': 'bot - training completed..'})
         MarketData2.ohlc_bot.del_data(5000)
-        print('bot - starting websocket...')
-        TickData.initialize()
-        time.sleep(3)
+
         print('bot - started bot loop.')
         LogMaster.add_log({'action_message': 'bot - started bot loop.'})
         predict = [0]

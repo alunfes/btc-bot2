@@ -121,6 +121,10 @@ class TickData:
         cls.ltps= []
         cls.std_1m = 0
         cls.std_3m = 0
+        cls.open = 0
+        cls.high = 0
+        cls.low =0
+        cls.close = 0
         th = threading.Thread(target=cls.start_thread)
         th.start()
 
@@ -164,6 +168,16 @@ class TickData:
         if len(num_exec_list) > 180:
             n = num_exec_list[-1] - num_exec_list[-180]
             cls.std_3m = stdev(cls.ltps[-n:])
+
+    @classmethod
+    def __calc_ohlc(cls):
+        p = cls.get_ltp()
+        if datetime.now().second >=0 and cls.open == 0:
+            cls.open = p
+        cls.close = p
+        cls.high = max(cls.high, p)
+        cls.low = min(cls.low, p)
+
 
     @classmethod
     def start_thread(cls):
