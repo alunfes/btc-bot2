@@ -4,7 +4,6 @@ import threading
 from SystemFlg import SystemFlg
 from LogMaster import LogMaster
 from datetime import datetime
-from WebsocketMaster import WebsocketMaster
 from LineNotification import LineNotification
 from ProxyList import ProxyList
 
@@ -44,9 +43,8 @@ class Trade:
         cls.conti_order_error = 0
         cls.adjusting_sleep = 0
         cls.total_access_per_300s = 0
-        #cls.ws_ticker = WebsocketMaster('lightning_ticker_', 'FX_BTC_JPY')
         th = threading.Thread(target=cls.monitor_api)
-        #th.start()
+        th.start()
         #time.sleep(5)
 
     @classmethod
@@ -63,7 +61,7 @@ class Trade:
             if len(cls.access_log) >= 300:
                 cls.total_access_per_300s = sum(cls.access_log[-300:])
                 cls.access_log.pop(0)
-                if cls.total_access_per_300s >= 500:
+                if cls.total_access_per_300s >= 5000000:
                     LineNotification.send_error('Total API access reached 500/sec! sleep for 60sec')
                     print('Total API access reached 500/sec! sleep for 60sec')
                     LogMaster.add_log({'dt': datetime.now(), 'api_error': 'Total API access reached 500/sec! sleep for 60sec'})

@@ -39,15 +39,15 @@ class CatModel:
         train_pool = Pool(train_x, label=train_y)
         params = {
             'loss_function': 'MultiClass',
-            'num_boost_round': 10000,
-            'early_stopping_rounds': 10,
-            'task_type': 'GPU',
+            'learning_rate':0.005,
+            'num_boost_round': 100000,
+            'depth':4,
+            'verbose':False,
+            #'early_stopping_rounds': 10,
+            'has_time':True,
+            #'task_type': 'GPU',
         }
-        model = cb.CatBoostClassifier(loss_function="MultiClass",
-                                   num_boost_round=10000,
-                                   task_type='GPU',
-                                   verbose=1000,
-                                   )
+        model = cb.CatBoostClassifier(**params)
         model.fit(train_pool)
         return model
 

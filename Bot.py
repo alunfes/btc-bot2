@@ -11,11 +11,13 @@ from XgbModel import  XgbModel
 from datetime import timedelta
 from MarketData2 import MarketData2
 from CryptowatchDataGetter import CryptowatchDataGetter
+from WebsocketMaster import TickData
 from LogMaster import LogMaster
 from LineNotification import LineNotification
 from Trade import Trade
 from datetime import datetime
 import datetime as dt
+import math
 #import datetime
 import pytz
 from numba import jit
@@ -41,6 +43,7 @@ pred=3で大きなボラで損が広がる時は損切りするようにした�
 class Bot:
     @jit
     def initialize(self,pl_kijun):
+        TickData.initialize()
         self.pl_kijun = pl_kijun
         self.posi_initialzie()
         self.order_initailize()
@@ -59,9 +62,23 @@ class Bot:
         self.leverage = 15.0
         self.initial_asset = Trade.get_collateral()
         self.JST = pytz.timezone('Asia/Tokyo')
+        self.num_train_model = 0
+        self.last_train_model_dt = None
+        self.model = None
+        self.cbm = None
+        self.model_lock = threading.Lock()
         Trade.cancel_all_orders()
         time.sleep(5)
         self.sync_position_order()
+
+    def set_model_cbm(self, model, cbm):
+        with self.model_lock:
+            self.model = model
+            self.cbm = cbm
+
+    def get_model_cbm(self):
+        with self.model_lock:
+            return (self.model, self.cbm)
 
     @jit
     def combine_status_data(self, status):
@@ -126,9 +143,28 @@ class Bot:
     @jit
     def calc_opt_size(self):
         collateral = Trade.get_collateral()['collateral']
-        size = round((1.5 * collateral * self.margin_rate) / Trade.get_last_price() * 1.0/self.leverage,2)
-        #size = round((1.5 * collateral * self.margin_rate) / Trade.get_current_asset() * 1.0 / self.leverage, 2)
+        if TickData.get_1m_std() > 10000:
+            multiplier = 0.5
+            print('changed opt size multiplier to 0.5')
+            LogMaster.add_log({'dt': self.order_dt,
+                               'action_message': 'changed opt size multiplier to 0.5'})
+            LineNotification.send_error('changed opt size multiplier to 0.5')
+        else:
+            multiplier = 1.5
+        size = round((multiplier * collateral * self.margin_rate) / Trade.get_last_price() * 1.0/self.leverage,2)
         return size
+
+    @jit
+    def calc_opt_pl(self):
+        if TickData.get_1m_std() > 10000:
+            newpl = self.pl_kijun * math.log((TickData.get_1m_std() / 100000)) + 5
+            print('changed opt pl kijun to '+str(newpl))
+            LogMaster.add_log({'dt': self.order_dt,
+                               'action_message': 'changed opt pl kijun to '+str(newpl)})
+            LineNotification.send_error('changed opt pl kijun to '+str(newpl))
+            return newpl
+        else:
+            return self.pl_kijun
 
     @jit
     def calc_and_log_pl(self, ave_p, size):
@@ -218,7 +254,8 @@ class Bot:
     @jit
     def pl_order(self):
         side = 'buy' if self.posi_side == 'sell' else 'sell'
-        price = self.posi_price + self.pl_kijun if self.posi_side == 'buy' else self.posi_price - self.pl_kijun
+        pl_kijun = self.calc_opt_pl()
+        price = self.posi_price + pl_kijun if self.posi_side == 'buy' else self.posi_price - pl_kijun
         res = Trade.order(side, price, self.posi_size, 'limit', 1440)
         if len(res) > 10:
             self.order_id = res
@@ -383,6 +420,22 @@ class Bot:
             print('order status is not available due to API access limitation')
             pass
 
+    @jit
+    def check_and_train_model(self, num_term, window_term, future_period, pl_kijun):
+        print(str(datetime.now(tz=self.JST)) + ' - Training Model...')
+        LineNotification.send_error(str(datetime.now(tz=self.JST)) + ' - Training Model...')
+        start = time.time()
+        self.last_train_model_dt = time.time()
+        CryptowatchDataGetter.get_and_add_to_csv()
+        MarketData2.initialize_from_bot_csv(num_term, window_term, future_period, pl_kijun)
+        newmodel = CatModel()
+        train_df = MarketData2.generate_df(MarketData2.ohlc_bot)
+        train_x, test_x, train_y, test_y = newmodel.generate_data(train_df, 0)
+        cbm = newmodel.train(train_x, train_y)
+        elapsed_time = time.time() - start
+        print('Elapsed time='+str(round(elapsed_time/60.0,2))+' - completed training model.')
+        LineNotification.send_error('Completed model training. '+'Elapsed time='+str(round(elapsed_time/60.0,2)))
+        self.set_model_cbm(newmodel,cbm)
 
     @jit
     def start_bot(self,pl_kijun, future_period, num_term, window_term):
@@ -400,11 +453,13 @@ class Bot:
         model = CatModel()
         print('bot - generating training data')
         LogMaster.add_log({'action_message': 'bot - training xgb model..'})
-        train_x, test_x, train_y, test_y = model.generate_data(train_df, 1)
+        #train_x, test_x, train_y, test_y = model.generate_data(train_df, 1)
         print('bot - training model..')
         #bst = xgb.Booster()  # init model
         #bst.load_model('./Model/bst_model.dat')
         cbm = model.read_dump_model('./Model/cat_model.dat')
+        self.set_model_cbm(model,cbm)
+        self.last_train_model_dt = time.time()
         print('bot - training completed..')
         print('bot - updating crypto data..')
         LogMaster.add_log({'action_message': 'bot - training completed..'})
@@ -421,6 +476,9 @@ class Bot:
                     self.cancel_order()
                 time.sleep(780)  # wait for daily system maintenace
                 print('resumed from maintenance time sleep')
+            elif (time.time() - self.last_train_model_dt  >= 3600 * 3): #train model every 3h with most latest data
+                th = threading.Thread(target=self.check_and_train_model(num_term,window_term,future_period,pl_kijun))
+                th.start()
             elif datetime.now(tz=self.JST).second <= 3:
                 self.sync_position_order()
                 self.elapsed_time = time.time() - start
@@ -436,10 +494,10 @@ class Bot:
                     df = MarketData2.generate_df_for_bot(MarketData2.ohlc_bot)
                     MarketData2.ohlc_bot.del_data(5000)
                     #print('MD df completed =' +datetime.now(tz=self.JST).strftime("%H:%M:%S"))
-                    pred_x = model.generate_bot_pred_data(df)
+                    pred_x = self.get_model_cbm()[0].generate_bot_pred_data(df)
                     #print('Model df completed =' +datetime.now(tz=self.JST).strftime("%H:%M:%S"))
                     #predict = bst.predict(xgb.DMatrix(pred_x))
-                    predict = cbm.predict(Pool(pred_x))
+                    predict = self.get_model_cbm()[1].predict(Pool(pred_x))
                     #print('Prediction completed =' +datetime.now(tz=self.JST).strftime("%H:%M:%S"))
                     #print('predicted - ' + str(datetime.now(tz=JST)))
                     self.calc_collateral_change()
@@ -489,7 +547,7 @@ if __name__ == '__main__':
     LogMaster.initialize()
     LineNotification.initialize()
     bot = Bot()
-    bot.start_bot(500, 30, 100, 1)
+    bot.start_bot(500, 15, 200, 1)
 
 
 

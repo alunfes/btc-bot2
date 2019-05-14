@@ -3,8 +3,12 @@ import threading
 import time
 import json
 import asyncio
+from statistics import mean, median,variance,stdev
 from SystemFlg import SystemFlg
 from numba import jit
+from LogMaster import LogMaster
+from datetime import datetime
+from LineNotification import LineNotification
 
 
 class WebsocketMaster:
@@ -28,42 +32,35 @@ class WebsocketMaster:
         #self.thread.daemon = True
         self.thread.start()
 
-    @jit
     def is_connected(self):
         return self.ws.sock and self.ws.sock.connected
 
-    @jit
     def disconnect(self):
         print('disconnected')
         self.ws.keep_running = False
         self.ws.close()
 
-    @jit
     def get(self):
         return self.ticker
 
-    @jit
     def get_ltp(self):
         if self.ticker is not None:
             return self.ticker['ltp']
         else:
             return None
 
-    @jit
     def get_best_bid(self): #for buy
         if self.ticker is not None:
             return self.ticker['best_bid']
         else:
             return None
 
-    @jit
     def get_best_ask(self): #for sell
         if self.ticker is not None:
             return self.ticker['best_ask']
         else:
             return None
 
-    @jit
     def get_buy_child_order_acceptance_id(self):
         if self.exection is not None:
             return self.exection[-1]['buy_child_order_acceptance_id']
@@ -91,7 +88,7 @@ class WebsocketMaster:
         if self.channel == 'lightning_executions_':
             if self.message is not None:
                 self.exection = self.message
-                TickData.add_exec_data((self.exection))
+                TickData.add_exec_data(self.exection)
                 pass
         elif self.channel == 'lightning_ticker_':
             if self.message is not None:
@@ -103,7 +100,9 @@ class WebsocketMaster:
 
     @jit
     def on_error(self, ws, error):
-        print('error')
+        print('websocket error!')
+        LogMaster.add_log({'dt': datetime.now(), 'api_error': 'websocket!'})
+        LineNotification.send_error('websocket error!')
         self.disconnect()
         time.sleep(3)
         self.connect()
@@ -117,7 +116,7 @@ class WebsocketMaster:
         ws.send(json.dumps( {'method':'subscribe',
             'params':{'channel':self.channel + self.symbol}} ))
         time.sleep(1)
-        print('Websocket connected')
+        print('Websocket connected for '+self.channel)
 
     @jit
     async def loop(self):
@@ -125,6 +124,10 @@ class WebsocketMaster:
             await asyncio.sleep(1)
 
 
+
+'''
+TickData class
+'''
 
 class TickData:
     @classmethod
@@ -135,15 +138,51 @@ class TickData:
         cls.ws_ticker = WebsocketMaster('lightning_ticker_', 'FX_BTC_JPY')
         cls.exec_data = []
         cls.ticker_data = []
+        cls.ltps= []
+        cls.std_1m = 0
+        cls.std_3m = 0
         th = threading.Thread(target=cls.start_thread)
         th.start()
 
     @classmethod
+    def get_ltp(cls):
+        with cls.lock:
+            return cls.exec_data[-1]['price']
+
+    @classmethod
+    def get_1m_std(cls):
+        return cls.std_1m
+
+    @classmethod
+    def get_3m_std(cls):
+        return cls.std_3m
+
+    @classmethod
+    def __calc_std(cls, num_exec_list):
+        if len(num_exec_list) > 60:
+            n = num_exec_list[-1] - num_exec_list[-60]
+            cls.std_1m = stdev(cls.ltps[-n:])
+        if len(num_exec_list) > 180:
+            n = num_exec_list[-1] - num_exec_list[-180]
+            cls.std_3m = stdev(cls.ltps[-n:])
+
+    @classmethod
     def start_thread(cls):
+        num_exec = 0
+        num_exec_list = []
         while SystemFlg.get_system_flg():
             if len(cls.exec_data) > 0:
-                print(cls.exec_data[-1])
-                print(cls.ticker_data[-1])
+                ed = cls.exec_data[num_exec:]
+                cls.ltps.extend([d.get('price') for d in ed])
+                num_exec = len(cls.exec_data)
+                num_exec_list.append(num_exec)
+                cls.__calc_std(num_exec_list)
+                if len(num_exec_list) > 3600:
+                    del num_exec_list[:-1000]
+                #print(cls.exec_data[-1])
+            if len(cls.ticker_data) > 0:
+                pass
+                #print(cls.ticker_data[-1])
             time.sleep(1)
 
     @classmethod
@@ -151,19 +190,27 @@ class TickData:
         with cls.lock:
             if len(exec) > 0:
                 cls.exec_data.extend(exec)
+                if len(cls.exec_data) >= 30000:
+                    del cls.exec_data[:-10000]
+
 
     @classmethod
     def add_ticker_data(cls, ticker):
         with cls.lock:
-            if len(ticker) > 0:
-                cls.ticker_data.extend(ticker)
-
+            if len(ticker) is not None:
+                cls.ticker_data.append(ticker)
+                if len(cls.ticker_data) >= 30000:
+                    del cls.ticker_data[:-10000]
+            else:
+                print(ticker)
 
 
 if __name__ == '__main__':
     SystemFlg.initialize()
     TickData.initialize()
     while True:
+        print('std 1m='+str(TickData.get_1m_std()))
+        print('std 3m=' + str(TickData.get_3m_std()))
         time.sleep(1)
     #ws_execution = WebsocketMaster('lightning_executions_', 'FX_BTC_JPY')
     #ws_ticker = WebsocketMaster('lightning_ticker_', 'FX_BTC_JPY')
