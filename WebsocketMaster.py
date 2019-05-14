@@ -3,6 +3,7 @@ import threading
 import time
 import json
 import asyncio
+import ssl
 from statistics import mean, median,variance,stdev
 from SystemFlg import SystemFlg
 from numba import jit
@@ -26,10 +27,10 @@ class WebsocketMaster:
             'wss://ws.lightstream.bitflyer.com/json-rpc', header=None,
             on_open = self.on_open, on_message = self.on_message,
             on_error = self.on_error, on_close = self.on_close)
-        self.ws.keep_running = True
-        websocket.enableTrace(True)
-        self.thread = threading.Thread(target=lambda: self.ws.run_forever())
-        #self.thread.daemon = True
+        self.ws.keep_running = False
+        websocket.enableTrace(False)
+        self.thread = threading.Thread(target=lambda: self.ws.run_forever(sslopt={"cert_reqs": ssl.CERT_NONE}))
+        self.thread.daemon = True
         self.thread.start()
 
     def is_connected(self):
@@ -147,7 +148,26 @@ class TickData:
     @classmethod
     def get_ltp(cls):
         with cls.lock:
-            return cls.exec_data[-1]['price']
+            if len(cls.exec_data) > 0:
+                return cls.exec_data[-1]['price']
+            else:
+                return None
+
+    @classmethod
+    def get_bid_price(cls):
+        with cls.lock:
+            if len(cls.ticker_data) > 0:
+                return cls.ticker_data[-1]['best_bid']
+            else:
+                return None
+
+    @classmethod
+    def get_ask_price(cls):
+        with cls.lock:
+            if len(cls.ticker_data) > 0:
+                return cls.ticker_data[-1]['best_ask']
+            else:
+                return None
 
     @classmethod
     def get_1m_std(cls):
@@ -183,7 +203,7 @@ class TickData:
             if len(cls.ticker_data) > 0:
                 pass
                 #print(cls.ticker_data[-1])
-            time.sleep(1)
+            time.sleep(0.3)
 
     @classmethod
     def add_exec_data(cls, exec):
@@ -209,8 +229,9 @@ if __name__ == '__main__':
     SystemFlg.initialize()
     TickData.initialize()
     while True:
-        print('std 1m='+str(TickData.get_1m_std()))
-        print('std 3m=' + str(TickData.get_3m_std()))
+        print(str(TickData.get_ltp()))
+        #print('std 1m='+str(TickData.get_1m_std()))
+        #print('std 3m=' + str(TickData.get_3m_std()))
         time.sleep(1)
     #ws_execution = WebsocketMaster('lightning_executions_', 'FX_BTC_JPY')
     #ws_ticker = WebsocketMaster('lightning_ticker_', 'FX_BTC_JPY')

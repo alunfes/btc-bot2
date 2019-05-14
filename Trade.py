@@ -6,6 +6,7 @@ from LogMaster import LogMaster
 from datetime import datetime
 from LineNotification import LineNotification
 from ProxyList import ProxyList
+from WebsocketMaster import TickData
 
 '''
 Private API の呼出は 5 分間で 500 回を上限とします。上限に達すると呼出を一定時間ブロックします。また、ブロックの解除後も呼出の上限を一定時間引き下げます。
@@ -393,7 +394,7 @@ class Trade:
             if cls.check_exception(e) == 'ok':
                 pass
         finally:
-            return res['total']['BTC'] * cls.get_opt_price() + res['total']['JPY']
+            return res['total']['BTC'] * TickData.get_ltp() + res['total']['JPY']
 
 
     #{'collateral': 5094.0, 'open_position_pnl': 0.0, 'require_collateral': 0.0, 'keep_rate': 0.0}
@@ -429,14 +430,14 @@ class Trade:
             sum_price_x_size = 0
             sum_size = 0
             pre_exe_size = 0
-            price = cls.get_opt_price()
+            price = round(0.5*(TickData.get_bid_price() + TickData.get_ask_price()))
             #price = cls.get_opt_buy_price() if side == 'buy' else cls.get_opt_sell_price()
             order_id = cls.order_wait_till_boarding(side, price, remaining_size, 100)['child_order_acceptance_id']
             num_loop = 0
             while remaining_size > 0:
                 status = cls.get_order_status(order_id)
-                if abs(price - cls.get_opt_price()) >= 100 and remaining_size > 0:  # current order price is far from opt price
-                #if abs(price - cls.get_opt_buy_price() if side == 'buy' else cls.get_opt_sell_price()) >= 30 and remaining_size > 0:  # current order price is far from opt price
+                if abs(price - round(0.5*(TickData.get_bid_price() + TickData.get_ask_price()))) >= 100 and remaining_size > 0:  # current order price is far from opt price
+                #if abs(price - cls.get_opt_price()) >= 100 and remaining_size > 0:  # current order price is far from opt price
                     res = cls.cancel_and_wait_completion(order_id)
                     if len(res) > 0:  # cancell failed order partially executed
                         remaining_size = res['outstanding_size']
@@ -447,12 +448,12 @@ class Trade:
                             break
                         else:  # place a new order for remaining size
                             pre_exe_size = status[0]['executed_size']
-                            price = cls.get_opt_price()
+                            price = round(0.5*(TickData.get_bid_price() + TickData.get_ask_price()))
                             order_id = cls.order_wait_till_boarding(side, price, remaining_size, 100)['child_order_acceptance_id']
                             print('price tracing order - placed new order for remaining size. size = '+str(remaining_size))
                             #print('price tracing order - executed ' + str(res['executed_size'] - pre_exe_size) + ' @' + str(res['average_price']))
                     else:
-                        price = cls.get_opt_price()
+                        price = round(0.5*(TickData.get_bid_price() + TickData.get_ask_price()))
                         #price = cls.get_opt_buy_price() if side == 'buy' else cls.get_opt_sell_price()
                         order_id = cls.order_wait_till_boarding(side, price, remaining_size, 100)['child_order_acceptance_id']
                         print('price tracing order - replaced order for ' + side + ', @' + str(price) + ' x ' + str(remaining_size))
@@ -575,7 +576,7 @@ class Trade:
                     print('order has been expired')
                     return None
                 i += 1
-            time.sleep(1)
+            time.sleep(0.5)
 
     '''
     new entryしたオーダーが1秒後にもまだboardしておらず、cancel and wait orderでorder status取得できず、誤ってsuccessfully cancelledと判定されうるので、

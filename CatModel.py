@@ -40,7 +40,7 @@ class CatModel:
         params = {
             'loss_function': 'MultiClass',
             'learning_rate':0.005,
-            'num_boost_round': 100000,
+            'num_boost_round': 230000,
             'depth':4,
             'verbose':False,
             #'early_stopping_rounds': 10,

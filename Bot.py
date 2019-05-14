@@ -43,7 +43,6 @@ pred=3で大きなボラで損が広がる時は損切りするようにした�
 class Bot:
     @jit
     def initialize(self,pl_kijun):
-        TickData.initialize()
         self.pl_kijun = pl_kijun
         self.posi_initialzie()
         self.order_initailize()
@@ -130,7 +129,6 @@ class Bot:
         self.posi_status = ''
         self.original_posi_size = 0
 
-
     @jit
     def order_initailize(self):
         self.order_side = ''
@@ -151,7 +149,8 @@ class Bot:
             LineNotification.send_error('changed opt size multiplier to 0.5')
         else:
             multiplier = 1.5
-        size = round((multiplier * collateral * self.margin_rate) / Trade.get_last_price() * 1.0/self.leverage,2)
+        #size = round((multiplier * collateral * self.margin_rate) / Trade.get_last_price() * 1.0/self.leverage,2)
+        size = round((multiplier * collateral * self.margin_rate) / TickData.get_ltp() * 1.0 / self.leverage, 2)
         return size
 
     @jit
@@ -191,7 +190,8 @@ class Bot:
 
     @jit
     def calc_holding_pl(self):
-        lastp = Trade.get_last_price()
+        lastp = TickData.get_ltp()
+        #lastp = Trade.get_last_price()
         #lastp = Trade.get_current_price()
         self.holding_pl = round((lastp - self.posi_price) * self.posi_size if self.posi_side == 'buy' else (self.posi_price - lastp) * self.posi_size)
 
@@ -464,6 +464,9 @@ class Bot:
         print('bot - updating crypto data..')
         LogMaster.add_log({'action_message': 'bot - training completed..'})
         MarketData2.ohlc_bot.del_data(5000)
+        print('bot - starting websocket...')
+        TickData.initialize()
+        time.sleep(3)
         print('bot - started bot loop.')
         LogMaster.add_log({'action_message': 'bot - started bot loop.'})
         predict = [0]
@@ -508,17 +511,19 @@ class Bot:
                                        'num_total_access_per_300s':Trade.total_access_per_300s,'num_trade':self.num_trade,'win_rate':self.win_rate, 'pl':self.pl+self.holding_pl,
                                        'pl_per_min':self.pl_per_min, 'prediction':predict[0], 'collateral_change':self.collateral_change,'collateral_change_per_min':self.collateral_change_per_min})
                     LineNotification.send_notification()
-                    print('dt={}, close={}, predict={}, pl={}, collateral_change={}, pl_per_min={}, collateral_change_per_min={}, num_trade={}, win_rate={}, posi_side={}, posi_price={}, posi_size={}, order_side={}, order_price={}, order_size={}'
+                    print('dt={}, close={}, predict={}, pl={}, collateral_change={}, pl_per_min={}, collateral_change_per_min={}, num_trade={}, std_1m={}, win_rate={}, posi_side={}, posi_price={}, posi_size={}, order_side={}, order_price={}, order_size={}'
                           .format(MarketData2.ohlc_bot.dt[-1],MarketData2.ohlc_bot.close[-1],predict[0],self.pl+self.holding_pl, self.collateral_change, self.pl_per_min, self.collateral_change_per_min,
-                                  self.num_trade, self.win_rate, self.posi_side, self.posi_price, self.posi_size, self.order_side, self.order_price, self.order_size))
+                                  self.num_trade, TickData.get_1m_std(), self.win_rate, self.posi_side, self.posi_price, self.posi_size,     self.order_side, self.order_price, self.order_size))
                 else:
                     print('crypto watch data download error!')
             if self.posi_side == '' and self.order_side == '': #no position no order
                 if predict[0] == 1:
-                    self.entry_order('buy', Trade.get_bid_price()+1, self.calc_opt_size())
+                    self.entry_order('buy', TickData.get_bid_price() + 1, self.calc_opt_size())
+                    #self.entry_order('buy', Trade.get_bid_price()+1, self.calc_opt_size())
                     #self.entry_market_order('buy', Trade.get_bid_price()+1, self.calc_opt_size())
                 elif predict[0] == 2:
-                    self.entry_order('sell', Trade.get_ask_price()-1, self.calc_opt_size())
+                    self.entry_order('sell', TickData.get_ask_price() - 1, self.calc_opt_size())
+                    #self.entry_order('sell', Trade.get_ask_price()-1, self.calc_opt_size())
                     #self.entry_market_order('sell', Trade.get_bid_price() + 1, self.calc_opt_size())
             elif self.posi_side == '' and self.order_side != '': #no position and ordering
                 if (self.order_side == 'buy' and self.posi_side=='' and (predict[0] == 2)) or (self.order_side == 'sell' and self.posi_side =='' and (predict[0] == 1)):#ノーポジでオーダーが判定を逆の時にキャンセル。
