@@ -43,6 +43,7 @@ class Sim:
         cls.slip_page = 500
         cls.force_loss_cut_rate = 0.5
         cls.initial_asset = 5000
+        cls.pl_mul = 0.8
         cls.asset = cls.initial_asset
         cls.__initialize_posi()
         
@@ -67,18 +68,32 @@ class Sim:
                 if prediction[i] == 1 or prediction[i] == 2:
                     cls.__entry_order('buy' if prediction[i]==1 else 'sell',cls.__calc_opt_size(ind),cls.ohlc.open[ind+1],ind,i)
             elif cls.posi_side == 'buy' or cls.posi_side == 'sell':
-                if (cls.posi_side == 'buy' and prediction[i] != 2) or (cls.posi_side == 'sell' and prediction[i] != 1):
-                    cls.__check_pl_execution(ind, i)
-                elif (cls.posi_side == 'buy' and prediction[i] == 2) or (cls.posi_side == 'sell' and prediction[i] == 1):
-                    cls.__price_tracing_exit(ind+1,i+1)
-                    p=0
-                    if cls.ohlc.open[ind] > cls.ohlc.close[ind]: #open, low, high, close
-                        p = (cls.ohlc.low[ind+1] + cls.ohlc.open[ind+1]) * 0.5
-                    else:#open, high, low, close
-                        p = (cls.ohlc.high[ind+1] + cls.ohlc.open[ind+1]) * 0.5
-                    cls.__entry_order('sell',cls.__calc_opt_size(ind+1),p,ind,i+1)
+                if conservertive_trade == False:
+                    if (cls.posi_side == 'buy' and prediction[i] != 2) or (cls.posi_side == 'sell' and prediction[i] != 1):
+                        cls.__check_pl_execution(ind, i)
+                    elif (cls.posi_side == 'buy' and prediction[i] == 2) or (cls.posi_side == 'sell' and prediction[i] == 1):
+                        cls.__price_tracing_exit(ind,i)
+                        p=0
+                        if cls.ohlc.open[ind] > cls.ohlc.close[ind]: #open, low, high, close
+                            p = (cls.ohlc.low[ind+1] + cls.ohlc.open[ind+1]) * 0.5
+                        else:#open, high, low, close
+                            p = (cls.ohlc.high[ind+1] + cls.ohlc.open[ind+1]) * 0.5
+                        cls.__entry_order('sell',cls.__calc_opt_size(ind+1),p,ind,i)
+                    else:
+                        print('unhandled case!!!!')
                 else:
-                    print('unhandled case!!!!')
+                    if (cls.posi_side == 'buy' and prediction[i] == 1) or (cls.posi_side == 'sell' and prediction[i] == 2):
+                        cls.__check_pl_execution(ind, i)
+                    elif (cls.posi_side == 'buy' and (prediction[i] == 2 or prediction[i] == 3 or prediction[i] == 0)) or (cls.posi_side == 'sell' and (prediction[i] == 1  or prediction[i] == 3 or prediction[i] == 0)):
+                        cls.__price_tracing_exit(ind,i)
+                        p=0
+                        if cls.ohlc.open[ind] > cls.ohlc.close[ind]: #open, low, high, close
+                            p = (cls.ohlc.low[ind+1] + cls.ohlc.open[ind+1]) * 0.5
+                        else:#open, high, low, close
+                            p = (cls.ohlc.high[ind+1] + cls.ohlc.open[ind+1]) * 0.5
+                        cls.__entry_order('sell',cls.__calc_opt_size(ind+1),p,ind,i)
+                    else:
+                        print('unhandled case!!!!')
             cls.holding_pl = round((cls.ohlc.close[ind] - cls.posi_price ) * cls.posi_size) if cls.posi_side == 'buy' else round((cls.posi_price - cls.ohlc.close[ind]) * cls.posi_size)
             cls.total_pl = cls.realized_pl + cls.holding_pl
             cls.total_pl_log.append(cls.total_pl)
@@ -95,8 +110,8 @@ class Sim:
                 if cls.posi_side =='sell' or (cls.posi_side =='buy' and cls.__check_and_do_force_loss_cut(ind,i) == False):
                     if (cls.posi_price + cls.pl_kijun <= cls.ohlc.high[ind] and cls.posi_side == 'buy') or (cls.posi_price - cls.pl_kijun >= cls.ohlc.low[ind] and cls.posi_side == 'sell'): #in case pl executed
                         mul = (cls.ohlc.high[ind] - cls.posi_price) / cls.pl_kijun if cls.posi_side == 'buy' else (cls.posi_price - cls.ohlc.low[ind]) / cls.pl_kijun
-                        pl = cls.pl_kijun * cls.posi_size + round((mul -1) * cls.pl_kijun * 0.5 * cls.posi_size)
-                        num = 1 + round((mul-1) * 0.5)
+                        pl = cls.pl_kijun * cls.posi_size + round((mul -1) * cls.pl_kijun * cls.pl_mul * cls.posi_size)
+                        num = 1 + round((mul-1) * cls.pl_mul)
                         cls.realized_pl += pl
                         cls.num_trade += num
                         cls.num_win += num
@@ -111,8 +126,8 @@ class Sim:
                 if cls.posi_side =='buy' or (cls.posi_side =='sell' and cls.__check_and_do_force_loss_cut(ind,i) == False):
                     if (cls.posi_price + cls.pl_kijun <= cls.ohlc.high[ind] and cls.posi_side == 'buy') or (cls.posi_price - cls.pl_kijun >= cls.ohlc.low[ind] and cls.posi_side == 'sell'): #in case pl executed
                         mul = (cls.ohlc.high[ind] - cls.posi_price) / cls.pl_kijun if cls.posi_side == 'buy' else (cls.posi_price - cls.ohlc.low[ind]) / cls.pl_kijun
-                        pl = cls.pl_kijun * cls.posi_size + round((mul -1) * cls.pl_kijun * 0.5 * cls.posi_size)
-                        num = 1 + round((mul-1) * 0.5)
+                        pl = cls.pl_kijun * cls.posi_size + round((mul -1) * cls.pl_kijun * cls.pl_mul * cls.posi_size)
+                        num = 1 + round((mul-1) * cls.pl_mul)
                         cls.realized_pl += pl
                         cls.num_trade += num
                         cls.num_win += num
@@ -225,7 +240,7 @@ class Sim:
 
 if __name__ == '__main__':
     print('initializing data')
-    MarketData2.initialize_from_bot_csv(100,1,30,500,500)
+    MarketData2.initialize_from_bot_csv(100,1,1,500,0)
     df =MarketData2.generate_df(MarketData2.ohlc_bot)
     model = CatModel()
     print('init')

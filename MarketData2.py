@@ -294,6 +294,11 @@ class MarketData2:
                 cls.ohlc_bot.rsi[term].extend(rsi)
 
 
+if __name__ == '__main__':
+    print('initializing data')
+    MarketData2.initialize_from_bot_csv(10,1,1,500,500)
+    df =MarketData2.generate_df(MarketData2.ohlc_bot)
+    df.to_csv('./generated_df.csv')
 '''
 @classmethod
 def read_from_csv(cls, ohlc):
