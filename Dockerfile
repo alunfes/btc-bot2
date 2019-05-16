@@ -10,6 +10,9 @@ ENV LC_ALL ja_JP.UTF-8
 ENV TZ JST-9
 ENV TERM xterm
 
+EXPOSE 443
+EXPOSE 80
+
 WORKDIR /usr/src/app
 COPY requirements.txt ./
 COPY ignore ./ignore

@@ -427,7 +427,7 @@ class Bot:
         start = time.time()
         self.last_train_model_dt = time.time()
         CryptowatchDataGetter.get_and_add_to_csv()
-        MarketData2.initialize_from_bot_csv(num_term, window_term, future_period, pl_kijun)
+        MarketData2.initialize_from_bot_csv(num_term, window_term, future_period, pl_kijun,0)
         newmodel = CatModel()
         train_df = MarketData2.generate_df(MarketData2.ohlc_bot)
         train_x, test_x, train_y, test_y = newmodel.generate_data(train_df, 0)
@@ -520,20 +520,20 @@ class Bot:
                     print('crypto watch data download error!')
             if self.posi_side == '' and self.order_side == '': #no position no order
                 if predict[0] == 1:
-                    self.entry_order('buy', TickData.get_bid_price() + 1, self.calc_opt_size())
+                    #self.entry_order('buy', TickData.get_bid_price() + 1, self.calc_opt_size())
                     #self.entry_order('buy', Trade.get_bid_price()+1, self.calc_opt_size())
-                    #self.entry_market_order('buy', Trade.get_bid_price()+1, self.calc_opt_size())
+                    self.entry_market_order('buy', TickData.get_bid_price()+1, self.calc_opt_size())
                 elif predict[0] == 2:
-                    self.entry_order('sell', TickData.get_ask_price() - 1, self.calc_opt_size())
+                    #self.entry_order('sell', TickData.get_ask_price() - 1, self.calc_opt_size())
                     #self.entry_order('sell', Trade.get_ask_price()-1, self.calc_opt_size())
-                    #self.entry_market_order('sell', Trade.get_bid_price() + 1, self.calc_opt_size())
+                    self.entry_market_order('sell', TickData.get_bid_price() + 1, self.calc_opt_size())
             elif self.posi_side == '' and self.order_side != '': #no position and ordering
-                if (self.order_side == 'buy' and self.posi_side=='' and (predict[0] == 2)) or (self.order_side == 'sell' and self.posi_side =='' and (predict[0] == 1)):#ノーポジでオーダーが判定を逆の時にキャンセル。
+                if (self.order_side == 'buy' and self.posi_side=='' and (predict[0] == 2 or predict[0] == 0 or predict[0] == 3)) or (self.order_side == 'sell' and self.posi_side =='' and (predict[0] == 1 or predict[0] == 0 or predict[0] == 3)):#ノーポジでオーダーが判定を逆の時にキャンセル。
                     self.cancel_order()
             elif self.posi_side != '' and self.order_side == '': #holding position and no order
                 self.pl_order()
             #elif self.posi_side == 'buy' and (predict[0] == 2 or predict[0] == 3) or self.posi_side == 'sell' and (predict[0] == 1   or predict[0] == 3): # ポジションが判定と逆の時にexit,　もしplがあればキャンセル。。
-            elif (self.posi_side == 'buy' and predict[0] == 2) or (self.posi_side == 'sell' and predict[0] == 1):  # ポジションが判定と逆の時にexit,　もしplがあればキャンセル。。
+            elif (self.posi_side == 'buy' and (predict[0] == 2 or predict[0] == 0 or predict[0] == 3)) or (self.posi_side == 'sell' and (predict[0] == 1 or predict[0] == 0 or predict[0] == 3)):  # ポジションが判定と逆の時にexit,　もしplがあればキャンセル。。
                 self.exit_order()
                 if self.order_status == 'pl ordering':
                     self.cancel_order()
@@ -554,7 +554,7 @@ if __name__ == '__main__':
     LogMaster.initialize()
     LineNotification.initialize()
     bot = Bot()
-    bot.start_bot(500, 30, 100, 1)
+    bot.start_bot(500, 1, 100, 1)
 
 
 

@@ -88,7 +88,7 @@ class MarketData2:
 
     @classmethod
     def generate_df(cls, ohlc):
-        end = len(ohlc.close) - cls.future_side_period
+        end = len(ohlc.close) - cls.future_side_period -1
         df = pd.DataFrame()
         df = df.assign(dt=ohlc.dt[cls.max_term:end])
         df = df.assign(open=ohlc.open[cls.max_term:end])
@@ -136,14 +136,18 @@ class MarketData2:
             df.rename(columns={'col': col}, inplace=True)
         return df
 
+    '''
+    future_side should be checked assuming real use case as a prediction
+    predict using ohlc data so should calc using next 1m ohlc
+    '''
     @classmethod
     def calc_future_side(cls, future_side_period, future_side_kijun, ohlc):
-        for i in range(len(ohlc.close) - future_side_period):
+        for i in range(len(ohlc.close) - future_side_period-1):
             buy_max = 0
             sell_max = 0
             for j in range(i, i + future_side_period):
-                buy_max = max(buy_max, ohlc.close[j] - ohlc.close[i])
-                sell_max = max(sell_max, ohlc.close[i] - ohlc.close[j])
+                buy_max = max(buy_max, ohlc.high[j+1] - ohlc.close[i])
+                sell_max = max(sell_max, ohlc.close[i] - ohlc.low[j+1])
             if buy_max >= future_side_kijun and sell_max >= future_side_kijun:
                 ohlc.future_side.append('both')
             elif buy_max >= future_side_kijun and sell_max < future_side_kijun:

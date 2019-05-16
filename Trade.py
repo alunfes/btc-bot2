@@ -155,8 +155,14 @@ class Trade:
                     if 'Margin amount is insufficient' in str(e):
                         size -= 0.01
                         size = round(size,2)
-                        print('margin amount is insufficient! - decrease order size to '+str(size))
-                        return cls.order(side,price,size, type, expire_m)
+                        if size >= 0.01:
+                            print('margin amount is insufficient! - decrease order size to '+str(size))
+                            return cls.order(side,price,size, type, expire_m)
+                        else:
+                            print('margin amount can not be less than 0.01! - decrease order size to 0.01')
+                            LogMaster.add_log({'dt': datetime.now(), 'api_error': 'Trade - order:margin amount can not be less than 0.01!'})
+                            LineNotification.send_error('Trade - order:margin amount can not be less than 0.01!')
+                            return ''
                     elif 'Market state is closed.' in str(e):
                         print(str(datetime.now())+': market state is closed.')
                         time.sleep(10)

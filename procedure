@@ -1,9 +1,23 @@
-ssh root@ip address
+ssh keyをダウンロードして、~/.sshにおく。
+.ssh/configに秘密鍵nameとhost nameを記入
+chmod 600 ~/.ssh/conoha.pem
+ssh -i ~/.ssh/conoha.pem root@150.95.177.122
 useradd alun
-visudo
-usermod -aG wheel alun
 passwd alun
+gpasswd -a alun wheel
+vim /etc/ssh/sshd_config　してPort 10022
+cp /usr/lib/firewalld/services/ssh.xml /etc/firewalld/services/   #firewalldを使ってssh用portを変更
+vim /etc/firewalld/services/ssh.xml
+firewall-cmd --reload
+systemctl restart sshd.service
+mkdir home/alun/.ssh
+cp ~/.ssh/authorized_keys home/alun/.ssh
 su alun
+sudo chmod 700 .ssh/
+sudo chmod 600 .ssh/authorized_keys
+ssh alun@150.95.177.122
+vim  /etc/sudoers
+
 sudo yum upgrade
 sudo yum install -y https://centos7.iuscommunity.org/ius-release.rpm
 yum search python36
@@ -25,7 +39,6 @@ sudo docker build -t flyerbot . --no-cache  #!need to remove xgboost from requir
 sudo docker run -d flyerbot --mount type=volume, src=bot_log.csv, dst=/usr/src/app/bot_log.csv
 sudo docker run -d flyerbot:latest
 sudo docker run -it flyerbot:latest /bin/bash
-#sudo docker run -i -t flyerbot bash
 
 sudo docker logs container-id
 
