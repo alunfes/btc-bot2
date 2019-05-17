@@ -4,7 +4,7 @@ chmod 600 ~/.ssh/conoha.pem
 ssh -i ~/.ssh/conoha.pem root@150.95.177.122
 useradd alun
 passwd alun
-gpasswd -a alun wheel
+gpasswd -a alun wheel  #conoha centosの場合はsudoというグループ
 vim /etc/ssh/sshd_config　してPort 10022
 cp /usr/lib/firewalld/services/ssh.xml /etc/firewalld/services/   #firewalldを使ってssh用portを変更
 vim /etc/firewalld/services/ssh.xml
