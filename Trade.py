@@ -430,75 +430,85 @@ class Trade:
     '''
     @classmethod
     def price_tracing_order(cls, side, size) -> float:
-        if cls.flg_api_limit == False:
-            print('started price tracing order')
-            remaining_size = size
-            sum_price_x_size = 0
-            sum_size = 0
-            pre_exe_size = 0
-            price = round(0.5*(TickData.get_bid_price() + TickData.get_ask_price()))
-            #price = cls.get_opt_buy_price() if side == 'buy' else cls.get_opt_sell_price()
-            order_id = cls.order_wait_till_boarding(side, price, remaining_size, 100)['child_order_acceptance_id']
-            num_loop = 0
-            while remaining_size > 0:
-                status = cls.get_order_status(order_id)
-                if abs(price - round(0.5*(TickData.get_bid_price() + TickData.get_ask_price()))) >= 100 and remaining_size > 0:  # current order price is far from opt price
-                #if abs(price - cls.get_opt_price()) >= 100 and remaining_size > 0:  # current order price is far from opt price
-                    res = cls.cancel_and_wait_completion(order_id)
-                    if len(res) > 0:  # cancell failed order partially executed
-                        remaining_size = res['outstanding_size']
-                        sum_price_x_size += float(res['average_price']) * float(res['executed_size'] - pre_exe_size)
-                        sum_size += float(res['executed_size'] - pre_exe_size)
-                        print('price tracing order - executed ' + str(res['executed_size'] - pre_exe_size) + ' @' + str(res['average_price']))
-                        if remaining_size <= 0:  # target size has been executed
-                            break
-                        else:  # place a new order for remaining size
-                            pre_exe_size = status[0]['executed_size']
+        if size <= 0.01:
+            status = cls.market_order_wait_till_execution(side,size)
+            if status is not None:
+                return status['price']
+            else:
+                print('price tracing market order return was None!')
+                LogMaster.add_log({'dt': datetime.now(), 'api_error': 'price tracing market order return was None!'})
+                LineNotification.send_error('price tracing market order return was None!')
+                return ''
+        else:
+            if cls.flg_api_limit == False:
+                print('started price tracing order')
+                remaining_size = size
+                sum_price_x_size = 0
+                sum_size = 0
+                pre_exe_size = 0
+                price = round(0.5*(TickData.get_bid_price() + TickData.get_ask_price()))
+                #price = cls.get_opt_buy_price() if side == 'buy' else cls.get_opt_sell_price()
+                order_id = cls.order_wait_till_boarding(side, price, remaining_size, 100)['child_order_acceptance_id']
+                num_loop = 0
+                while remaining_size > 0:
+                    status = cls.get_order_status(order_id)
+                    if abs(price - round(0.5*(TickData.get_bid_price() + TickData.get_ask_price()))) >= 100 and remaining_size > 0:  # current order price is far from opt price
+                    #if abs(price - cls.get_opt_price()) >= 100 and remaining_size > 0:  # current order price is far from opt price
+                        res = cls.cancel_and_wait_completion(order_id)
+                        if len(res) > 0:  # cancell failed order partially executed
+                            remaining_size = res['outstanding_size']
+                            sum_price_x_size += float(res['average_price']) * float(res['executed_size'] - pre_exe_size)
+                            sum_size += float(res['executed_size'] - pre_exe_size)
+                            print('price tracing order - executed ' + str(res['executed_size'] - pre_exe_size) + ' @' + str(res['average_price']))
+                            if remaining_size <= 0:  # target size has been executed
+                                break
+                            else:  # place a new order for remaining size
+                                pre_exe_size = status[0]['executed_size']
+                                price = round(0.5*(TickData.get_bid_price() + TickData.get_ask_price()))
+                                order_id = cls.order_wait_till_boarding(side, price, remaining_size, 100)['child_order_acceptance_id']
+                                print('price tracing order - placed new order for remaining size. size = '+str(remaining_size))
+                                #print('price tracing order - executed ' + str(res['executed_size'] - pre_exe_size) + ' @' + str(res['average_price']))
+                        else:
                             price = round(0.5*(TickData.get_bid_price() + TickData.get_ask_price()))
+                            #price = cls.get_opt_buy_price() if side == 'buy' else cls.get_opt_sell_price()
                             order_id = cls.order_wait_till_boarding(side, price, remaining_size, 100)['child_order_acceptance_id']
-                            print('price tracing order - placed new order for remaining size. size = '+str(remaining_size))
-                            #print('price tracing order - executed ' + str(res['executed_size'] - pre_exe_size) + ' @' + str(res['average_price']))
-                    else:
-                        price = round(0.5*(TickData.get_bid_price() + TickData.get_ask_price()))
-                        #price = cls.get_opt_buy_price() if side == 'buy' else cls.get_opt_sell_price()
-                        order_id = cls.order_wait_till_boarding(side, price, remaining_size, 100)['child_order_acceptance_id']
-                        print('price tracing order - replaced order for ' + side + ', @' + str(price) + ' x ' + str(remaining_size))
-                        pre_exe_size = 0
-                if len(status) > 0:
-                    if status[0]['outstanding_size'] == 0:  # excuted all portion
-                        sum_price_x_size += float(status[0]['average_price']) * float(status[0]['executed_size'] - pre_exe_size)
-                        sum_size += float(status[0]['executed_size'] - pre_exe_size)
-                        remaining_size = 0
-                        pre_exe_size = 0
-                        break
-                    else:
-                        if status[0]['outstanding_size'] < remaining_size:
+                            print('price tracing order - replaced order for ' + side + ', @' + str(price) + ' x ' + str(remaining_size))
+                            pre_exe_size = 0
+                    if len(status) > 0:
+                        if status[0]['outstanding_size'] == 0:  # excuted all portion
                             sum_price_x_size += float(status[0]['average_price']) * float(status[0]['executed_size'] - pre_exe_size)
                             sum_size += float(status[0]['executed_size'] - pre_exe_size)
-                            remaining_size = status[0]['outstanding_size']
-                            print('price tracing order - executed ' + str(status[0]['executed_size'] - pre_exe_size) + ' @' + str(price))
-                            pre_exe_size = status[0]['executed_size']
-                time.sleep(0.5)
-                num_loop += 1
-                if num_loop > 100:
-                    print('price tracing order loop too many!')
-                    print(status)
-                    print(remaining_size)
-                    print(order_id)
-                    print(pre_exe_size)
-                    if sum_size > 0:
-                        print('ave price={}, exe size = {}'.format(sum_price_x_size / sum_size, sum_size))
-                        return sum_price_x_size / sum_size
-                    else:
-                        print('ave price={}, exe size = {}'.format(0, 0))
-                        return ''
-            Trade.cancel_all_orders()
-            print('price tracing order has been completed.')
-            print('ave price={}, exe size = {}'.format(sum_price_x_size / sum_size, sum_size))
-            return sum_price_x_size / sum_size
-        else:
-            print('order is temporary exhibited due to API access limitation!')
-            return ''
+                            remaining_size = 0
+                            pre_exe_size = 0
+                            break
+                        else:
+                            if status[0]['outstanding_size'] < remaining_size:
+                                sum_price_x_size += float(status[0]['average_price']) * float(status[0]['executed_size'] - pre_exe_size)
+                                sum_size += float(status[0]['executed_size'] - pre_exe_size)
+                                remaining_size = status[0]['outstanding_size']
+                                print('price tracing order - executed ' + str(status[0]['executed_size'] - pre_exe_size) + ' @' + str(price))
+                                pre_exe_size = status[0]['executed_size']
+                    time.sleep(0.5)
+                    num_loop += 1
+                    if num_loop > 100:
+                        print('price tracing order loop too many!')
+                        print(status)
+                        print(remaining_size)
+                        print(order_id)
+                        print(pre_exe_size)
+                        if sum_size > 0:
+                            print('ave price={}, exe size = {}'.format(sum_price_x_size / sum_size, sum_size))
+                            return sum_price_x_size / sum_size
+                        else:
+                            print('ave price={}, exe size = {}'.format(0, 0))
+                            return ''
+                Trade.cancel_all_orders()
+                print('price tracing order has been completed.')
+                print('ave price={}, exe size = {}'.format(sum_price_x_size / sum_size, sum_size))
+                return sum_price_x_size / sum_size
+            else:
+                print('order is temporary exhibited due to API access limitation!')
+                return ''
 
     '''
     #res['bids'][0][0] = 394027
@@ -566,6 +576,27 @@ class Trade:
     @classmethod
     def order_wait_till_execution(cls, side, price, size, expire_m) -> dict:
         id = cls.order(side, price, size, 'limit', expire_m)
+        i = 0
+        print('waiting order execution...')
+        flg_activated = False
+        while True:
+            status = cls.get_order_status(id)
+            if len(status) > 0:
+                if status[0]['child_order_state'] == 'COMPLETED':  # order executed
+                    print('order has been executed')
+                    return status[0]
+                elif status[0]['child_order_state'] == 'ACTIVE':
+                    flg_activated = True
+            else:
+                if flg_activated:
+                    print('order has been expired')
+                    return None
+                i += 1
+            time.sleep(0.5)
+
+    @classmethod
+    def market_order_wait_till_execution(cls, side, size) -> dict:
+        id = cls.order(side, 0, size, 'market', 0)
         i = 0
         print('waiting order execution...')
         flg_activated = False

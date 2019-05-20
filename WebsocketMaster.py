@@ -196,8 +196,15 @@ class TickData:
                 #print(cls.exec_data[-1])
             if len(cls.ticker_data) > 0:
                 pass
-                #print(cls.ticker_data[-1])
+            cls.__check_thread_status()
             time.sleep(0.3)
+
+    @classmethod
+    def __check_thread_status(cls):
+        if cls.ws_execution.is_connected == False:
+            cls.ws_execution.connect()
+        if cls.ws_ticker.is_connected == False:
+            cls.ws_ticker.connect()
 
     @classmethod
     def add_exec_data(cls, exec):

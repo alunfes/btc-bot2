@@ -7,7 +7,7 @@ class Sim2:
     def start_sim(cls,test_x, prediction, pl_kijun, kairi_suspension_kijun, conservertive_trade, ohlc):
         cls.ac = Account2()
         cls.start_ind = cls.check_matched_index(test_x,ohlc)
-        cls.tick, cls.pred = MarketData3.generate_tick_pred_data(ohlc, prediction)
+        cls.tick, cls.pred = MarketData3.generate_tick_pred_data(ohlc, prediction, cls.start_ind)
         cls.pred = cls.__pred_converter(cls.pred)
         cls.prediction_delay = 3
         for i in range(len(cls.pred) - 1):
