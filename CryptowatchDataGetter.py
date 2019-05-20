@@ -5,7 +5,7 @@ import time
 import shutil
 from datetime import datetime
 from datetime import timedelta
-from OneMinutesData import OneMinutesData
+from OneMinutesData2 import OneMinutesData2
 
 
 class CryptowatchDataGetter:
@@ -105,7 +105,7 @@ class CryptowatchDataGetter:
 
     @classmethod
     def convert_json_to_ohlc(cls, json_data):
-        omd = OneMinutesData()
+        omd = OneMinutesData2()
         omd.initialize()
         i = 0
         for data in json_data:
@@ -120,7 +120,7 @@ class CryptowatchDataGetter:
         return omd
 
     @classmethod
-    def write_data_to_csv(cls, one_min_data: OneMinutesData):
+    def write_data_to_csv(cls, one_min_data: OneMinutesData2):
         df = pd.DataFrame()
         df = df.assign(unix_time=one_min_data.unix_time)
         df = df.assign(dt=one_min_data.dt)

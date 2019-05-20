@@ -21,7 +21,8 @@ vim  /etc/sudoers
 sudo yum upgrade
 sudo yum install -y https://centos7.iuscommunity.org/ius-release.rpm
 yum search python36
-sudo yum install -y python36u python36u-libs python36u-devel python36u-pip
+#sudo yum install -y python36u python36u-libs python36u-devel python36u-pip
+sudo yum install -y python36
 sudo yum install -y git
 
 sudo yum remove docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-engine

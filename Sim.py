@@ -61,9 +61,9 @@ class Sim:
         cls.trade_log = []
         cls.trade_log_i = []
 
-        start_ind = cls.check_matched_index(test_x)
+        cls.start_ind = cls.check_matched_index(test_x)
         for i in range(len(prediction) - 1):
-            ind = i + start_ind
+            ind = i + cls.start_ind
             if cls.posi_side == '':
                 if prediction[i] == 1 or prediction[i] == 2:
                     cls.__entry_order('buy' if prediction[i]==1 else 'sell',cls.__calc_opt_size(ind),cls.ohlc.open[ind+1],ind,i)
@@ -97,6 +97,8 @@ class Sim:
             cls.holding_pl = round((cls.ohlc.close[ind] - cls.posi_price ) * cls.posi_size) if cls.posi_side == 'buy' else round((cls.posi_price - cls.ohlc.close[ind]) * cls.posi_size)
             cls.total_pl = cls.realized_pl + cls.holding_pl
             cls.total_pl_log.append(cls.total_pl)
+            if cls.num_trade >0:
+                cls.win_rate = round(cls.num_win / cls.num_trade,2)
             cls.__add_log('i='+str(i)+', posi_side='+cls.posi_side+', price='+str(cls.posi_price)+', size='+str(cls.posi_size)+', total pl ='+str(cls.total_pl),ind,i)
             cls.__add_log('ohlc:'+str(cls.ohlc.open[ind])+' '+str(cls.ohlc.high[ind])+' '+str(cls.ohlc.low[ind])+' '+str(cls.ohlc.close[ind]),ind,i)
             cls.__add_log('prediction='+str(prediction[i]),ind,i)
@@ -240,7 +242,7 @@ class Sim:
 
 if __name__ == '__main__':
     print('initializing data')
-    MarketData2.initialize_from_bot_csv(100,1,1,500,0)
+    MarketData2.initialize_from_bot_csv(100,1,1,500,500)
     df =MarketData2.generate_df(MarketData2.ohlc_bot)
     model = CatModel()
     print('init')
@@ -248,7 +250,7 @@ if __name__ == '__main__':
     train_x, test_x, train_y, test_y = model.generate_data(df)
     predict = cbm.predict(Pool(test_x))
     #res = Sim.start_sim(test_x,predict,500,1.0,False,MarketData2.ohlc_bot)
-    res = Sim.simple_sim(test_x, predict ,500,1.0,False,MarketData2.ohlc_bot)
+    res = Sim.simple_sim(test_x, predict ,500,1.0,True,MarketData2.ohlc_bot)
 
 
 

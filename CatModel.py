@@ -13,13 +13,16 @@ import pandas as pd
 class CatModel:
     @jit
     def generate_data(self, df: pd.DataFrame, test_size=0.2):
-        df['future_side'] = df['future_side'].map({'no': 0, 'buy': 1, 'sell': 2, 'both': 3}).astype(int)
-        df = df.drop(['dt', 'open', 'high', 'low', 'close', 'size'], axis=1)
+        dff = df
+        dff['future_side'] = dff['future_side'].map({'no': 0, 'buy': 1, 'sell': 2, 'both': 3}).astype(int)
+        dff = dff.drop(['dt', 'open', 'high', 'low', 'close', 'size'], axis=1)
         size = int(round(df['future_side'].count() * (1 - test_size)))
-        train_x = df.drop('future_side', axis=1).iloc[0:size]
-        train_y = df['future_side'].iloc[0:size]
-        test_x = df.drop('future_side', axis=1).iloc[size:]
-        test_y = df['future_side'].iloc[size:]
+        train_x = dff.drop('future_side', axis=1).iloc[:size]
+        train_y = dff['future_side'].iloc[:size]
+        test_x = dff.drop('future_side', axis=1).iloc[size:]
+        test_y = dff['future_side'].iloc[size:]
+        print('train length='+str(len(train_y)))
+        print('test length='+str(len(test_y)))
         return train_x, test_x, train_y, test_y
 
     @jit

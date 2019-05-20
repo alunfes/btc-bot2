@@ -9,7 +9,7 @@ from SystemFlg import SystemFlg
 from CatModel import CatModel
 from XgbModel import  XgbModel
 from datetime import timedelta
-from MarketData2 import MarketData2
+from MarketData3 import MarketData3
 from CryptowatchDataGetter import CryptowatchDataGetter
 from WebsocketMaster import TickData
 from LogMaster import LogMaster
@@ -427,9 +427,9 @@ class Bot:
         start = time.time()
         self.last_train_model_dt = time.time()
         CryptowatchDataGetter.get_and_add_to_csv()
-        MarketData2.initialize_from_bot_csv(num_term, window_term, future_period, pl_kijun,0)
+        MarketData3.initialize_for_bot(num_term,window_term,future_period,pl_kijun,num_term+1)
         newmodel = CatModel()
-        train_df = MarketData2.generate_df(MarketData2.ohlc_bot)
+        train_df = MarketData3.generate_df()
         train_x, test_x, train_y, test_y = newmodel.generate_data(train_df, 0)
         cbm = newmodel.train(train_x, train_y)
         elapsed_time = time.time() - start
@@ -446,12 +446,10 @@ class Bot:
         CryptowatchDataGetter.get_and_add_to_csv()
         print('bot - initializing MarketData2..')
         LogMaster.add_log({'action_message': 'bot - initializing MarketData2..'})
-        MarketData2.initialize_from_bot_csv(num_term, window_term, future_period, pl_kijun, 5000)
+        MarketData3.initialize_for_bot(num_term, window_term, future_period, pl_kijun, num_term + 1)
         print('bot - starting websocket...')
         TickData.initialize()
         time.sleep(5)
-        #train_df = MarketData2.generate_df(MarketData2.ohlc_bot)
-        #print(train_df)
         #model = XgbModel()
         model = CatModel()
         print('bot - generating training data')
@@ -466,8 +464,7 @@ class Bot:
         print('bot - training completed..')
         print('bot - updating crypto data..')
         LogMaster.add_log({'action_message': 'bot - training completed..'})
-        MarketData2.ohlc_bot.del_data(5000)
-
+        #MarketData2.ohlc_bot.del_data(5000)
         print('bot - started bot loop.')
         LogMaster.add_log({'action_message': 'bot - started bot loop.'})
         predict = [0]
@@ -489,15 +486,12 @@ class Bot:
                 self.elapsed_time = time.time() - start
                 print("bot elapsed_time:{0}".format(round(self.elapsed_time/60,2)) + "[min]")
                 print('num total access per 300s={}, num private access={}, num public access={}'.format(Trade.total_access_per_300s, Trade.num_private_access, Trade.num_public_access))
-                res, omd = CryptowatchDataGetter.get_data_after_specific_ut(MarketData2.ohlc_bot.unix_time[-1])
-                #print('cryptowatch completed ='+datetime.now(tz=self.JST).strftime("%H:%M:%S"))
-                #print('downloaded data - '+str(datetime.now(tz=JST)))
+                res, omd = CryptowatchDataGetter.get_data_after_specific_ut(MarketData3.ohlc.unix_time[-1])
                 if res == 0:
                     for i in range(len(omd.dt)):
-                        MarketData2.ohlc_bot.add_and_pop(omd.unix_time[i],omd.dt[i], omd.open[i], omd.high[i], omd.low[i], omd.close[i], omd.size[i])
-                    MarketData2.update_ohlc_index_for_bot2()
-                    df = MarketData2.generate_df_for_bot(MarketData2.ohlc_bot)
-                    MarketData2.ohlc_bot.del_data(5000)
+                        MarketData3.ohlc.add_and_pop(omd.unix_time[i],omd.dt[i], omd.open[i], omd.high[i], omd.low[i], omd.close[i], omd.size[i])
+                    MarketData3.update_for_bot()
+                    df = MarketData3.generate_df()
                     #print('MD df completed =' +datetime.now(tz=self.JST).strftime("%H:%M:%S"))
                     pred_x = self.get_model_cbm()[0].generate_bot_pred_data(df)
                     #print('Model df completed =' +datetime.now(tz=self.JST).strftime("%H:%M:%S"))
@@ -506,15 +500,15 @@ class Bot:
                     #print('Prediction completed =' +datetime.now(tz=self.JST).strftime("%H:%M:%S"))
                     #print('predicted - ' + str(datetime.now(tz=JST)))
                     self.calc_collateral_change()
-                    LogMaster.add_log({'dt':MarketData2.ohlc_bot.dt[-1],'open':MarketData2.ohlc_bot.open[-1],'high':MarketData2.ohlc_bot.high[-1],
-                                      'low':MarketData2.ohlc_bot.low[-1],'close':MarketData2.ohlc_bot.close[-1],'posi_side':self.posi_side,
+                    LogMaster.add_log({'dt':MarketData3.ohlc.dt[-1],'open':MarketData3.ohlc.open[-1],'high':MarketData3.ohlc.high[-1],
+                                      'low':MarketData3.ohlc.low[-1],'close':MarketData3.ohlc.close[-1],'posi_side':self.posi_side,
                                        'posi_price':self.posi_price,'posi_size':self.posi_size,'order_side':self.order_side,'order_price':self.order_price,
                                        'order_size':self.order_size,'num_private_access':Trade.num_private_access, 'num_public_access':Trade.num_public_access,
                                        'num_total_access_per_300s':Trade.total_access_per_300s,'num_trade':self.num_trade,'win_rate':self.win_rate, 'pl':self.pl+self.holding_pl,
                                        'pl_per_min':self.pl_per_min, 'prediction':predict[0], 'collateral_change':self.collateral_change,'collateral_change_per_min':self.collateral_change_per_min})
                     LineNotification.send_notification()
                     print('dt={}, close={}, predict={}, pl={}, collateral_change={}, pl_per_min={}, collateral_change_per_min={}, num_trade={}, std_1m={}, win_rate={}, posi_side={}, posi_price={}, posi_size={}, order_side={}, order_price={}, order_size={}'
-                          .format(MarketData2.ohlc_bot.dt[-1],MarketData2.ohlc_bot.close[-1],predict[0],self.pl+self.holding_pl, self.collateral_change, self.pl_per_min, self.collateral_change_per_min,
+                          .format(MarketData3.ohlc.dt[-1],MarketData3.ohlc.close[-1],predict[0],self.pl+self.holding_pl, self.collateral_change, self.pl_per_min, self.collateral_change_per_min,
                                   self.num_trade, TickData.get_1m_std(), self.win_rate, self.posi_side, self.posi_price, self.posi_size, self.order_side, self.order_price, self.order_size))
                 else:
                     print('crypto watch data download error!')

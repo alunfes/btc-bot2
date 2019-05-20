@@ -1,5 +1,5 @@
 import pandas as pd
-from numba import jit
+from numba import jit, f8, i8, b1, void
 
 class OneMinutesData:
     def initialize(self):
@@ -11,11 +11,12 @@ class OneMinutesData:
         self.low = []
         self.close = []
         self.size = []
-
         self.ma = {} #{term:[kairi]}
         self.ma_kairi = {}
         self.rsi = {}
         self.momentum = {}
+        self.percent_bandwidth = {}
+        self.ema = {}
         self.future_side = []
 
     @jit
@@ -35,6 +36,10 @@ class OneMinutesData:
             self.momentum[k] = self.momentum[k][-num_data:]
         for k in self.rsi:
             self.rsi[k] = self.rsi[k][-num_data:]
+        for k in self.percent_bandwidth:
+            self.percent_bandwidth[k] = self.percent_bandwidth[k][-num_data:]
+        for k in self.ema:
+            self.ema[k] = self.ema[k][-num_data:]
         self.future_side = self.future_side[-num_data:]
 
 
@@ -55,6 +60,10 @@ class OneMinutesData:
             del self.momentum[k][:-num_remain_data]
         for k in self.rsi:
             del self.rsi[k][:-num_remain_data]
+        for k in self.percent_bandwidth:
+            del self.percent_bandwidth[k][:-num_remain_data]
+        for k in self.ema:
+            del self.ema[k][:-num_remain_data]
         del self.future_side[:-num_remain_data]
 
     @jit
