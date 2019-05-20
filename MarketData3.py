@@ -299,6 +299,10 @@ class MarketData3:
                     om_tick.extend(list(np.round(np.linspace(ohlc.low[i], ohlc.close[i], round(lc / sec_width)))))
                 else:
                     om_tick.extend([tick[-1]] * 60)
+            if 60 - len(om_tick) > 0:
+                om_tick.extend([om_tick[-1] * (60 - len(om_tick))])
+            elif 60 - len(om_tick) < 0:
+                del om_tick[-(len(om_tick) - 60):]
             tick.extend(om_tick)
             pred.extend([prediction[i]] * 60)
         return (tick, pred)

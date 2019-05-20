@@ -1,5 +1,5 @@
 import threading
-import xgboost as xgb
+#import xgboost as xgb
 import pandas as pd
 import time
 import copy
@@ -7,7 +7,7 @@ import pickle
 from catboost import Pool
 from SystemFlg import SystemFlg
 from CatModel import CatModel
-from XgbModel import  XgbModel
+#from XgbModel import  XgbModel
 from datetime import timedelta
 from MarketData3 import MarketData3
 from CryptowatchDataGetter import CryptowatchDataGetter
@@ -444,7 +444,7 @@ class Bot:
         print('bot - updating crypto data..')
         LogMaster.add_log({'action_message':'bot - updating crypto data..'})
         CryptowatchDataGetter.get_and_add_to_csv()
-        print('bot - initializing MarketData2..')
+        print('bot - initializing MarketData3..')
         LogMaster.add_log({'action_message': 'bot - initializing MarketData2..'})
         MarketData3.initialize_for_bot(num_term, window_term, future_period, pl_kijun, num_term + 1)
         print('bot - starting websocket...')
@@ -491,7 +491,7 @@ class Bot:
                     for i in range(len(omd.dt)):
                         MarketData3.ohlc.add_and_pop(omd.unix_time[i],omd.dt[i], omd.open[i], omd.high[i], omd.low[i], omd.close[i], omd.size[i])
                     MarketData3.update_for_bot()
-                    df = MarketData3.generate_df()
+                    df = MarketData3.generate_df_for_bot()
                     #print('MD df completed =' +datetime.now(tz=self.JST).strftime("%H:%M:%S"))
                     pred_x = self.get_model_cbm()[0].generate_bot_pred_data(df)
                     #print('Model df completed =' +datetime.now(tz=self.JST).strftime("%H:%M:%S"))
@@ -522,12 +522,12 @@ class Bot:
                     #self.entry_order('sell', Trade.get_ask_price()-1, self.calc_opt_size())
                     self.entry_market_order('sell', TickData.get_bid_price() + 1, self.calc_opt_size())
             elif self.posi_side == '' and self.order_side != '': #no position and ordering
-                if (self.order_side == 'buy' and self.posi_side=='' and (predict[0] == 2 or predict[0] == 0 or predict[0] == 3)) or (self.order_side == 'sell' and self.posi_side =='' and (predict[0] == 1 or predict[0] == 0 or predict[0] == 3)):#ノーポジでオーダーが判定を逆の時にキャンセル。
+                if (self.order_side == 'buy' and self.posi_side=='' and (predict[0] == 2)) or (self.order_side == 'sell' and self.posi_side =='' and (predict[0] == 1)):#ノーポジでオーダーが判定を逆の時にキャンセル。
                     self.cancel_order()
             elif self.posi_side != '' and self.order_side == '': #holding position and no order
                 self.pl_order()
             #elif self.posi_side == 'buy' and (predict[0] == 2 or predict[0] == 3) or self.posi_side == 'sell' and (predict[0] == 1   or predict[0] == 3): # ポジションが判定と逆の時にexit,　もしplがあればキャンセル。。
-            elif (self.posi_side == 'buy' and (predict[0] == 2 or predict[0] == 0 or predict[0] == 3)) or (self.posi_side == 'sell' and (predict[0] == 1 or predict[0] == 0 or predict[0] == 3)):  # ポジションが判定と逆の時にexit,　もしplがあればキャンセル。。
+            elif (self.posi_side == 'buy' and (predict[0] == 2)) or (self.posi_side == 'sell' and (predict[0] == 1)):  # ポジションが判定と逆の時にexit,　もしplがあればキャンセル。。
                 self.exit_order()
                 if self.order_status == 'pl ordering':
                     self.cancel_order()
@@ -548,7 +548,7 @@ if __name__ == '__main__':
     LogMaster.initialize()
     LineNotification.initialize()
     bot = Bot()
-    bot.start_bot(500, 1, 100, 1)
+    bot.start_bot(1000, 30, 1000, 10)
 
 
 

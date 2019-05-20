@@ -44,7 +44,7 @@ class Sim2:
                 print('position:' + cls.ac.holding_side + ', ' + str(cls.ac.holding_size) + ', order:' + cls.ac.order_side + ', ' + str(cls.ac.order_size) + ', pred=' +cls.pred[i])
                 pass
             cls.ac.move_to_next(i,cls.tick[i])
-        cls.ac.last_day_operation(i, cls.tick[i])
+        cls.ac.last_day_operation(len(cls.pred)-1, cls.tick[-1])
         return (cls.ac.total_pl,cls.ac.num_trade,cls.ac.win_rate,cls.ac.total_pl_log)
 
 
