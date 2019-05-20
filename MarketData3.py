@@ -275,29 +275,29 @@ class MarketData3:
         tick = []
         pred = []
         split_num = 60
-        con_ohlc = ohlc.del_data(len(ohlc.close)-start_ind)
+        ohlc.del_data(len(ohlc.close)-start_ind)
         for i in range(len(prediction)):
             om_tick = []
-            if con_ohlc.open[i] < con_ohlc.close[i]:  # open, low, high, close
-                ol = con_ohlc.open[i] - con_ohlc.low[i]
-                lh = con_ohlc.high[i] - con_ohlc.low[i]
-                hc = con_ohlc.high[i] - con_ohlc.close[i]
+            if ohlc.open[i] < ohlc.close[i]:  # open, low, high, close
+                ol = ohlc.open[i] - ohlc.low[i]
+                lh = ohlc.high[i] - ohlc.low[i]
+                hc = ohlc.high[i] - ohlc.close[i]
                 sec_width = (ol + lh + hc) / split_num
                 if sec_width > 0:
-                    om_tick.extend(list(np.round(np.linspace(con_ohlc.open[i], con_ohlc.low[i], round(ol / sec_width)))))
-                    om_tick.extend(list(np.round(np.linspace(con_ohlc.low[i], con_ohlc.high[i], round(lh / sec_width)))))
-                    om_tick.extend(list(np.round(np.linspace(con_ohlc.high[i], con_ohlc.close[i], round(hc / sec_width)))))
+                    om_tick.extend(list(np.round(np.linspace(ohlc.open[i], ohlc.low[i], round(ol / sec_width)))))
+                    om_tick.extend(list(np.round(np.linspace(ohlc.low[i], ohlc.high[i], round(lh / sec_width)))))
+                    om_tick.extend(list(np.round(np.linspace(ohlc.high[i], ohlc.close[i], round(hc / sec_width)))))
                 else:
                     om_tick.extend([tick[-1]] * 60)
             else:  # open, high, low, close
-                oh = con_ohlc.high[i] - con_ohlc.open[i]
-                hl = con_ohlc.high[i] - con_ohlc.low[i]
-                lc = con_ohlc.close[i] - con_ohlc.low[i]
+                oh = ohlc.high[i] - ohlc.open[i]
+                hl = ohlc.high[i] - ohlc.low[i]
+                lc = ohlc.close[i] - ohlc.low[i]
                 sec_width = (oh + hl + lc) / split_num
                 if sec_width > 0:
-                    om_tick.extend(list(np.round(np.linspace(con_ohlc.open[i], con_ohlc.high[i], round(oh / sec_width)))))
-                    om_tick.extend(list(np.round(np.linspace(con_ohlc.high[i], con_ohlc.low[i], round(hl / sec_width)))))
-                    om_tick.extend(list(np.round(np.linspace(con_ohlc.low[i], con_ohlc.close[i], round(lc / sec_width)))))
+                    om_tick.extend(list(np.round(np.linspace(ohlc.open[i], ohlc.high[i], round(oh / sec_width)))))
+                    om_tick.extend(list(np.round(np.linspace(ohlc.high[i], ohlc.low[i], round(hl / sec_width)))))
+                    om_tick.extend(list(np.round(np.linspace(ohlc.low[i], ohlc.close[i], round(lc / sec_width)))))
                 else:
                     om_tick.extend([tick[-1]] * 60)
             if 60 - len(om_tick) > 0:

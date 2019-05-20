@@ -63,6 +63,9 @@ class Account2:
         self.total_pl = self.realized_pl + self.current_pl
         self.total_pl_log.append(self.total_pl)
         self.__add_action_log('i:'+str(i)+'order='+self.order_side+', '+str(self.order_size)+' @'+str(self.order_price),i)
+        if self.holding_side !='':
+            print('i={},posi={},posi price={},posi size={},order side={},order price={},order size={},pl={},realize pl={},current pl={}'
+                  .format(i,self.holding_side,self.holding_price,self.holding_size,self.order_side,self.order_price,self.order_size,self.total_pl,self.realized_pl,self.current_pl))
 
     def last_day_operation(self,i, price):
         self.__check_loss_cut( i,price)
@@ -114,11 +117,12 @@ class Account2:
         if i - self.order_i >= self.order_cancel_delay and self.order_side !='':
             if self.order_type == 'market' or self.order_type == 'losscut':
                 self.__process_execution(price,i)
-            elif self.order_type == 'limit' and ((self.order_side == 'buy' and self.order_price <= price) or (self.order_side == 'sell' and self.order_price >= price)):
+                self.__initialize_order()
+            elif self.order_type == 'limit' and ((self.order_side == 'buy' and self.order_price >= price) or (self.order_side == 'sell' and self.order_price <= price)):
                 self.__process_execution(self.order_price,i)
+                self.__initialize_order()
             elif self.order_type != 'market' and self.order_type != 'limit' and self.order_type != 'losscut':
                 print('Invalid order type!' + self.order_type)
-            self.__initialize_order()
 
     def __process_execution(self, price,  i):
         if self.order_side != '':
@@ -133,9 +137,9 @@ class Account2:
                     self.holding_size += self.order_size
                     self.holding_i = i
                 elif self.holding_size > self.order_size:  # side is not matched and holding size > order size
+                    self.__calc_executed_pl(price, i)
                     self.holding_size -= self.order_size
-                    self.realized_pl = (price - self.holding_price) * self.order_size if self.holding_side == 'buy' else (self.holding_price - price) * self.order_size
-                    self.__calc_executed_pl(price,i)
+                    #self.realized_pl = (price - self.holding_price) * self.order_size if self.holding_side == 'buy' else (self.holding_price - price) * self.order_size
                 elif self.holding_size == self.order_size:
                     self.__calc_executed_pl(price, i)
                     self.__initialize_holding()
@@ -156,14 +160,15 @@ class Account2:
             self.num_win +=1
 
     def __check_loss_cut(self,  i, price):
-        req_collateral = self.holding_size * price / self.leverage
-        pl = price - self.holding_price if self.holding_side == 'buy' else self.holding_price - price
-        pl = pl * self.holding_size
-        margin_rate = (self.initial_asset + self.realized_pl + pl) / req_collateral
-        if margin_rate <= self.force_loss_cut_rate:
-            self.__add_action_log("Loss cut postion! margin_rate=" + str(margin_rate),i)
-            self.log.append("Loss cut postion! margin_rate=" + str(margin_rate))
-            self.__force_exit(i)
+        if self.holding_side != '' :
+            req_collateral = self.holding_size * price / self.leverage
+            pl = price - self.holding_price if self.holding_side == 'buy' else self.holding_price - price
+            pl = pl * self.holding_size
+            margin_rate = (self.initial_asset + self.realized_pl + pl) / req_collateral
+            if margin_rate <= self.force_loss_cut_rate:
+                self.__add_action_log("Loss cut postion! margin_rate=" + str(margin_rate),i)
+                self.log.append("Loss cut postion! margin_rate=" + str(margin_rate))
+                self.__force_exit(i)
 
     def __force_exit(self,  i):
         self.order_side = 'buy' if self.holding_side == 'sell' else 'sell'

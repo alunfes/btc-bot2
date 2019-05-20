@@ -4,16 +4,6 @@ USER root
 RUN apt-get update
 RUN apt-get -y install locales && \
     localedef -f UTF-8 -i ja_JP ja_JP.UTF-8
-
-RUN apt-get wget http://prdownloads.sourceforge.net/ta-lib/ta-lib-0.4.0-src.tar.gz && \
-    tar -zxvf ta-lib-0.4.0-src.tar.gz && \
-    cd ta-lib && \
-    ./configure --prefix=/usr && \
-    make && \
-    make install && \
-    cd ../ && \
-    rm -rf ta-lib-0.4.0-src.tar.gz && \
-    rm -rf ta-lib && \
 ENV LANG ja_JP.UTF-8
 ENV LANGUAGE ja_JP:ja
 ENV LC_ALL ja_JP.UTF-8
@@ -44,7 +34,20 @@ COPY *.py ./
   #cmake .. && \
   #cd .. && \
   #cd python-package && python3 setup.py install
+
 RUN pip install --upgrade pip
 RUN pip install --upgrade setuptools
+RUN pip install numpy
+
+RUN wget http://prdownloads.sourceforge.net/ta-lib/ta-lib-0.4.0-src.tar.gz && \
+    tar -zxvf ta-lib-0.4.0-src.tar.gz && \
+    cd ta-lib && \
+    ./configure --prefix=/usr && \
+    make && \
+    make install && \
+    cd ../ && \
+    rm -rf ta-lib-0.4.0-src.tar.gz && \
+    rm -rf ta-lib && \
+
 RUN pip install -r requirements.txt
 CMD ["python","./Bot.py"]

@@ -1,5 +1,7 @@
 from Account2 import Account2
 from MarketData3 import MarketData3
+import random
+from CatModel import CatModel
 
 
 class Sim2:
@@ -19,7 +21,7 @@ class Sim2:
             5.position side == prediction & order side == prediction -> cancel order
             6.position side == prediction & order side != prediction ->do nothing 
             7.position side != prediction & no order ->exit order and entry to prediction side
-            8.position side != prediction & order side == prediction -> pass
+            8.position side != prediction & order side == prediction & order size == self.holding_size -> cancel order (holding position and pl ordering)
             9.position side != prediction & order side != prediction -> pass (unexpected situation)
             '''
             if cls.ac.holding_side =='' and cls.ac.order_side == '' and (cls.pred[i] == 'buy' or cls.pred[i] == 'sell'): #1
@@ -28,7 +30,7 @@ class Sim2:
                 pass
             elif cls.ac.holding_side =='' and ((cls.ac.order_side == 'buy' and cls.pred[i] == 'sell') or (cls.ac.order_side == 'sell' and cls.pred[i] == 'buy')): #3
                 cls.ac.cancel_order(i)
-            elif ((cls.ac.holding_side == cls.pred[i]) or (cls.ac.holding_side == cls.pred[i])) and cls.ac.order_side =='': #4
+            elif cls.ac.holding_side == cls.pred[i] and cls.ac.order_side =='': #4
                 price = cls.ac.holding_price + pl_kijun if cls.ac.holding_side == 'buy' else cls.ac.holding_price - pl_kijun
                 cls.ac.entry_order('buy' if cls.ac.holding_side=='sell' else 'sell', price, cls.ac.holding_size, 'limit',1440, i)
             elif ((cls.ac.holding_side == cls.pred[i]) or (cls.ac.holding_side == cls.pred[i])) and cls.ac.order_side == cls.pred[i]:  # 5
@@ -37,8 +39,8 @@ class Sim2:
                 pass
             elif (cls.pred[i] == 'buy' or cls.pred[i] == 'sell')  and  cls.ac.holding_side != cls.pred[i] and cls.ac.order_side =='': #7
                 cls.ac.entry_order(cls.pred[i], 0, cls.ac.holding_size * 2, 'market', 60, i)
-            elif (cls.pred[i] == 'buy' or cls.pred[i] == 'sell')  and  cls.ac.holding_side != cls.pred[i] and cls.ac.order_side =='': #8
-                pass
+            elif (cls.pred[i] == 'buy' or cls.pred[i] == 'sell')  and  cls.ac.holding_side != cls.pred[i] and cls.ac.order_side == cls.pred[i] and cls.ac.order_size == cls.ac.holding_size: #8
+                cls.ac.cancel_order(i)
             elif (cls.pred[i] == 'buy' or cls.pred[i] == 'sell') and cls.ac.holding_side != cls.pred[i] and cls.ac.order_side == '':  # 9
                 print('unexpected situation in sim!')
                 print('position:' + cls.ac.holding_side + ', ' + str(cls.ac.holding_size) + ', order:' + cls.ac.order_side + ', ' + str(cls.ac.order_size) + ', pred=' +cls.pred[i])
@@ -88,3 +90,20 @@ class Sim2:
                 return 'error'
         return list(map(__converter, prediction))
 
+
+if __name__ == '__main__':
+    MarketData3.initialize_for_bot(1000, 10, 30, 1000, 3000)
+    df = MarketData3.generate_df()
+    model = CatModel()
+    train_x, test_x, train_y, test_y = model.generate_data(df, 0.05)
+    train_xx = train_x
+    train_yy = train_y
+    test_xx = test_x
+    test_yy = test_y
+
+    l = [0, 1, 2, 3]
+    pred = []
+    for p in range(len(test_yy)):
+        pred.append(random.choice(l))
+
+    res = Sim2.start_sim(test_xx, pred, 1000, 1.0, False, MarketData3.ohlc)
