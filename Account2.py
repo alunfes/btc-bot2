@@ -160,7 +160,7 @@ class Account2:
             self.num_win +=1
 
     def __check_loss_cut(self,  i, price):
-        if self.holding_side != '' :
+        if self.holding_side != '' and self.order_type !='losscut':
             req_collateral = self.holding_size * price / self.leverage
             pl = price - self.holding_price if self.holding_side == 'buy' else self.holding_price - price
             pl = pl * self.holding_size
