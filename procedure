@@ -29,7 +29,7 @@ sudo yum install -y git
 #sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 #sudo yum install docker-ce docker-ce-cli containerd.io
 #sudo yum install -y yum-utils device-mapper-persistent-data lvm2
-sudo yum install -y docker
+sudo yum install -y docker docker-ce docker-ce-cli containerd.io yum-utils device-mapper-persistent-data lvm2
 sudo service docker start
 sudo usermod -a -G docker ec2-user
 sudo docker info
