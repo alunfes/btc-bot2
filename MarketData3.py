@@ -288,7 +288,7 @@ class MarketData3:
                     om_tick.extend(list(np.round(np.linspace(ohlc.low[i], ohlc.high[i], round(lh / sec_width)))))
                     om_tick.extend(list(np.round(np.linspace(ohlc.high[i], ohlc.close[i], round(hc / sec_width)))))
                 else:
-                    om_tick.extend([tick[-1]] * 60)
+                    om_tick.extend([tick[-1]] * split_num)
             else:  # open, high, low, close
                 oh = ohlc.high[i] - ohlc.open[i]
                 hl = ohlc.high[i] - ohlc.low[i]
@@ -299,14 +299,14 @@ class MarketData3:
                     om_tick.extend(list(np.round(np.linspace(ohlc.high[i], ohlc.low[i], round(hl / sec_width)))))
                     om_tick.extend(list(np.round(np.linspace(ohlc.low[i], ohlc.close[i], round(lc / sec_width)))))
                 else:
-                    om_tick.extend([tick[-1]] * 60)
-            if 60 - len(om_tick) > 0:
-                om_tick.extend([om_tick[-1] * (60 - len(om_tick))])
-            elif 60 - len(om_tick) < 0:
-                del om_tick[-(len(om_tick) - 60):]
+                    om_tick.extend([tick[-1]] * split_num)
+            if split_num - len(om_tick) > 0:
+                om_tick.extend([om_tick[-1] * (split_num - len(om_tick))])
+            elif split_num - len(om_tick) < 0:
+                del om_tick[-(len(om_tick) - split_num):]
             tick.extend(om_tick)
             if i ==0:
-                pred.extend([0] * 60)
+                pred.extend([0] * split_num)
             else:
-                pred.extend([prediction[i-1]] * 60)
+                pred.extend([prediction[i-1]] * split_num)
         return (tick, pred)

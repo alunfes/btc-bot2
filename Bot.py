@@ -470,6 +470,7 @@ class Bot:
         predict = [0]
         JST = pytz.timezone('Asia/Tokyo')
         start = time.time()
+        last_update_ut = 0
         while SystemFlg.get_system_flg():
             #time.sleep(Trade.adjusting_sleep)
             if (datetime.now(tz=self.JST).hour == 3 and datetime.now(tz=self.JST).minute >= 48):
@@ -488,28 +489,30 @@ class Bot:
                 print('num total access per 300s={}, num private access={}, num public access={}'.format(Trade.total_access_per_300s, Trade.num_private_access, Trade.num_public_access))
                 res, omd = CryptowatchDataGetter.get_data_after_specific_ut(MarketData3.ohlc.unix_time[-1])
                 if res == 0:
-                    for i in range(len(omd.dt)):
-                        MarketData3.ohlc.add_and_pop(omd.unix_time[i],omd.dt[i], omd.open[i], omd.high[i], omd.low[i], omd.close[i], omd.size[i])
-                    MarketData3.update_for_bot()
-                    df = MarketData3.generate_df_for_bot()
-                    #print('MD df completed =' +datetime.now(tz=self.JST).strftime("%H:%M:%S"))
-                    pred_x = self.get_model_cbm()[0].generate_bot_pred_data(df)
-                    #print('Model df completed =' +datetime.now(tz=self.JST).strftime("%H:%M:%S"))
-                    #predict = bst.predict(xgb.DMatrix(pred_x))
-                    predict = self.get_model_cbm()[1].predict(Pool(pred_x))
-                    #print('Prediction completed =' +datetime.now(tz=self.JST).strftime("%H:%M:%S"))
-                    #print('predicted - ' + str(datetime.now(tz=JST)))
-                    self.calc_collateral_change()
-                    LogMaster.add_log({'dt':MarketData3.ohlc.dt[-1],'open':MarketData3.ohlc.open[-1],'high':MarketData3.ohlc.high[-1],
-                                      'low':MarketData3.ohlc.low[-1],'close':MarketData3.ohlc.close[-1],'posi_side':self.posi_side,
-                                       'posi_price':self.posi_price,'posi_size':self.posi_size,'order_side':self.order_side,'order_price':self.order_price,
-                                       'order_size':self.order_size,'num_private_access':Trade.num_private_access, 'num_public_access':Trade.num_public_access,
-                                       'num_total_access_per_300s':Trade.total_access_per_300s,'num_trade':self.num_trade,'win_rate':self.win_rate, 'pl':self.pl+self.holding_pl,
-                                       'pl_per_min':self.pl_per_min, 'prediction':predict[0], 'collateral_change':self.collateral_change,'collateral_change_per_min':self.collateral_change_per_min})
-                    LineNotification.send_notification()
-                    print('dt={}, close={}, predict={}, pl={}, collateral_change={}, pl_per_min={}, collateral_change_per_min={}, num_trade={}, std_1m={}, win_rate={}, posi_side={}, posi_price={}, posi_size={}, order_side={}, order_price={}, order_size={}'
-                          .format(MarketData3.ohlc.dt[-1],MarketData3.ohlc.close[-1],predict[0],self.pl+self.holding_pl, self.collateral_change, self.pl_per_min, self.collateral_change_per_min,
-                                  self.num_trade, TickData.get_1m_std(), self.win_rate, self.posi_side, self.posi_price, self.posi_size, self.order_side, self.order_price, self.order_size))
+                    if len(omd.unix_time) > 0:
+                        for i in range(len(omd.dt)):
+                            MarketData3.ohlc.add_and_pop(omd.unix_time[i],omd.dt[i], omd.open[i], omd.high[i], omd.low[i], omd.close[i], omd.size[i])
+                        MarketData3.update_for_bot()
+                        df = MarketData3.generate_df_for_bot()
+                        #print('MD df completed =' +datetime.now(tz=self.JST).strftime("%H:%M:%S"))
+                        pred_x = self.get_model_cbm()[0].generate_bot_pred_data(df)
+                        #print('Model df completed =' +datetime.now(tz=self.JST).strftime("%H:%M:%S"))
+                        #predict = bst.predict(xgb.DMatrix(pred_x))
+                        predict = self.get_model_cbm()[1].predict(Pool(pred_x))
+                        #print('Prediction completed =' +datetime.now(tz=self.JST).strftime("%H:%M:%S"))
+                        #print('predicted - ' + str(datetime.now(tz=JST)))
+                        self.calc_collateral_change()
+                        LogMaster.add_log({'dt':MarketData3.ohlc.dt[-1],'open':MarketData3.ohlc.open[-1],'high':MarketData3.ohlc.high[-1],
+                                          'low':MarketData3.ohlc.low[-1],'close':MarketData3.ohlc.close[-1],'posi_side':self.posi_side,
+                                           'posi_price':self.posi_price,'posi_size':self.posi_size,'order_side':self.order_side,'order_price':self.order_price,
+                                           'order_size':self.order_size,'num_private_access':Trade.num_private_access, 'num_public_access':Trade.num_public_access,
+                                           'num_total_access_per_300s':Trade.total_access_per_300s,'num_trade':self.num_trade,'win_rate':self.win_rate, 'pl':self.pl+self.holding_pl,
+                                           'pl_per_min':self.pl_per_min, 'prediction':predict[0], 'collateral_change':self.collateral_change,'collateral_change_per_min':self.collateral_change_per_min})
+                        LineNotification.send_notification()
+                        print('actual dt={}'.format(datetime.now(tz=self.JST)))
+                        print('dt={}, close={}, predict={}, pl={}, collateral_change={}, pl_per_min={}, collateral_change_per_min={}, num_trade={}, std_1m={}, win_rate={}, posi_side={}, posi_price={}, posi_size={}, order_side={}, order_price={}, order_size={}'
+                              .format(MarketData3.ohlc.dt[-1],MarketData3.ohlc.close[-1],predict[0],self.pl+self.holding_pl, self.collateral_change, self.pl_per_min, self.collateral_change_per_min,
+                                      self.num_trade, TickData.get_1m_std(), self.win_rate, self.posi_side, self.posi_price, self.posi_size, self.order_side, self.order_price, self.order_size))
                 else:
                     print('crypto watch data download error!')
             if self.posi_side == '' and self.order_side == '': #no position no order
@@ -548,10 +551,4 @@ if __name__ == '__main__':
     LogMaster.initialize()
     LineNotification.initialize()
     bot = Bot()
-    bot.start_bot(1000, 30, 1000, 10)
-
-
-
-
-
-
+    bot.start_bot(50000,30,100,1)

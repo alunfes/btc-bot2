@@ -1,18 +1,55 @@
-bot - started bot loop.
-ok order - JRF20190514-131723-687710
-pl order: side = sell, price = 939263, size = 0.03
-pl order is not boarded
-Traceback (most recent call last):
-  File "Bot.py", line 557, in <module>
-    bot.start_bot(500, 30, 100, 1)
-TypeError: unsupported operand type(s) for -: 'NoneType' and 'int'
-^CException ignored in: <module 'threading' from '/usr/local/lib/python3.7/threading.py'>
-Traceback (most recent call last):
-  File "/usr/local/lib/python3.7/threading.py", line 1281, in _shutdown
-    t.join()
-  File "/usr/local/lib/python3.7/threading.py", line 1032, in join
-    self._wait_for_tstate_lock()
-  File "/usr/local/lib/python3.7/threading.py", line 1048, in _wait_for_tstate_lock
-    elif lock.acquire(block, timeout):
-KeyboardInterrupt
-Error in sys.excepthook:
+test_x
+864   -0.050716
+865   -0.027306
+866   -0.048874
+867    0.003885
+868    0.034134
+869    0.046350
+870    0.089489
+871    0.049886
+872    0.077392
+873   -0.051654
+874    0.065313
+875    0.012861
+876    0.013994
+877    0.016309
+878    0.003385
+879   -0.007771
+880    0.008066
+881    0.052364
+882   -0.008227
+883    0.013572
+884   -0.051713
+
+
+
+774   -0.035527
+775    0.010502
+776    0.024053
+777   -0.012431
+778   -0.060348
+779   -0.038915
+780   -0.102560
+781   -0.079165
+782    0.025415
+783    0.010255
+784    0.065679
+785    0.081695
+786    0.048076
+787    0.025667
+788   -0.019495
+789   -0.006644
+790   -0.002106
+791   -0.033829
+792    0.040161
+793    0.092842
+794    0.131563
+795    0.025667
+796   -0.029199
+797   -0.022824
+798   -0.100933
+799    0.015686
+800   -0.015525
+801    0.049472
+802    0.020933
+803    0.016305

@@ -62,6 +62,7 @@ class Account2:
             self.current_pl = 0
         self.total_pl = self.realized_pl + self.current_pl
         self.total_pl_log.append(self.total_pl)
+        self.asset = self.initial_asset + self.total_pl
         self.__add_action_log('i:'+str(i)+'order='+self.order_side+', '+str(self.order_size)+' @'+str(self.order_price),i)
         if self.holding_side !='':
             print('i={},posi={},posi price={},posi size={},order side={},order price={},order size={},pl={},realize pl={},current pl={}'
