@@ -45,7 +45,7 @@ mccabe==0.6.1
 mistune==0.8.4
 mpl-finance==0.10.0
 multidict==4.5.2
-nbconvert==5.4.1
+nbconvert==6.5.1
 nbformat==4.4.0
 notebook==5.7.6
 numba==0.43.1
