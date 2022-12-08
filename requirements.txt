@@ -10,7 +10,7 @@ bleach==3.1.0
 cachetools==3.1.0
 catboost==0.14.0
 ccxt==1.18.418
-certifi==2019.3.9
+certifi==2022.12.7
 cffi==1.12.2
 chardet==3.0.4
 cycler==0.10.0
